@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>AVS 医学助手</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: "Helvetica Neue", sans-serif;
+      background: linear-gradient(to bottom, #eaf6ff, #f0f8ff);
+      color: #003366;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #0077cc;
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    nav {
+      background-color: #005fa3;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav a {
+      color: white;
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .section {
+      padding: 2rem;
+      border-bottom: 1px solid #cce0ff;
+    }
+    h2 {
+      color: #0077cc;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>AVS 医学助手</h1>
+    <p>专业、清爽、未来感的医疗知识平台</p>
+  </header>
+  <nav>
+    <a href="#avs">AVS 模型</a>
+    <a href="#wiki">术式百科</a>
+    <a href="#expert">专家投稿</a>
+    <a href="#about">项目介绍</a>
+  </nav>
+
+  <div class="section" id="avs">
+    <h2>AVS 模型入口</h2>
+    <p>本模块将提供自动对接 <a href="https://arise-score.vercel.app/" target="_blank">AVS 模型官网</a> 的功能。</p>
+    <div id="avs-fetch-section">加载中...</div>
+  </div>
+
+  <div class="section" id="wiki">
+    <h2>术式百科</h2>
+    <p>我们将收录常见介入术式的定义、适应症与文献参考。</p>
+  </div>
+
+  <div class="section" id="expert">
+    <h2>专家投稿推荐</h2>
+    <p>精选来自全国各地介入专家的投稿内容。</p>
+  </div>
+
+  <div class="section" id="about">
+    <h2>项目介绍</h2>
+    <p>本站致力于打造可信赖的未来医疗数据入口。</p>
+  </div>
+
+  <script>
+    async function fetchAVS() {
+      try {
+        const proxy = 'https://corsproxy.io/?';
+        const res = await fetch(proxy + encodeURIComponent('https://arise-score.vercel.app/api/arise-data'));
+        const json = await res.json();
+        document.getElementById('avs-fetch-section').innerText = JSON.stringify(json, null, 2);
+      } catch (err) {
+        document.getElementById('avs-fetch-section').innerText = '无法获取 AVS 数据。';
+      }
+    }
+    fetchAVS();
+  </script>
+</body>
+</html>
