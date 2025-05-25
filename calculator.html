@@ -12,14 +12,14 @@
         padding-top: 2rem; 
         padding-bottom: 2rem; 
     }
-    .error { color: #ef4444; font-size: 0.875rem; margin-top: 0.25rem; } /* Added margin-top for errors */
-    .disclaimer { color: #6b7280; font-size: 0.875rem; margin-top: 1.5rem; } /* Increased margin-top for disclaimer */
-    #survival-chart-container { /* Added a container for the chart for better responsiveness */
+    .error { color: #ef4444; font-size: 0.875rem; margin-top: 0.25rem; }
+    .disclaimer { color: #6b7280; font-size: 0.875rem; margin-top: 1.5rem; }
+    #survival-chart-container {
         position: relative;
         margin: auto;
-        height: 280px; /* Default height */
-        width: 100%;   /* Default width */
-        max-width: 600px; /* Max width for larger screens */
+        height: 280px; 
+        width: 100%;   
+        max-width: 600px; 
         margin-top: 1.5rem;
     }
     .back-to-home {
@@ -44,92 +44,93 @@
         <a href="index.html" class="back-to-home">&larr; 返回首页</a>
     </div>
     <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
-        <h1 class="text-2xl font-bold text-center mb-6" id="calculatorTitle">ARISE Score: 心脏瓣膜预后评估</h1>
+        <h1 class="text-2xl font-bold text-center mb-6" id="calculatorTitleElement">ARISE Score: 心脏瓣膜预后评估</h1>
         <div class="flex justify-end mb-4">
           <select id="language" class="border rounded p-1 text-sm">
             <option value="zh">中文</option>
             <option value="en">English</option>
           </select>
         </div>
-        <form id="arise-form" class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4"> {/* Adjusted gap for better spacing */}
+        <form id="arise-form" class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
           <div>
-            <label for="age" class="block text-sm font-medium text-gray-700">年龄 (Age, 年):</label>
+            <label for="age" class="block text-sm font-medium text-gray-700" id="ageLabelElement">年龄 (Age, 年):</label>
             <input type="number" id="age" min="20" max="100" class="mt-1 block w-full border rounded p-2" required>
             <p id="age-error" class="error hidden"></p>
           </div>
           <div>
-            <label for="sex" class="block text-sm font-medium text-gray-700">性别 (Sex):</label>
+            <label for="sex" class="block text-sm font-medium text-gray-700" id="sexLabelElement">性别 (Sex):</label>
             <select id="sex" class="mt-1 block w-full border rounded p-2" required>
-              {/* Options will be populated by JavaScript */}
+              {/* Options populated by JS */}
             </select>
             <p id="sex-error" class="error hidden"></p>
           </div>
           <div>
-            <label for="cci" class="block text-sm font-medium text-gray-700">CCI (Charlson合并症指数):</label>
+            <label for="cci" class="block text-sm font-medium text-gray-700" id="cciLabelElement">CCI (Charlson合并症指数):</label>
             <input type="number" id="cci" min="0" max="9" class="mt-1 block w-full border rounded p-2" required>
             <p id="cci-error" class="error hidden"></p>
           </div>
           <div>
-            <label for="nyha" class="block text-sm font-medium text-gray-700">NYHA 心功能分级:</label>
+            <label for="nyha" class="block text-sm font-medium text-gray-700" id="nyhaLabelElement">NYHA 心功能分级:</label>
             <select id="nyha" class="mt-1 block w-full border rounded p-2" required>
-              {/* Options will be populated by JavaScript */}
+              {/* Options populated by JS */}
             </select>
             <p id="nyha-error" class="error hidden"></p>
           </div>
           <div>
-            <label for="aodi" class="block text-sm font-medium text-gray-700">主动脉直径指数 (AoDi, mm/m²):</label>
+            <label for="aodi" class="block text-sm font-medium text-gray-700" id="aodiLabelElement">主动脉直径指数 (AoDi, mm/m²):</label>
             <input type="number" id="aodi" min="15" max="65" step="0.1" class="mt-1 block w-full border rounded p-2" required>
             <p id="aodi-error" class="error hidden"></p>
           </div>
           <div>
-            <label for="lvef" class="block text-sm font-medium text-gray-700">左心室射血分数 (LVEF, %):</label>
+            <label for="lvef" class="block text-sm font-medium text-gray-700" id="lvefLabelElement">左心室射血分数 (LVEF, %):</label>
             <input type="number" id="lvef" min="20" max="80" step="0.1" class="mt-1 block w-full border rounded p-2" required>
             <p id="lvef-error" class="error hidden"></p>
           </div>
           <div>
-            <label for="lvesdi" class="block text-sm font-medium text-gray-700">左心室收缩末期内径指数 (LVESDi, mm/m²):</label>
+            <label for="lvesdi" class="block text-sm font-medium text-gray-700" id="lvesdiLabelElement">左心室收缩末期内径指数 (LVESDi, mm/m²):</label>
             <input type="number" id="lvesdi" min="10" max="50" step="0.1" class="mt-1 block w-full border rounded p-2" required>
             <p id="lvesdi-error" class="error hidden"></p>
           </div>
           <div>
-            <label for="avsIn3Months" class="block text-sm font-medium text-gray-700">3个月内是否进行主动脉瓣手术 (AVS):</label>
+            <label for="avsIn3Months" class="block text-sm font-medium text-gray-700" id="avsLabelElement">3个月内是否进行主动脉瓣手术 (AVS):</label>
             <select id="avsIn3Months" class="mt-1 block w-full border rounded p-2" required>
-                {/* Options will be populated by JavaScript */}
+                {/* Options populated by JS */}
             </select>
-            <p id="avsIn3Months-error" class="error hidden"></p> {/* Corrected ID for AVS error */}
+            <p id="avsIn3Months-error" class="error hidden"></p> 
           </div>
-          <div class="col-span-1 md:col-span-2 mt-2"> {/* Added margin-top */}
-            <button type="button" id="calculate" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">计算</button>
+          <div class="col-span-1 md:col-span-2 mt-2">
+            <button type="button" id="calculate" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" id="calculateButtonElement">计算</button>
           </div>
         </form>
         <div id="results" class="mt-6 hidden">
-          <h2 class="text-xl font-semibold mb-4" id="resultsTitle">计算结果</h2>
-          <p><strong id="totalPointsLabel">总点数:</strong> <span id="total-points"></span></p>
-          <p><strong id="riskCategoryLabel">风险类别:</strong> <span id="risk-category"></span></p>
-          <p><strong id="survival1yLabel">1年生存率:</strong> <span id="survival-1y"></span></p>
-          <p><strong id="survival3yLabel">3年生存率:</strong> <span id="survival-3y"></span></p>
-          <p><strong id="survival5yLabel">5年生存率:</strong> <span id="survival-5y"></span></p>
+          <h2 class="text-xl font-semibold mb-4" id="resultsTitleElement">计算结果</h2>
+          <p><strong id="totalPointsLabelElement">总点数:</strong> <span id="total-points"></span></p>
+          <p><strong id="riskCategoryLabelElement">风险类别:</strong> <span id="risk-category"></span></p>
+          <p><strong id="survival1yLabelElement">1年生存率:</strong> <span id="survival-1y"></span></p>
+          <p><strong id="survival3yLabelElement">3年生存率:</strong> <span id="survival-3y"></span></p>
+          <p><strong id="survival5yLabelElement">5年生存率:</strong> <span id="survival-5y"></span></p>
           <div id="survival-chart-container">
             <canvas id="survival-chart"></canvas>
           </div>
-          <p class="disclaimer" id="disclaimer">注意：ARISE Score不适用于术后30天内死亡风险评估，仅供参考，请结合临床判断。</p>
+          <p class="disclaimer" id="disclaimerElement">注意：ARISE Score不适用于术后30天内死亡风险评估，仅供参考，请结合临床判断。</p>
         </div>
     </div>
   </div>
   <script>
     const translations = {
       zh: {
+        pageTitle: "ARISE Score 计算器 - HeartValve 专家",
         calculatorTitle: "ARISE Score: 心脏瓣膜预后评估",
-        ageLabel: "年龄 (Age, 年):", ageAriaLabel: "年龄（20-100岁）",
-        sexLabel: "性别 (Sex):", sexAriaLabel: "性别",
+        ageLabel: "年龄 (Age, 年):",
+        sexLabel: "性别 (Sex):",
         sexOptions: { "": "请选择", Male: "男 (Male)", Female: "女 (Female)" },
-        cciLabel: "CCI (Charlson合并症指数):", cciAriaLabel: "Charlson合并症指数（0-9）",
-        nyhaLabel: "NYHA 心功能分级:", nyhaAriaLabel: "NYHA心功能分级",
+        cciLabel: "CCI (Charlson合并症指数):",
+        nyhaLabel: "NYHA 心功能分级:",
         nyhaOptions: { "": "请选择", I: "I级", II: "II级", III: "III级", IV: "IV级" },
-        aodiLabel: "主动脉直径指数 (AoDi, mm/m²):", aodiAriaLabel: "主动脉直径指数（15-65 mm/m²）",
-        lvefLabel: "左心室射血分数 (LVEF, %):", lvefAriaLabel: "左心室射血分数（20-80%）",
-        lvesdiLabel: "左心室收缩末期内径指数 (LVESDi, mm/m²):", lvesdiAriaLabel: "左心室收缩末期内径指数（10-50 mm/m²）",
-        avsLabel: "3个月内是否进行主动脉瓣手术 (AVS):", avsAriaLabel: "3个月内是否进行主动脉瓣手术",
+        aodiLabel: "主动脉直径指数 (AoDi, mm/m²):",
+        lvefLabel: "左心室射血分数 (LVEF, %):",
+        lvesdiLabel: "左心室收缩末期内径指数 (LVESDi, mm/m²):",
+        avsLabel: "3个月内是否进行主动脉瓣手术 (AVS):",
         avsOptions: { "": "请选择", Yes: "是 (Yes)", No: "否 (No)" },
         calculateButton: "计算",
         resultsTitle: "计算结果",
@@ -143,21 +144,22 @@
         errors: {
           age: "年龄必须在20-100之间", sex: "请选择性别", cci: "CCI必须在0-9之间",
           nyha: "请选择NYHA分级", aodi: "AoDi必须在15-65之间", lvef: "LVEF必须在20-80之间",
-          lvesdi: "LVESDi必须在10-50之间", avsIn3Months: "请选择AVS状态" // Corrected key to avsIn3Months
+          lvesdi: "LVESDi必须在10-50之间", avsIn3Months: "请选择AVS状态"
         }
       },
       en: {
+        pageTitle: "ARISE Score Calculator - HeartValve Expert",
         calculatorTitle: "ARISE Score: Cardiac Valve Prognosis Assessment",
-        ageLabel: "Age (years):", ageAriaLabel: "Age (20-100 years)",
-        sexLabel: "Sex:", sexAriaLabel: "Sex",
+        ageLabel: "Age (years):",
+        sexLabel: "Sex:",
         sexOptions: { "": "Please select", Male: "Male", Female: "Female" },
-        cciLabel: "CCI (Charlson Comorbidity Index):", cciAriaLabel: "Charlson Comorbidity Index (0-9)",
-        nyhaLabel: "NYHA Functional Class:", nyhaAriaLabel: "NYHA Functional Class",
+        cciLabel: "CCI (Charlson Comorbidity Index):",
+        nyhaLabel: "NYHA Functional Class:",
         nyhaOptions: { "": "Please select", I: "Class I", II: "Class II", III: "Class III", IV: "Class IV" },
-        aodiLabel: "Aortic Diameter Index (AoDi, mm/m²):", aodiAriaLabel: "Aortic Diameter Index (15-65 mm/m²)",
-        lvefLabel: "Left Ventricular Ejection Fraction (LVEF, %):", lvefAriaLabel: "Left Ventricular Ejection Fraction (20-80%)",
-        lvesdiLabel: "Left Ventricular End-Systolic Diameter Index (LVESDi, mm/m²):", lvesdiAriaLabel: "Left Ventricular End-Systolic Diameter Index (10-50 mm/m²)",
-        avsLabel: "Aortic Valve Surgery within 3 Months (AVS):", avsAriaLabel: "Aortic Valve Surgery within 3 Months",
+        aodiLabel: "Aortic Diameter Index (AoDi, mm/m²):",
+        lvefLabel: "Left Ventricular Ejection Fraction (LVEF, %):",
+        lvesdiLabel: "Left Ventricular End-Systolic Diameter Index (LVESDi, mm/m²):",
+        avsLabel: "Aortic Valve Surgery within 3 Months (AVS):",
         avsOptions: { "": "Please select", Yes: "Yes", No: "No" },
         calculateButton: "Calculate",
         resultsTitle: "Results",
@@ -171,71 +173,79 @@
         errors: {
           age: "Age must be between 20 and 100", sex: "Please select sex", cci: "CCI must be between 0 and 9",
           nyha: "Please select NYHA class", aodi: "AoDi must be between 15 and 65", lvef: "LVEF must be between 20 and 80",
-          lvesdi: "LVESDi must be between 10 and 50", avsIn3Months: "Please select AVS status" // Corrected key to avsIn3Months
+          lvesdi: "LVESDi must be between 10 and 50", avsIn3Months: "Please select AVS status"
         }
       }
     };
 
     function updateLanguage(lang) {
         const t = translations[lang];
-        document.getElementById("calculatorTitle").textContent = t.calculatorTitle;
-        document.title = t.calculatorTitle; 
-
-        const elementsToUpdate = {
-            "age": "ageLabel", "sex": "sexLabel", "cci": "cciLabel", "nyha": "nyhaLabel",
-            "aodi": "aodiLabel", "lvef": "lvefLabel", "lvesdi": "lvesdiLabel", "avsIn3Months": "avsLabel" // Corrected ID from 'avs' to 'avsIn3Months'
+        document.title = t.pageTitle;
+        document.getElementById("calculatorTitleElement").textContent = t.calculatorTitle;
+        
+        const labelMap = {
+            "ageLabelElement": "ageLabel", "sexLabelElement": "sexLabel", "cciLabelElement": "cciLabel", 
+            "nyhaLabelElement": "nyhaLabel", "aodiLabelElement": "aodiLabel", "lvefLabelElement": "lvefLabel", 
+            "lvesdiLabelElement": "lvesdiLabel", "avsLabelElement": "avsLabel"
         };
-        Object.entries(elementsToUpdate).forEach(([id, langKey]) => {
-            document.querySelector(`label[for='${id}']`).textContent = t[langKey];
-            const ariaLabelKey = langKey.replace('Label', 'AriaLabel'); // e.g. ageAriaLabel
-             if(t[ariaLabelKey]) document.querySelector(`label[for='${id}']`).setAttribute('aria-label', t[ariaLabelKey]);
+        Object.entries(labelMap).forEach(([elementId, langKey]) => {
+            const el = document.getElementById(elementId);
+            if(el && t[langKey]) el.textContent = t[langKey];
         });
         
-        document.getElementById("calculate").textContent = t.calculateButton;
+        document.getElementById("calculate").textContent = t.calculateButton; // Corrected ID for calculate button
         
-        const resultsTitle = document.getElementById("resultsTitle");
-        if(resultsTitle) resultsTitle.textContent = t.resultsTitle;
+        const resultsTitleEl = document.getElementById("resultsTitleElement");
+        if(resultsTitleEl) resultsTitleEl.textContent = t.resultsTitle;
 
-        const totalPointsLabel = document.getElementById("totalPointsLabel");
-        if(totalPointsLabel) totalPointsLabel.textContent = t.totalPointsLabel;
+        const totalPointsLabelEl = document.getElementById("totalPointsLabelElement");
+        if(totalPointsLabelEl) totalPointsLabelEl.textContent = t.totalPointsLabel;
         
-        const riskCategoryLabel = document.getElementById("riskCategoryLabel");
-        if(riskCategoryLabel) riskCategoryLabel.textContent = t.riskCategoryLabel;
+        const riskCategoryLabelEl = document.getElementById("riskCategoryLabelElement");
+        if(riskCategoryLabelEl) riskCategoryLabelEl.textContent = t.riskCategoryLabel;
 
-        const survival1yLabel = document.getElementById("survival1yLabel");
-        if(survival1yLabel) survival1yLabel.textContent = t.survival1yLabel;
+        const survival1yLabelEl = document.getElementById("survival1yLabelElement");
+        if(survival1yLabelEl) survival1yLabelEl.textContent = t.survival1yLabel;
 
-        const survival3yLabel = document.getElementById("survival3yLabel");
-        if(survival3yLabel) survival3yLabel.textContent = t.survival3yLabel;
+        const survival3yLabelEl = document.getElementById("survival3yLabelElement");
+        if(survival3yLabelEl) survival3yLabelEl.textContent = t.survival3yLabel;
         
-        const survival5yLabel = document.getElementById("survival5yLabel");
-        if(survival5yLabel) survival5yLabel.textContent = t.survival5yLabel;
+        const survival5yLabelEl = document.getElementById("survival5yLabelElement");
+        if(survival5yLabelEl) survival5yLabelEl.textContent = t.survival5yLabel;
         
-        document.getElementById("disclaimer").textContent = t.disclaimer;
+        document.getElementById("disclaimerElement").textContent = t.disclaimer;
 
         function populateSelect(selectId, optionsObj) {
             const selectEl = document.getElementById(selectId);
             if (!selectEl) return;
             const currentVal = selectEl.value;
-            selectEl.innerHTML = Object.entries(optionsObj).map(([value, text]) => 
-                `<option value="${value}" ${value === "" ? "selected" : ""}>${text}</option>` // Simplified default selection
-            ).join("");
-            if (selectEl.querySelector(`option[value="${currentVal}"]`)) { // Check if current value is a valid option
+            selectEl.innerHTML = ""; 
+            Object.entries(optionsObj).forEach(([value, text]) => {
+                const option = document.createElement('option');
+                option.value = value;
+                option.textContent = text;
+                if (value === "") option.selected = true; // Default "Please select"
+                selectEl.appendChild(option);
+            });
+            if (selectEl.querySelector(`option[value="${currentVal}"]`)) {
                  selectEl.value = currentVal;
             } else {
-                 selectEl.value = ""; // Default to "Please select"
+                 selectEl.value = ""; 
             }
         }
         populateSelect("sex", t.sexOptions);
         populateSelect("nyha", t.nyhaOptions);
-        populateSelect("avsIn3Months", t.avsOptions); // Corrected ID from 'avs' to 'avsIn3Months'
+        populateSelect("avsIn3Months", t.avsOptions); 
         
         Object.keys(t.errors).forEach(id => {
             const errorEl = document.getElementById(`${id}-error`);
             if (errorEl && !errorEl.classList.contains("hidden")) {
                 errorEl.textContent = t.errors[id] || "";
-            } else if (errorEl) { // Ensure all error messages are updated even if hidden
-                 errorEl.textContent = t.errors[id] || ""; // Set the text for future display
+            } else if (errorEl) { 
+                 errorEl.textContent = ""; 
+                 // Ensure error messages are set according to the selected language for future display
+                 if (id === "avsIn3Months") errorEl.textContent = t.errors.avsIn3Months;
+                 else errorEl.textContent = t.errors[id];
             }
         });
         
@@ -243,21 +253,24 @@
             window.survivalChart.options.scales.y.title.text = t.chartLabel;
             window.survivalChart.options.scales.x.title.text = t.chartTimeLabel;
             window.survivalChart.data.datasets[0].label = t.chartLabel;
-             window.survivalChart.data.labels = lang === 'zh' ? ["1年", "3年", "5年"] : ["1-Year", "3-Year", "5-Year"];
-            window.survivalChart.update();
+            window.survivalChart.data.labels = lang === 'zh' ? ["1年", "3年", "5年"] : ["1-Year", "3-Year", "5-Year"];
+            window.survivalChart.update('none'); 
         }
     }
     
     document.addEventListener('DOMContentLoaded', () => {
         const preferredLang = localStorage.getItem('preferredLang') || 'zh';
         document.getElementById("language").value = preferredLang;
-        updateLanguage(preferredLang);
+        updateLanguage(preferredLang); // Initialize language on load
 
         document.getElementById("language").addEventListener("change", (e) => {
             const selectedLang = e.target.value;
             updateLanguage(selectedLang);
             localStorage.setItem('preferredLang', selectedLang);
         });
+
+        // Initialize Chart.js instance holder
+        window.survivalChart = null; 
     });
 
     document.getElementById("calculate").addEventListener("click", function() {
@@ -271,26 +284,29 @@
         aodi: document.getElementById("aodi").value,
         lvef: document.getElementById("lvef").value,
         lvesdi: document.getElementById("lvesdi").value,
-        avsIn3Months: document.getElementById("avsIn3Months").value // Corrected ID
+        avsIn3Months: document.getElementById("avsIn3Months").value
       };
 
       const errors = validateInputs(inputs, t);
       let hasErrors = false;
-      Object.keys(inputs).forEach(id => { // Use actual input ids for error mapping
-        const errorKey = id === 'avsIn3Months' ? 'avsIn3Months' : id; // Map avsIn3Months to its error key
+      document.querySelectorAll('.error').forEach(el => el.classList.add('hidden'));
+
+      Object.keys(inputs).forEach(id => {
+        const errorKey = id; 
         const errorEl = document.getElementById(`${id}-error`);
-        if (errors[errorKey]) { // Use errorKey to get message from t.errors
+        if (errors[errorKey] && errorEl) { 
             errorEl.textContent = errors[errorKey];
             errorEl.classList.remove("hidden");
             hasErrors = true;
-        } else if(errorEl) {
-            errorEl.textContent = "";
-            errorEl.classList.add("hidden");
         }
       });
 
       if (hasErrors) {
         document.getElementById("results").classList.add("hidden");
+        if (window.survivalChart instanceof Chart) { // Destroy chart if there are errors
+            window.survivalChart.destroy();
+            window.survivalChart = null;
+        }
         return;
       }
       
@@ -302,15 +318,15 @@
         aodi: parseFloat(inputs.aodi),
         lvef: parseFloat(inputs.lvef),
         lvesdi: parseFloat(inputs.lvesdi),
-        avs: inputs.avsIn3Months // Use correct variable
+        avs: inputs.avsIn3Months 
       };
 
       const pointsArray = calculatePoints(processedInputs);
-      const totalPoints = pointsArray.reduce((sum, p) => Math.round(sum + p), 0); // Round sum of points
-      const survivalRates = calculateSurvivalRates(totalPoints);
+      const totalPoints = pointsArray.reduce((sum, p) => sum + p, 0);
+      const survivalRates = calculateSurvivalRates(Math.round(totalPoints));
 
-      document.getElementById("total-points").textContent = totalPoints.toFixed(0);
-      document.getElementById("risk-category").textContent = getRiskCategory(totalPoints, lang);
+      document.getElementById("total-points").textContent = Math.round(totalPoints).toFixed(0);
+      document.getElementById("risk-category").textContent = getRiskCategory(Math.round(totalPoints), lang);
       document.getElementById("survival-1y").textContent = (survivalRates[1] * 100).toFixed(1) + "%";
       document.getElementById("survival-3y").textContent = (survivalRates[3] * 100).toFixed(1) + "%";
       document.getElementById("survival-5y").textContent = (survivalRates[5] * 100).toFixed(1) + "%";
@@ -318,7 +334,7 @@
       renderSurvivalChart(survivalRates, lang);
     });
 
-    function validateInputs({ age, sex, cci, nyha, aodi, lvef, lvesdi, avsIn3Months }, t) { // Corrected destructuring for avsIn3Months
+    function validateInputs({ age, sex, cci, nyha, aodi, lvef, lvesdi, avsIn3Months }, t) { 
       const errors = {};
       const ageNum = parseInt(age);
       const cciNum = parseInt(cci);
@@ -333,15 +349,40 @@
       if (aodi === "" || isNaN(aodiNum) || aodiNum < 15 || aodiNum > 65) errors.aodi = t.errors.aodi;
       if (lvef === "" || isNaN(lvefNum) || lvefNum < 20 || lvefNum > 80) errors.lvef = t.errors.lvef;
       if (lvesdi === "" || isNaN(lvesdiNum) || lvesdiNum < 10 || lvesdiNum > 50) errors.lvesdi = t.errors.lvesdi;
-      if (avsIn3Months === "") errors.avsIn3Months = t.errors.avsIn3Months; // Corrected key
+      if (avsIn3Months === "") errors.avsIn3Months = t.errors.avsIn3Months;
       return errors;
     }
+    
+    function interpolate(value, pointsDef, isInverse = false) {
+        value = parseFloat(value);
+        if (isNaN(value)) return 0; 
 
-    function calculatePoints({ age, sex, cci, nyha, aodi, lvef, lvesdi, avs }) { // 'avs' here maps to avsIn3Months value
-      // Using the refined point estimation from Liu et al. JAHA 2025 Figure 1 (visual approximation)
-      let pointsAge = interpolate(Math.min(Math.max(age, 20), 100), [[20, 0], [100, 85]]);
+        let val1 = pointsDef[0][0]; 
+        let pt1 = pointsDef[0][1];  
+        let val2 = pointsDef[1][0]; 
+        let pt2 = pointsDef[1][1];  
+
+        if (isInverse) {
+            if (value >= val1) return pt1; 
+            if (value <= val2) return pt2; 
+            return pt1 + ((val1 - value) / (val1 - val2)) * (pt2 - pt1);
+        } else {
+            if (value <= val1) return pt1;
+            if (value >= val2) return pt2;
+            return pt1 + ((value - val1) / (val2 - val1)) * (pt2 - pt1);
+        }
+    }
+
+    function calculatePoints({ age, sex, cci, nyha, aodi, lvef, lvesdi, avs }) { 
+      // Based on Liu et al. JAHA 2025 Figure 1 (visual approximation)
+      const clampedAge = Math.min(Math.max(age, 20), 100);
+      let pointsAge = interpolate(clampedAge, [[20, 0], [100, 85]]);
+      
       let pointsSex = (sex === 'Female') ? 7 : 0; 
-      let pointsCCI = interpolate(Math.min(Math.max(cci, 0), 9), [[0, 0], [9, 63]]);
+      
+      const clampedCCI = Math.min(Math.max(cci, 0), 9); 
+      let pointsCCI = interpolate(clampedCCI, [[0, 0], [9, 63]]); 
+
       let pointsNYHA = 0;
       switch (nyha) {
           case 'I': pointsNYHA = 0; break;
@@ -349,17 +390,38 @@
           case 'III': pointsNYHA = 32; break;
           case 'IV': pointsNYHA = 42; break;
       }
-      let pointsAoDi = interpolate(Math.min(Math.max(aodi, 15), 65), [[15, 0], [65, 50]]);
-      let pointsLVEF = interpolate(Math.min(Math.max(lvef, 20), 80), [[80, 0], [20, 30]], true);
-      let pointsLVESDi = interpolate(Math.min(Math.max(lvesdi, 10), 50), [[10, 0], [50, 40]]);
-      let pointsAVS = (avs === 'No') ? 11 : 0; // Adjusted AVS 'No' points to 11 based on official site data
+
+      const clampedAoDi = Math.min(Math.max(aodi, 15), 65); 
+      let pointsAoDi = interpolate(clampedAoDi, [[15, 0], [65, 50]]);
+      
+      const clampedLVEF = Math.min(Math.max(lvef, 20), 80); 
+      let pointsLVEF = interpolate(clampedLVEF, [[80, 0], [20, 30]], true); 
+
+      const clampedLVESDi = Math.min(Math.max(lvesdi, 10), 50); 
+      let pointsLVESDi = interpolate(clampedLVESDi, [[10, 0], [50, 40]]);
+      
+      let pointsAVS = (avs === 'No') ? 11 : 0; // Using 11 points for AVS No based on earlier calibration attempt
       
       return [pointsAge, pointsSex, pointsCCI, pointsNYHA, pointsAoDi, pointsLVEF, pointsLVESDi, pointsAVS];
     }
 
+    function getSurvivalFromMultiPointMap(points, map) {
+        points = parseFloat(points);
+        if (isNaN(points)) return 0; 
+
+        if (points <= map[0][0]) return map[0][1]; 
+        for (let i = 0; i < map.length - 1; i++) {
+            const p1_data = map[i];      
+            const p2_data = map[i+1];    
+            if (points >= p1_data[0] && points < p2_data[0]) { 
+                return p1_data[1] + ( (points - p1_data[0]) / (p2_data[0] - p1_data[0]) ) * (p2_data[1] - p1_data[1]);
+            }
+        }
+        return map[map.length - 1][1]; 
+    }
+
     function calculateSurvivalRates(totalPoints) {
-      // Adjusted Survival Maps based on official site data for Test Case 1 (points 46 & 57)
-      // and trying to keep the general curve from nomogram
+      // These maps are based on our previous refined estimations (Turn 45) and may need further calibration
       const survivalMap1Year = [[0,1.0],[20,0.999],[40,0.9985],[46,0.998],[57,0.997],[60,0.996],[80,0.95],[100,0.85],[120,0.70],[140,0.55],[160,0.40],[180,0.25],[200,0.15]];
       const survivalMap3Year = [[0,1.0],[20,0.998],[40,0.996],[46,0.995],[57,0.991],[60,0.99],[80,0.90],[100,0.75],[120,0.55],[140,0.35],[160,0.20],[180,0.10],[200,0.05]];
       const survivalMap5Year = [[0,1.0],[20,0.995],[40,0.992],[46,0.991],[57,0.984],[60,0.98],[80,0.85],[100,0.65],[120,0.45],[140,0.25],[160,0.15],[180,0.08],[200,0.04]];
@@ -367,9 +429,9 @@
       const clampedTotalPoints = Math.min(Math.max(totalPoints, 0), 200);
 
       return {
-        1: getSurvivalProbability(clampedTotalPoints, survivalMap1Year),
-        3: getSurvivalProbability(clampedTotalPoints, survivalMap3Year),
-        5: getSurvivalProbability(clampedTotalPoints, survivalMap5Year)
+        1: getSurvivalFromMultiPointMap(clampedTotalPoints, survivalMap1Year),
+        3: getSurvivalFromMultiPointMap(clampedTotalPoints, survivalMap3Year),
+        5: getSurvivalFromMultiPointMap(clampedTotalPoints, survivalMap5Year)
       };
     }
 
@@ -385,11 +447,21 @@
       const chartLabels = { zh: ["1年", "3年", "5年"], en: ["1-Year", "3-Year", "5-Year"] };
       const chartDatasetLabel = { zh: "生存率 (%)", en: "Survival Rate (%)" };
 
-      const yMin = Math.max(0, Math.floor(Math.min(survivalRates[1] * 100, survivalRates[3] * 100, survivalRates[5] * 100) / 10) * 10 - 5);
-
+      const dataValues = [
+          survivalRates[1] * 100, 
+          survivalRates[3] * 100, 
+          survivalRates[5] * 100
+      ];
+      
+      let minYValue = 100; // Start with max possible survival
+      for(let val of dataValues) {
+          if (val < minYValue) minYValue = val;
+      }
+      const yMinScale = Math.max(0, Math.floor(minYValue / 10) * 10 - 5);
 
       if (window.survivalChart instanceof Chart) {
         window.survivalChart.destroy();
+        window.survivalChart = null; // Ensure old instance is cleared
       }
       window.survivalChart = new Chart(ctx, {
         type: "line",
@@ -397,7 +469,7 @@
           labels: chartLabels[lang],
           datasets: [{
             label: chartDatasetLabel[lang],
-            data: [survivalRates[1] * 100, survivalRates[3] * 100, survivalRates[5] * 100],
+            data: dataValues,
             borderColor: "#4CAF50", 
             backgroundColor: "rgba(76, 175, 80, 0.1)", 
             fill: true,
@@ -410,7 +482,7 @@
           scales: {
             y: { 
                 beginAtZero: false, 
-                min: yMin, 
+                min: yMinScale, 
                 max: 100, 
                 title: { display: true, text: chartDatasetLabel[lang] } 
             },
