@@ -5,36 +5,130 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AVS 医学助手 - HeartValve.pro</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f7f6; color: #333; }
-        header { background-color: #007bff; color: white; padding: 1em 0; text-align: center; }
-        header h1 { margin: 0; }
-        nav { background-color: #333; padding: 0.5em 0; text-align: center; }
-        nav a { color: white; margin: 0 1em; text-decoration: none; font-weight: bold; }
-        .container { max-width: 900px; margin: 2em auto; padding: 1em; background-color: white; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        .module { margin-bottom: 2em; padding: 1em; border: 1px solid #ddd; border-radius: 5px; }
-        .module h2 { margin-top: 0; color: #007bff; }
-        label { display: block; margin-bottom: 0.5em; font-weight: bold; }
-        input[type="text"], input[type="number"], select {
-            width: calc(100% - 22px); /* Full width minus padding and border */
-            padding: 0.5em;
-            margin-bottom: 1em;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background-color: #eef1f5; /* 淡雅的背景蓝灰色 */
+            color: #333; 
+            line-height: 1.6;
         }
-        button {
-            background-color: #28a745;
-            color: white;
-            padding: 0.7em 1.5em;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+        header { 
+            background: linear-gradient(90deg, #007bff, #0056b3); /* 医疗蓝渐变 */
+            color: white; 
+            padding: 1.5em 1em; 
+            text-align: center; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        header h1 { 
+            margin: 0; 
+            font-size: 2em; 
+            font-weight: 600;
+        }
+        header p {
+            margin: 0.3em 0 0;
             font-size: 1em;
         }
-        button:hover { background-color: #218838; }
-        #resultArea { margin-top: 1em; padding: 1em; background-color: #e9ecef; border-radius: 4px; }
-        #resultArea h3 { margin-top: 0; }
-        footer { text-align: center; padding: 1em 0; background-color: #333; color: white; margin-top: 2em; }
+        nav { 
+            background-color: #343a40; /* 深灰色导航 */
+            padding: 0.8em 0; 
+            text-align: center; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        nav a { 
+            color: #f8f9fa; 
+            margin: 0 1.2em; 
+            text-decoration: none; 
+            font-weight: 500; 
+            transition: color 0.3s ease;
+        }
+        nav a:hover { 
+            color: #007bff; /* 悬停时变医疗蓝 */
+        }
+        .container { 
+            max-width: 950px; 
+            margin: 2.5em auto; 
+            padding: 1.5em; 
+            background-color: white; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .module { 
+            margin-bottom: 2.5em; 
+            padding: 1.8em; 
+            border: 1px solid #dee2e6; 
+            border-radius: 8px;
+            background-color: #fff; /* 模块背景 */
+        }
+        .module h2 { 
+            margin-top: 0; 
+            color: #0056b3; /* 深医疗蓝 */
+            font-size: 1.6em;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 0.4em;
+            margin-bottom: 0.8em;
+        }
+        label { 
+            display: block; 
+            margin-bottom: 0.6em; 
+            font-weight: 600; 
+            color: #495057;
+        }
+        input[type="number"], select {
+            width: calc(100% - 24px); 
+            padding: 0.7em;
+            margin-bottom: 1.2em;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 0.95em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        input[type="number"]:focus, select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+            outline: none;
+        }
+        button {
+            background: linear-gradient(90deg, #28a745, #218838); /* 绿色渐变按钮 */
+            color: white;
+            padding: 0.8em 1.8em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 500;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        button:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        #resultArea { 
+            margin-top: 1.5em; 
+            padding: 1.2em; 
+            background-color: #f8f9fa; 
+            border: 1px solid #e9ecef;
+            border-radius: 5px; 
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+        }
+        #resultArea h3 { 
+            margin-top: 0; 
+            color: #0056b3;
+            font-size: 1.3em;
+        }
+        #resultArea p {
+            font-size: 1.1em;
+            margin-bottom: 0.5em;
+        }
+        footer { 
+            text-align: center; 
+            padding: 1.5em 0; 
+            background-color: #343a40; 
+            color: #f8f9fa; 
+            margin-top: 3em; 
+            font-size: 0.9em;
+        }
     </style>
 </head>
 <body>
@@ -51,3 +145,124 @@
 
     <div class="container">
         <div id="avsModel" class="module">
+            <h2>ARISE Score 模型入口</h2>
+            <p>请输入以下信息以评估风险。字段参考 <a href="https://arise-score.vercel.app/" target="_blank">ARISE Score官网</a>。</p>
+            <form id="ariseForm">
+                <div>
+                    <label for="age">年龄 (岁):</label>
+                    <input type="number" id="age" name="age" required>
+                </div>
+                <div>
+                    <label for="nihss">NIHSS on admission (0-42):</label>
+                    <input type="number" id="nihss" name="nihss" min="0" max="42" required>
+                </div>
+                <div>
+                    <label for="reperfusion">Successful reperfusion (mTICI 2b-3):</label>
+                    <select id="reperfusion" name="reperfusion" required>
+                        <option value="">请选择</option>
+                        <option value="yes">是</option>
+                        <option value="no">否</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="symptomaticICH">Symptomatic ICH:</label>
+                    <select id="symptomaticICH" name="symptomaticICH" required>
+                        <option value="">请选择</option>
+                        <option value="yes">是</option>
+                        <option value="no">否</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="glucose">Glucose on admission (mg/dL):</label>
+                    <input type="number" id="glucose" name="glucose" required>
+                </div>
+                <div>
+                    <label for="aspectScore">ASPECT score (0-10):</label>
+                    <input type="number" id="aspectScore" name="aspectScore" min="0" max="10" required>
+                </div>
+                <button type="button" onclick="calculateAriseScore()">计算 ARISE Score</button>
+            </form>
+            <div id="resultArea">
+                <h3>评估结果:</h3>
+                <p id="mortalityRisk">院内死亡风险: --%</p>
+                <p id="confidenceInterval">95% 置信区间: --% to --%</p>
+            </div>
+        </div>
+
+        <div id="procedures" class="module">
+            <h2>术式百科</h2>
+            <p>此模块将收录常见介入术式的定义、适应症与文献参考。（内容建设中...）</p>
+        </div>
+
+        <div id="expertContributions" class="module">
+            <h2>专家投稿推荐</h2>
+            <p>此模块将精选来自全国各地介入专家的投稿内容。（内容建设中...）</p>
+        </div>
+
+        <div id="aboutProject" class="module">
+            <h2>项目介绍</h2>
+            <p>本站 (heartvalve.pro) 致力于打造可信赖的未来医疗数据入口与知识共享平台。（内容建设中...）</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 HeartValve.pro - 版权所有</p>
+    </footer>
+
+    <script>
+        function calculateAriseScore() {
+            // 获取表单数据
+            const age = document.getElementById('age').value;
+            const nihss = document.getElementById('nihss').value;
+            const reperfusion = document.getElementById('reperfusion').value;
+            const symptomaticICH = document.getElementById('symptomaticICH').value;
+            const glucose = document.getElementById('glucose').value;
+            const aspectScore = document.getElementById('aspectScore').value;
+
+            // 简单的输入验证 (可以根据需要扩展)
+            if (!age || !nihss || !reperfusion || !symptomaticICH || !glucose || !aspectScore) {
+                alert('请填写所有必填字段！');
+                return;
+            }
+
+            // --- 占位符逻辑 ---
+            // 由于无法直接破解或调用 https://arise-score.vercel.app/ 的内部计算模型，
+            // 这里我们只使用一个非常简单的占位符来模拟输出。
+            // 真实场景下，如果官网提供了API，我们会调用API；
+            // 或者如果模型是公开的，我们会在这里实现该模型。
+
+            let calculatedRisk = 0;
+            // 这是一个非常粗略的模拟，完全不代表真实 ARISE Score 算法
+            calculatedRisk += parseInt(age) * 0.1;
+            calculatedRisk += parseInt(nihss) * 0.2;
+            if (reperfusion === 'no') calculatedRisk += 10;
+            if (symptomaticICH === 'yes') calculatedRisk += 15;
+            calculatedRisk += parseInt(glucose) * 0.05;
+            calculatedRisk -= parseInt(aspectScore) * 0.5;
+
+            // 确保风险值在合理范围内 (0-100)
+            calculatedRisk = Math.max(0, Math.min(100, calculatedRisk)); 
+
+            const riskPercentage = calculatedRisk.toFixed(1);
+            const lowerCI = (Math.max(0, calculatedRisk - 5)).toFixed(1); // 示例CI
+            const upperCI = (Math.min(100, calculatedRisk + 5)).toFixed(1); // 示例CI
+
+            // 显示结果
+            document.getElementById('mortalityRisk').textContent = '院内死亡风险: ' + riskPercentage + '%';
+            document.getElementById('confidenceInterval').textContent = '95% 置信区间: ' + lowerCI + '% to ' + upperCI + '%';
+
+            // 提示用户这是模拟结果
+            const resultArea = document.getElementById('resultArea');
+            let notice = document.getElementById('simNotice');
+            if (!notice) {
+                notice = document.createElement('p');
+                notice.id = 'simNotice';
+                notice.style.fontSize = '0.9em';
+                notice.style.color = 'red';
+                notice.textContent = '注意：当前结果为演示目的的模拟计算，并非真实的 ARISE Score。';
+                resultArea.appendChild(notice);
+            }
+        }
+    </script>
+</body>
+</html>
