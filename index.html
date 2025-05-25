@@ -6,9 +6,9 @@
     <title>HeartValve 专家 - 主动脉瓣疾病与外科资讯</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* 您可以在这里添加一些全局的或不方便用Tailwind类直接应用的自定义CSS */
         .hero-bg {
-            background-image: url('https://via.placeholder.com/1200x400.png/0056b3/ffffff?text=HeartValve+Concept+Image'); /* 占位符背景图 */
+            /* 替换为更相关的医学背景图 - 示例图片来自Pexels (允许免费使用) */
+            background-image: url('https://images.pexels.com/photos/4021775/pexels-photo-4021775.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'); 
             background-size: cover;
             background-position: center;
         }
@@ -16,16 +16,19 @@
             @apply text-3xl font-bold text-center mb-10 text-gray-700;
         }
         .feature-card {
-            @apply bg-white rounded-xl shadow-lg p-6 m-4 hover:shadow-2xl transition-shadow duration-300;
+            @apply bg-white rounded-xl shadow-lg p-6 m-4 hover:shadow-2xl transition-shadow duration-300 flex flex-col items-center text-center; /* 使内容居中 */
+        }
+        .feature-card img {
+            @apply h-20 w-20 mb-4 object-contain; /* 调整图片大小和包含方式 */
         }
         .feature-card h3 {
             @apply text-xl font-semibold text-blue-700 mb-3;
         }
         .feature-card p {
-            @apply text-gray-600 text-sm mb-4;
+            @apply text-gray-600 text-sm mb-4 flex-grow; /* 使描述占据可用空间 */
         }
         .feature-card a {
-            @apply inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300;
+            @apply inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300 mt-auto; /* 按钮在卡片底部 */
         }
     </style>
 </head>
@@ -46,7 +49,7 @@
     </nav>
 
     <header class="hero-bg text-white py-20 md:py-32">
-        <div class="container mx-auto px-6 text-center bg-black bg-opacity-40 p-10 rounded-lg">
+        <div class="container mx-auto px-6 text-center bg-black bg-opacity-50 p-10 rounded-lg">
             <h1 class="text-4xl md:text-5xl font-bold mb-6">HeartValve 专家</h1>
             <p class="text-lg md:text-xl mb-8">专注于心脏外科，特别是主动脉瓣疾病（如二叶畸形）的前沿资讯与专业评估工具。</p>
             <a href="#learn-more" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition-colors duration-300">了解更多</a>
@@ -59,36 +62,36 @@
             <h2 class="section-title">核心内容与工具</h2>
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 
-                <div class="feature-card text-center">
-                    <img src="https://via.placeholder.com/80x80.png/007bff/ffffff?text=Calculator" alt="Calculator Icon" class="mx-auto mb-4">
+                <div class="feature-card">
+                    <img src="https://images.pexels.com/photos/5327653/pexels-photo-5327653.jpeg?auto=compress&cs=tinysrgb&w=160&h=160&dpr=1" alt="ARISE Score 评估工具">
                     <h3>ARISE Score 预后评估</h3>
                     <p>基于最新研究（Liu et al., JAHA 2025），为主动脉瓣反流患者提供1、3、5年生存率估算。</p>
                     <a href="calculator.html">使用评估工具</a>
                 </div>
 
-                <div class="feature-card text-center">
-                    <img src="https://via.placeholder.com/80x80.png/17a2b8/ffffff?text=Bicuspid" alt="Bicuspid Aortic Valve Icon" class="mx-auto mb-4">
+                <div class="feature-card">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Aortic_valve_schematic.svg/160px-Aortic_valve_schematic.svg.png" alt="主动脉瓣二叶畸形专题">
                     <h3>主动脉瓣二叶畸形专题</h3>
                     <p>深入了解主动脉瓣二叶畸形的诊断、分型、并发症及最新治疗策略。</p>
                     <a href="bicuspid-aortic-valve-info.html">阅读专题</a>
                 </div>
 
-                <div class="feature-card text-center">
-                    <img src="https://via.placeholder.com/80x80.png/28a745/ffffff?text=Surgery" alt="Surgical Options Icon" class="mx-auto mb-4">
+                <div class="feature-card">
+                    <img src="https://images.pexels.com/photos/5721906/pexels-photo-5721906.jpeg?auto=compress&cs=tinysrgb&w=160&h=160&dpr=1" alt="手术方案解析">
                     <h3>手术方案解析</h3>
                     <p>详细介绍各类主动脉瓣手术（如AVR, TAVR, Ross手术等）的适应症、流程与预后。</p>
                     <a href="surgical-options.html">查看手术方案</a>
                 </div>
                 
-                <div class="feature-card text-center md:col-span-1 lg:col-span-1">
-                    <img src="https://via.placeholder.com/80x80.png/ffc107/000000?text=Expert" alt="Expert Views Icon" class="mx-auto mb-4">
+                <div class="feature-card">
+                    <img src="https://images.pexels.com/photos/3184328/pexels-photo-3184328.jpeg?auto=compress&cs=tinysrgb&w=160&h=160&dpr=1" alt="专家视角与病例">
                     <h3>专家视角与病例</h3>
                     <p>分享领域内专家的最新观点、研究进展以及典型病例讨论。</p>
                     <a href="expert-views.html">阅读专家观点</a>
                 </div>
 
-                <div class="feature-card text-center md:col-span-2 lg:col-span-2">
-                     <img src="https://via.placeholder.com/80x80.png/6f42c1/ffffff?text=Knowledge" alt="Knowledge Base Icon" class="mx-auto mb-4">
+                <div class="feature-card md:col-span-2 lg:col-span-2">
+                     <img src="https://images.pexels.com/photos/261909/pexels-photo-261909.jpeg?auto=compress&cs=tinysrgb&w=160&h=160&dpr=1" alt="心脏瓣膜疾病知识库">
                     <h3>心脏瓣膜疾病知识库</h3>
                     <p>提供全面的心脏瓣膜疾病基础知识、预防、诊断和康复指南。</p>
                     <a href="disease-info.html">探索知识库</a>
@@ -96,14 +99,13 @@
 
             </div>
         </section>
-
-        </main>
+    </main>
 
     <footer class="bg-gray-800 text-gray-300 py-8 text-center">
         <div class="container mx-auto px-6">
             <p>&copy; 2025 HeartValve 专家. 版权所有.</p>
             <p class="text-sm mt-2">本网站信息仅供参考，不能替代专业医疗建议、诊断或治疗。</p>
-            </div>
+        </div>
     </footer>
 
 </body>
