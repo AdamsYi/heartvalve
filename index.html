@@ -7,7 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .hero-bg {
-            /* 替换为更相关的医学背景图 - 示例图片来自Pexels (允许免费使用) */
             background-image: url('https://images.pexels.com/photos/4021775/pexels-photo-4021775.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'); 
             background-size: cover;
             background-position: center;
@@ -16,19 +15,19 @@
             @apply text-3xl font-bold text-center mb-10 text-gray-700;
         }
         .feature-card {
-            @apply bg-white rounded-xl shadow-lg p-6 m-4 hover:shadow-2xl transition-shadow duration-300 flex flex-col items-center text-center; /* 使内容居中 */
+            @apply bg-white rounded-xl shadow-lg p-6 m-4 hover:shadow-2xl transition-shadow duration-300 flex flex-col items-center text-center;
         }
         .feature-card img {
-            @apply h-20 w-20 mb-4 object-contain; /* 调整图片大小和包含方式 */
+            @apply h-20 w-20 mb-4 object-contain; 
         }
         .feature-card h3 {
             @apply text-xl font-semibold text-blue-700 mb-3;
         }
         .feature-card p {
-            @apply text-gray-600 text-sm mb-4 flex-grow; /* 使描述占据可用空间 */
+            @apply text-gray-600 text-sm mb-4 flex-grow; 
         }
         .feature-card a {
-            @apply inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300 mt-auto; /* 按钮在卡片底部 */
+            @apply inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300 mt-auto; 
         }
     </style>
 </head>
@@ -57,7 +56,6 @@
     </header>
 
     <main class="container mx-auto px-6 py-12">
-
         <section id="learn-more" class="py-12">
             <h2 class="section-title">核心内容与工具</h2>
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -70,7 +68,7 @@
                 </div>
 
                 <div class="feature-card">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Aortic_valve_schematic.svg/160px-Aortic_valve_schematic.svg.png" alt="主动脉瓣二叶畸形专题">
+                    img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Bicuspid_Aortic_Valve_Illustration.png/160px-Bicuspid_Aortic_Valve_Illustration.png" alt="主动脉瓣二叶畸形专题">
                     <h3>主动脉瓣二叶畸形专题</h3>
                     <p>深入了解主动脉瓣二叶畸形的诊断、分型、并发症及最新治疗策略。</p>
                     <a href="bicuspid-aortic-valve-info.html">阅读专题</a>
@@ -91,12 +89,11 @@
                 </div>
 
                 <div class="feature-card md:col-span-2 lg:col-span-2">
-                     <img src="https://images.pexels.com/photos/261909/pexels-photo-261909.jpeg?auto=compress&cs=tinysrgb&w=160&h=160&dpr=1" alt="心脏瓣膜疾病知识库">
+                    <img src="https://images.pexels.com/photos/261909/pexels-photo-261909.jpeg?auto=compress&cs=tinysrgb&w=160&h=160&dpr=1" alt="心脏瓣膜疾病知识库">
                     <h3>心脏瓣膜疾病知识库</h3>
                     <p>提供全面的心脏瓣膜疾病基础知识、预防、诊断和康复指南。</p>
                     <a href="disease-info.html">探索知识库</a>
                 </div>
-
             </div>
         </section>
     </main>
@@ -107,6 +104,5 @@
             <p class="text-sm mt-2">本网站信息仅供参考，不能替代专业医疗建议、诊断或治疗。</p>
         </div>
     </footer>
-
 </body>
 </html>
