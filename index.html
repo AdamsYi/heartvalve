@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HeartValve 专家 - 预后评估与资讯</title> {/* 修改了标题 */}
+    <title>HeartValve 专家 - 预后评估与资讯</title>
     <style>
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
@@ -16,16 +16,15 @@
         header { 
             background: linear-gradient(90deg, #007bff, #0056b3); 
             color: white; 
-            padding: 1.8em 1em; /* 稍微增加padding */
+            padding: 1.8em 1em; 
             text-align: center; 
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         header h1 { 
             margin: 0; 
-            font-size: 2.2em; /* 稍微增大标题 */
+            font-size: 2.2em; 
             font-weight: 600;
         }
-        /* 移除了之前的 <p> 标签副标题 */
         nav { 
             background-color: #343a40; 
             padding: 0.8em 0; 
@@ -131,8 +130,7 @@
 <body>
     <header>
         <h1>HeartValve 专家</h1>
-        {/* <p>专业、清爽、未来感的医疗知识平台 (heartvalve.pro)</p>  移除了这句 */}
-    </header>
+        </header>
     <nav>
         <a href="#avsModel">ARISE Score (心脏瓣膜预后)</a>
         <a href="#procedures">术式百科</a>
@@ -228,17 +226,15 @@
             value = parseFloat(value);
             if (isNaN(value)) return 0; 
 
-            let val1 = pointsDef[0][0]; // 例如：对于Age, val1是20 (岁)
-            let pt1 = pointsDef[0][1];  // 例如：对于Age, pt1是0 (点数)
-            let val2 = pointsDef[1][0]; // 例如：对于Age, val2是100 (岁)
-            let pt2 = pointsDef[1][1];  // 例如：对于Age, pt2是85 (点数)
+            let val1 = pointsDef[0][0]; 
+            let pt1 = pointsDef[0][1];  
+            let val2 = pointsDef[1][0]; 
+            let pt2 = pointsDef[1][1];  
 
             if (isInverse) {
-                // 例如 LVEF: val1=80 (LVEF高值), pt1=0 (点数低值); val2=20 (LVEF低值), pt2=30 (点数高值)
-                if (value >= val1) return pt1; // 如果 LVEF >= 80, 点数 = 0
-                if (value <= val2) return pt2; // 如果 LVEF <= 20, 点数 = 30
-                // 插值逻辑: 当 value 从 val1 降到 val2, 点数从 pt1 升到 pt2
-                return pt1 + ((val1 - value) / (val1 - val2)) * (pt2 - pt1);
+                if (value >= val1) return pt1; 
+                if (value <= val2) return pt2; 
+                return pt1 + ((val1 - value) / (val1 - val2)) * (pt2 - pt1); // Corrected inverse interpolation
             } else {
                 if (value <= val1) return pt1;
                 if (value >= val2) return pt2;
@@ -298,14 +294,13 @@
             const lvesdi = parseFloat(lvesdiInput.value);
             const avsIn3Months = avsIn3MonthsInput.value;
 
-            // 根据 Figure 1 列线图估算点数
-            const clampedAge = Math.min(Math.max(age, 20), 100); // Nomogram Age range 20-100
+            const clampedAge = Math.min(Math.max(age, 20), 100); 
             let pointsAge = interpolate(clampedAge, [[20, 0], [100, 85]]);
             
-            let pointsSex = (sex === 'female') ? 7 : 0; // Female ~7pts, Male 0pts
+            let pointsSex = (sex === 'female') ? 7 : 0; 
             
-            const clampedCCI = Math.min(Math.max(cci, 0), 9); // Nomogram CCI range 0-9
-            let pointsCCI = interpolate(clampedCCI, [[0, 0], [9, 63]]); // Approx CCI * 7
+            const clampedCCI = Math.min(Math.max(cci, 0), 9); 
+            let pointsCCI = interpolate(clampedCCI, [[0, 0], [9, 63]]); 
 
             let pointsNYHA = 0;
             switch (nyha) {
@@ -315,26 +310,25 @@
                 case 'IV': pointsNYHA = 42; break;
             }
 
-            const clampedAoDi = Math.min(Math.max(aodi, 15), 65); // Nomogram AoDi range 15-65
+            const clampedAoDi = Math.min(Math.max(aodi, 15), 65); 
             let pointsAoDi = interpolate(clampedAoDi, [[15, 0], [65, 50]]);
             
-            const clampedLVEF = Math.min(Math.max(lvef, 20), 80); // Nomogram LVEF range 20-80 (for points calculation)
+            const clampedLVEF = Math.min(Math.max(lvef, 20), 80); 
             let pointsLVEF = interpolate(clampedLVEF, [[80, 0], [20, 30]], true); 
 
-            const clampedLVESDi = Math.min(Math.max(lvesdi, 10), 50); // Nomogram LVESDi range 10-50
+            const clampedLVESDi = Math.min(Math.max(lvesdi, 10), 50); 
             let pointsLVESDi = interpolate(clampedLVESDi, [[10, 0], [50, 40]]);
             
-            let pointsAVS = (avsIn3Months === 'no') ? 20 : 0; // AVS in 3 months: No ~20pts, Yes 0pts
+            let pointsAVS = (avsIn3Months === 'no') ? 20 : 0; 
 
             let totalPoints = pointsAge + pointsSex + pointsCCI + pointsNYHA + pointsAoDi + pointsLVEF + pointsLVESDi + pointsAVS;
             totalPoints = Math.max(0, Math.round(totalPoints)); 
 
-            // Nomogram Total Points axis for survival is roughly 20-200, actual sum of points from paper 24-168
             const survival1YrMap = [[0,1.0],[20,0.99],[40,0.97],[60,0.93],[80,0.87],[100,0.78],[120,0.65],[140,0.50],[160,0.35],[180,0.22],[200,0.10]];
             const survival3YrMap = [[0,1.0],[20,0.98],[40,0.92],[60,0.82],[80,0.68],[100,0.50],[120,0.35],[140,0.22],[160,0.15],[180,0.08],[200,0.04]];
             const survival5YrMap = [[0,1.0],[20,0.97],[40,0.88],[60,0.72],[80,0.55],[100,0.38],[120,0.22],[140,0.12],[160,0.08],[180,0.04],[200,0.02]];
             
-            const clampedTotalPointsForSurvival = Math.min(Math.max(totalPoints, 0), 200); // Clamp for survival map lookup
+            const clampedTotalPointsForSurvival = Math.min(Math.max(totalPoints, 0), 200); 
 
             const survival1yr = getSurvivalProbability(clampedTotalPointsForSurvival, survival1YrMap);
             const survival3yr = getSurvivalProbability(clampedTotalPointsForSurvival, survival3YrMap);
