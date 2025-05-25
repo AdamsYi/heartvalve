@@ -1,344 +1,473 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HeartValve 专家 - 预后评估与资讯</title>
-    <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 0; 
-            padding: 0; 
-            background-color: #eef1f5; 
-            color: #333; 
-            line-height: 1.6;
-        }
-        header { 
-            background: linear-gradient(90deg, #007bff, #0056b3); 
-            color: white; 
-            padding: 1.8em 1em; 
-            text-align: center; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        header h1 { 
-            margin: 0; 
-            font-size: 2.2em; 
-            font-weight: 600;
-        }
-        nav { 
-            background-color: #343a40; 
-            padding: 0.8em 0; 
-            text-align: center; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        nav a { 
-            color: #f8f9fa; 
-            margin: 0 1.2em; 
-            text-decoration: none; 
-            font-weight: 500; 
-            transition: color 0.3s ease;
-        }
-        nav a:hover { 
-            color: #007bff; 
-        }
-        .container { 
-            max-width: 950px; 
-            margin: 2.5em auto; 
-            padding: 1.5em; 
-            background-color: white; 
-            border-radius: 10px; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-        .module { 
-            margin-bottom: 2.5em; 
-            padding: 1.8em; 
-            border: 1px solid #dee2e6; 
-            border-radius: 8px;
-            background-color: #fff; 
-        }
-        .module h2 { 
-            margin-top: 0; 
-            color: #0056b3; 
-            font-size: 1.6em;
-            border-bottom: 2px solid #007bff;
-            padding-bottom: 0.4em;
-            margin-bottom: 0.8em;
-        }
-        label { 
-            display: block; 
-            margin-bottom: 0.6em; 
-            font-weight: 600; 
-            color: #495057;
-        }
-        input[type="number"], select {
-            width: calc(100% - 24px); 
-            padding: 0.7em;
-            margin-bottom: 1.2em;
-            border: 1px solid #ced4da;
-            border-radius: 5px;
-            box-sizing: border-box;
-            font-size: 0.95em;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-        input[type="number"]:focus, select:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
-            outline: none;
-        }
-        button {
-            background: linear-gradient(90deg, #28a745, #218838); 
-            color: white;
-            padding: 0.8em 1.8em;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1.05em;
-            font-weight: 500;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-        button:hover { 
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-        #resultArea { 
-            margin-top: 1.5em; 
-            padding: 1.2em; 
-            background-color: #f8f9fa; 
-            border: 1px solid #e9ecef;
-            border-radius: 5px; 
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
-        }
-        #resultArea h3 { 
-            margin-top: 0; 
-            color: #0056b3;
-            font-size: 1.3em;
-        }
-        #resultArea p {
-            font-size: 1.1em;
-            margin-bottom: 0.5em;
-        }
-        footer { 
-            text-align: center; 
-            padding: 1.5em 0; 
-            background-color: #343a40; 
-            color: #f8f9fa; 
-            margin-top: 3em; 
-            font-size: 0.9em;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARISE Score 计算器</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.min.js"></script>
+  <style>
+    .error { color: #ef4444; font-size: 0.875rem; }
+    .disclaimer { color: #6b7280; font-size: 0.875rem; margin-top: 1rem; }
+    #survival-chart { max-height: 200px; } /* 您可以根据需要调整图表的最大高度 */
+  </style>
 </head>
-<body>
-    <header>
-        <h1>HeartValve 专家</h1>
-        </header>
-    <nav>
-        <a href="#avsModel">ARISE Score (心脏瓣膜预后)</a>
-        <a href="#procedures">术式百科</a>
-        <a href="#expertContributions">专家投稿</a>
-        <a href="#aboutProject">项目介绍</a>
-    </nav>
-
-    <div class="container">
-        <div id="avsModel" class="module">
-            <h2>ARISE Score: 心脏瓣膜预后评估 (基于列线图)</h2>
-            <p>请输入以下信息，以根据Liu et al.的论文 (JAHA, 2025) 中的Figure 1列线图估算1年、3年和5年生存率。结果为基于列线图的估算，仅供参考，实际应用请参照<a href="https://arise-score.vercel.app/" target="_blank">官方工具</a>或原始文献。</p>
-            <form id="nomogramForm">
-                <div>
-                    <label for="age">年龄 (岁) [Nomogram: 20-100]:</label>
-                    <input type="number" id="age" name="age" placeholder="例如: 65" required>
-                </div>
-                <div>
-                    <label for="sex">性别:</label>
-                    <select id="sex" name="sex" required>
-                        <option value="">请选择</option>
-                        <option value="male">男 (Male)</option>
-                        <option value="female">女 (Female)</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="cci">CCI (Charlson合并症指数) [Nomogram: 0-9]:</label>
-                    <input type="number" id="cci" name="cci" placeholder="例如: 2" min="0" max="9" required>
-                </div>
-                <div>
-                    <label for="nyha">NYHA 心功能分级:</label>
-                    <select id="nyha" name="nyha" required>
-                        <option value="">请选择</option>
-                        <option value="I">I级</option>
-                        <option value="II">II级</option>
-                        <option value="III">III级</option>
-                        <option value="IV">IV级</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="aodi">主动脉直径指数 (AoDi, mm/m²) [Nomogram: 15-65]:</label>
-                    <input type="number" id="aodi" name="aodi" step="0.1" placeholder="例如: 25.6" required>
-                </div>
-                <div>
-                    <label for="lvef">左心室射血分数 (LVEF, %) [Nomogram: 20-80]:</label>
-                    <input type="number" id="lvef" name="lvef" placeholder="例如: 55" min="0" max="100" required>
-                </div>
-                <div>
-                    <label for="lvesdi">左心室收缩末期内径指数 (LVESDi, mm/m²) [Nomogram: 10-50]:</label>
-                    <input type="number" id="lvesdi" name="lvesdi" step="0.1" placeholder="例如: 24.6" required>
-                </div>
-                <div>
-                    <label for="avsIn3Months">3个月内是否进行主动脉瓣手术 (AVS):</label>
-                    <select id="avsIn3Months" name="avsIn3Months" required>
-                        <option value="">请选择</option>
-                        <option value="yes">是 (Yes)</option>
-                        <option value="no">否 (No)</option>
-                    </select>
-                </div>
-                <button type="button" onclick="calculateAriseScore()">计算生存率 (估算)</button>
-            </form>
-            <div id="resultArea">
-                <h3>评估结果 (基于列线图估算):</h3>
-                <p id="totalPointsDisplay">总点数 (估算): --</p>
-                <p id="survival1yr">1年生存率: --%</p>
-                <p id="survival3yr">3年生存率: --%</p>
-                <p id="survival5yr">5年生存率: --%</p>
-            </div>
-        </div>
-
-        <div id="procedures" class="module">
-            <h2>术式百科</h2>
-            <p>此模块将收录常见介入术式的定义、适应症与文献参考。（内容建设中...）</p>
-        </div>
-
-        <div id="expertContributions" class="module">
-            <h2>专家投稿推荐</h2>
-            <p>此模块将精选来自全国各地介入专家的投稿内容。（内容建设中...）</p>
-        </div>
-
-        <div id="aboutProject" class="module">
-            <h2>项目介绍</h2>
-            <p>本站 (heartvalve.pro) 致力于打造可信赖的未来医疗数据入口与知识共享平台。（内容建设中...）</p>
-        </div>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+  <div class="container mx-auto p-4 max-w-3xl bg-white rounded-lg shadow-lg">
+    <h1 class="text-2xl font-bold text-center mb-6">ARISE Score: 心脏瓣膜预后评估</h1>
+    <div class="flex justify-end mb-4">
+      <select id="language" class="border rounded p-1 text-sm">
+        <option value="zh">中文</option>
+        <option value="en">English</option>
+      </select>
     </div>
-
-    <footer>
-        <p>&copy; 2025 HeartValve.pro - 版权所有</p>
-    </footer>
-
-    <script>
-        // 辅助函数：根据值在两个点之间进行线性插值来获取点数或概率
-        function interpolate(value, pointsDef, isInverse = false) {
-            value = parseFloat(value);
-            if (isNaN(value)) return 0; 
-
-            let val1 = pointsDef[0][0]; 
-            let pt1 = pointsDef[0][1];  
-            let val2 = pointsDef[1][0]; 
-            let pt2 = pointsDef[1][1];  
-
-            if (isInverse) {
-                if (value >= val1) return pt1; 
-                if (value <= val2) return pt2; 
-                return pt1 + ((val1 - value) / (val1 - val2)) * (pt2 - pt1); // Corrected inverse interpolation
-            } else {
-                if (value <= val1) return pt1;
-                if (value >= val2) return pt2;
-                return pt1 + ((value - val1) / (val2 - val1)) * (pt2 - pt1);
-            }
+    <form id="arise-form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label for="age" class="block text-sm font-medium text-gray-700" aria-label="年龄（20-100岁）">年龄 (Age, 年):</label>
+        <input type="number" id="age" min="20" max="100" class="mt-1 block w-full border rounded p-2" aria-describedby="age-error" required>
+        <p id="age-error" class="error hidden">年龄必须在20-100之间</p>
+      </div>
+      <div>
+        <label for="sex" class="block text-sm font-medium text-gray-700" aria-label="性别">性别 (Sex):</label>
+        <select id="sex" class="mt-1 block w-full border rounded p-2" aria-describedby="sex-error" required>
+          <option value="">请选择</option>
+          <option value="Male">男 (Male)</option>
+          <option value="Female">女 (Female)</option>
+        </select>
+        <p id="sex-error" class="error hidden">请选择性别</p>
+      </div>
+      <div>
+        <label for="cci" class="block text-sm font-medium text-gray-700" aria-label="Charlson合并症指数（0-9）">CCI (Charlson合并症指数):</label>
+        <input type="number" id="cci" min="0" max="9" class="mt-1 block w-full border rounded p-2" aria-describedby="cci-error" required>
+        <p id="cci-error" class="error hidden">CCI必须在0-9之间</p>
+      </div>
+      <div>
+        <label for="nyha" class="block text-sm font-medium text-gray-700" aria-label="NYHA心功能分级">NYHA 心功能分级:</label>
+        <select id="nyha" class="mt-1 block w-full border rounded p-2" aria-describedby="nyha-error" required>
+          <option value="">请选择</option>
+          <option value="I">I级</option>
+          <option value="II">II级</option>
+          <option value="III">III级</option>
+          <option value="IV">IV级</option>
+        </select>
+        <p id="nyha-error" class="error hidden">请选择NYHA分级</p>
+      </div>
+      <div>
+        <label for="aodi" class="block text-sm font-medium text-gray-700" aria-label="主动脉直径指数（15-65 mm/m²）">主动脉直径指数 (AoDi, mm/m²):</label>
+        <input type="number" id="aodi" min="15" max="65" step="0.1" class="mt-1 block w-full border rounded p-2" aria-describedby="aodi-error" required>
+        <p id="aodi-error" class="error hidden">AoDi必须在15-65之间</p>
+      </div>
+      <div>
+        <label for="lvef" class="block text-sm font-medium text-gray-700" aria-label="左心室射血分数（20-80%）">左心室射血分数 (LVEF, %):</label>
+        <input type="number" id="lvef" min="20" max="80" step="0.1" class="mt-1 block w-full border rounded p-2" aria-describedby="lvef-error" required>
+        <p id="lvef-error" class="error hidden">LVEF必须在20-80之间</p>
+      </div>
+      <div>
+        <label for="lvesdi" class="block text-sm font-medium text-gray-700" aria-label="左心室收缩末期内径指数（10-50 mm/m²）">左心室收缩末期内径指数 (LVESDi, mm/m²):</label>
+        <input type="number" id="lvesdi" min="10" max="50" step="0.1" class="mt-1 block w-full border rounded p-2" aria-describedby="lvesdi-error" required>
+        <p id="lvesdi-error" class="error hidden">LVESDi必须在10-50之间</p>
+      </div>
+      <div>
+        <label for="avs" class="block text-sm font-medium text-gray-700" aria-label="3个月内是否进行主动脉瓣手术">3个月内是否进行主动脉瓣手术 (AVS):</label>
+        <select id="avs" class="mt-1 block w-full border rounded p-2" aria-describedby="avs-error" required>
+          <option value="">请选择</option>
+          <option value="Yes">是 (Yes)</option>
+          <option value="No">否 (No)</option>
+        </select>
+        <p id="avs-error" class="error hidden">请选择AVS状态</p>
+      </div>
+      <div class="col-span-1 md:col-span-2">
+        <button type="button" id="calculate" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">计算</button>
+      </div>
+    </form>
+    <div id="results" class="mt-6 hidden">
+      <h2 class="text-xl font-semibold mb-4">计算结果</h2>
+      <p><strong>总点数:</strong> <span id="total-points"></span></p>
+      <p><strong>风险类别:</strong> <span id="risk-category"></span></p>
+      <p><strong>1年生存率:</strong> <span id="survival-1y"></span></p>
+      <p><strong>3年生存率:</strong> <span id="survival-3y"></span></p>
+      <p><strong>5年生存率:</strong> <span id="survival-5y"></span></p>
+      <canvas id="survival-chart" class="mt-4"></canvas>
+      <p class="disclaimer">注意：ARISE Score不适用于术后30天内死亡风险评估，仅供参考，请结合临床判断。</p>
+    </div>
+  </div>
+  <script>
+    // 语言切换
+    const translations = {
+      zh: {
+        title: "ARISE Score: 心脏瓣膜预后评估",
+        age: "年龄 (Age, 年):",
+        sex: "性别 (Sex):",
+        sexOptions: { "": "请选择", Male: "男 (Male)", Female: "女 (Female)" }, // 保持 (Male)/(Female) 提示
+        cci: "CCI (Charlson合并症指数):",
+        nyha: "NYHA 心功能分级:",
+        nyhaOptions: { "": "请选择", I: "I级", II: "II级", III: "III级", IV: "IV级" },
+        aodi: "主动脉直径指数 (AoDi, mm/m²):",
+        lvef: "左心室射血分数 (LVEF, %):",
+        lvesdi: "左心室收缩末期内径指数 (LVESDi, mm/m²):",
+        avs: "3个月内是否进行主动脉瓣手术 (AVS):",
+        avsOptions: { "": "请选择", Yes: "是 (Yes)", No: "否 (No)" }, // 保持 (Yes)/(No) 提示
+        calculate: "计算",
+        results: "计算结果",
+        totalPoints: "总点数:",
+        riskCategory: "风险类别:",
+        survival1y: "1年生存率:",
+        survival3y: "3年生存率:",
+        survival5y: "5年生存率:",
+        disclaimer: "注意：ARISE Score不适用于术后30天内死亡风险评估，仅供参考，请结合临床判断。",
+        errors: {
+          age: "年龄必须在20-100之间",
+          sex: "请选择性别",
+          cci: "CCI必须在0-9之间",
+          nyha: "请选择NYHA分级",
+          aodi: "AoDi必须在15-65之间",
+          lvef: "LVEF必须在20-80之间",
+          lvesdi: "LVESDi必须在10-50之间",
+          avs: "请选择AVS状态"
         }
-        
-        function getSurvivalProbability(points, map) {
-            points = parseFloat(points);
-            if (isNaN(points)) return 0; 
+      },
+      en: {
+        title: "ARISE Score: Cardiac Valve Prognosis Assessment",
+        age: "Age (years):",
+        sex: "Sex:",
+        sexOptions: { "": "Please select", Male: "Male", Female: "Female" },
+        cci: "CCI (Charlson Comorbidity Index):",
+        nyha: "NYHA Functional Class:",
+        nyhaOptions: { "": "Please select", I: "Class I", II: "Class II", III: "Class III", IV: "Class IV" },
+        aodi: "Aortic Diameter Index (AoDi, mm/m²):",
+        lvef: "Left Ventricular Ejection Fraction (LVEF, %):",
+        lvesdi: "Left Ventricular End-Systolic Diameter Index (LVESDi, mm/m²):",
+        avs: "Aortic Valve Surgery within 3 Months (AVS):",
+        avsOptions: { "": "Please select", Yes: "Yes", No: "No" },
+        calculate: "Calculate",
+        results: "Results",
+        totalPoints: "Total Points:",
+        riskCategory: "Risk Category:",
+        survival1y: "1-Year Survival Rate:",
+        survival3y: "3-Year Survival Rate:",
+        survival5y: "5-Year Survival Rate:",
+        disclaimer: "Note: ARISE Score is not suitable for assessing mortality risk within 30 days post-surgery. For reference only, please consult clinical judgment.",
+        errors: {
+          age: "Age must be between 20 and 100",
+          sex: "Please select sex",
+          cci: "CCI must be between 0 and 9",
+          nyha: "Please select NYHA class",
+          aodi: "AoDi must be between 15 and 65",
+          lvef: "LVEF must be between 20 and 80",
+          lvesdi: "LVESDi must be between 10 and 50",
+          avs: "Please select AVS status"
+        }
+      }
+    };
 
-            if (points <= map[0][0]) return map[0][1];
-            for (let i = 0; i < map.length - 1; i++) {
-                const p1 = map[i];      
-                const p2 = map[i+1];    
-                if (points >= p1[0] && points < p2[0]) {
-                    return p1[1] + (points - p1[0]) * (p2[1] - p1[1]) / (p2[0] - p1[0]);
+    function updateLanguage(lang) {
+      const t = translations[lang];
+      document.querySelector("h1").textContent = t.title;
+      document.querySelector("label[for='age']").textContent = t.age;
+      document.querySelector("label[for='sex']").textContent = t.sex;
+      document.querySelector("label[for='cci']").textContent = t.cci;
+      document.querySelector("label[for='nyha']").textContent = t.nyha;
+      document.querySelector("label[for='aodi']").textContent = t.aodi;
+      document.querySelector("label[for='lvef']").textContent = t.lvef;
+      document.querySelector("label[for='lvesdi']").textContent = t.lvesdi;
+      document.querySelector("label[for='avs']").textContent = t.avs;
+      document.getElementById("calculate").textContent = t.calculate;
+      
+      const resultsTitle = document.querySelector("#results h2");
+      if(resultsTitle) resultsTitle.textContent = t.results;
+
+      const totalPointsLabel = document.querySelector("#results p:nth-child(2) strong");
+      if(totalPointsLabel) totalPointsLabel.textContent = t.totalPoints;
+      
+      const riskCategoryLabel = document.querySelector("#results p:nth-child(3) strong");
+      if(riskCategoryLabel) riskCategoryLabel.textContent = t.riskCategory;
+
+      const survival1yLabel = document.querySelector("#results p:nth-child(4) strong");
+      if(survival1yLabel) survival1yLabel.textContent = t.survival1y;
+
+      const survival3yLabel = document.querySelector("#results p:nth-child(5) strong");
+      if(survival3yLabel) survival3yLabel.textContent = t.survival3y;
+      
+      const survival5yLabel = document.querySelector("#results p:nth-child(6) strong");
+      if(survival5yLabel) survival5yLabel.textContent = t.survival5y;
+      
+      document.querySelector(".disclaimer").textContent = t.disclaimer;
+
+      // 更新下拉选项的文本
+      const sexSelect = document.getElementById("sex");
+      const currentSexVal = sexSelect.value; // 保存当前选中的值
+      sexSelect.innerHTML = Object.entries(t.sexOptions).map(([value, text]) => `<option value="${value}" ${value === "" && currentSexVal === "" ? "selected" : ""}>${text}</option>`).join("");
+      sexSelect.value = currentSexVal; // 恢复之前选中的值或默认值
+
+      const nyhaSelect = document.getElementById("nyha");
+      const currentNyhaVal = nyhaSelect.value;
+      nyhaSelect.innerHTML = Object.entries(t.nyhaOptions).map(([value, text]) => `<option value="${value}" ${value === "" && currentNyhaVal === "" ? "selected" : ""}>${text}</option>`).join("");
+      nyhaSelect.value = currentNyhaVal;
+
+      const avsSelect = document.getElementById("avs");
+      const currentAvsVal = avsSelect.value;
+      avsSelect.innerHTML = Object.entries(t.avsOptions).map(([value, text]) => `<option value="${value}" ${value === "" && currentAvsVal === "" ? "selected" : ""}>${text}</option>`).join("");
+      avsSelect.value = currentAvsVal;
+
+      // 更新错误提示信息（如果它们是可见的）
+      Object.keys(t.errors).forEach(id => {
+        const errorEl = document.getElementById(`${id}-error`);
+        if (errorEl && !errorEl.classList.contains("hidden")) {
+            errorEl.textContent = t.errors[id] || "";
+        }
+      });
+    }
+
+    document.getElementById("language").addEventListener("change", (e) => {
+      updateLanguage(e.target.value);
+    });
+
+    // 初始化语言 (例如，可以从localStorage读取用户上次的选择，或者默认中文)
+    const preferredLang = localStorage.getItem('preferredLang') || 'zh';
+    document.getElementById("language").value = preferredLang; // 设置下拉框的初始值
+    updateLanguage(preferredLang);
+    
+    // 保存语言偏好
+    document.getElementById("language").addEventListener("change", (e) => {
+        const selectedLang = e.target.value;
+        updateLanguage(selectedLang);
+        localStorage.setItem('preferredLang', selectedLang);
+    });
+
+
+    // 计算逻辑
+    document.getElementById("calculate").addEventListener("click", function() {
+      const lang = document.getElementById("language").value;
+      const t = translations[lang];
+      const inputs = {
+        age: document.getElementById("age").value, // 获取原始值，将在 validateInputs 中转换为数字
+        sex: document.getElementById("sex").value,
+        cci: document.getElementById("cci").value,
+        nyha: document.getElementById("nyha").value,
+        aodi: document.getElementById("aodi").value,
+        lvef: document.getElementById("lvef").value,
+        lvesdi: document.getElementById("lvesdi").value,
+        avs: document.getElementById("avs").value
+      };
+
+      // 输入验证
+      const errors = validateInputs(inputs, t);
+      let hasErrors = false;
+      Object.keys(inputs).forEach(id => { // 使用 inputs 的 keys 来确保对应 error id
+        const errorEl = document.getElementById(`${id}-error`);
+        if (errors[id]) {
+            errorEl.textContent = errors[id];
+            errorEl.classList.remove("hidden");
+            hasErrors = true;
+        } else if(errorEl) { // 确保 errorEl 存在
+            errorEl.textContent = "";
+            errorEl.classList.add("hidden");
+        }
+      });
+
+      if (hasErrors) {
+        document.getElementById("results").classList.add("hidden"); // 如果有错误，隐藏结果区域
+        return;
+      }
+      
+      // 将验证过的输入转换为正确的类型进行计算
+      const processedInputs = {
+        age: parseInt(inputs.age),
+        sex: inputs.sex,
+        cci: parseInt(inputs.cci),
+        nyha: inputs.nyha,
+        aodi: parseFloat(inputs.aodi),
+        lvef: parseFloat(inputs.lvef),
+        lvesdi: parseFloat(inputs.lvesdi),
+        avs: inputs.avs
+      };
+
+
+      // 计算点数
+      const pointsArray = calculatePoints(processedInputs); // calculatePoints现在返回一个点数数组
+      const totalPoints = pointsArray.reduce((sum, p) => sum + p, 0);
+
+      // 计算生存率
+      const survivalRates = calculateSurvivalRates(totalPoints);
+
+      // 显示结果
+      document.getElementById("total-points").textContent = totalPoints.toFixed(0);
+      document.getElementById("risk-category").textContent = getRiskCategory(totalPoints, lang);
+      document.getElementById("survival-1y").textContent = (survivalRates[1] * 100).toFixed(1) + "%";
+      document.getElementById("survival-3y").textContent = (survivalRates[3] * 100).toFixed(1) + "%";
+      document.getElementById("survival-5y").textContent = (survivalRates[5] * 100).toFixed(1) + "%";
+      document.getElementById("results").classList.remove("hidden");
+
+      // 渲染图表
+      renderSurvivalChart(survivalRates, lang); // 传递 lang 给图表函数
+    });
+
+    function validateInputs({ age, sex, cci, nyha, aodi, lvef, lvesdi, avs }, t) {
+      const errors = {};
+      const ageNum = parseInt(age);
+      const cciNum = parseInt(cci);
+      const aodiNum = parseFloat(aodi);
+      const lvefNum = parseFloat(lvef);
+      const lvesdiNum = parseFloat(lvesdi);
+
+      if (isNaN(ageNum) || ageNum < 20 || ageNum > 100) errors.age = t.errors.age;
+      if (!["Male", "Female"].includes(sex)) errors.sex = t.errors.sex;
+      if (isNaN(cciNum) || cciNum < 0 || cciNum > 9) errors.cci = t.errors.cci;
+      if (!["I", "II", "III", "IV"].includes(nyha)) errors.nyha = t.errors.nyha;
+      if (isNaN(aodiNum) || aodiNum < 15 || aodiNum > 65) errors.aodi = t.errors.aodi;
+      // LVEF的Nomogram点数计算基于20-80，但临床输入可以是0-100，这里验证的是图表有效输入范围
+      if (isNaN(lvefNum) || lvefNum < 20 || lvefNum > 80) errors.lvef = t.errors.lvef; 
+      if (isNaN(lvesdiNum) || lvesdiNum < 10 || lvesdiNum > 50) errors.lvesdi = t.errors.lvesdi;
+      if (!["Yes", "No"].includes(avs)) errors.avs = t.errors.avs;
+      return errors;
+    }
+
+    function calculatePoints({ age, sex, cci, nyha, aodi, lvef, lvesdi, avs }) {
+      // 点数分配基于列线图（Figure 1, Liu et al. JAHA 2025）的估算
+      // 论文中提到总点数范围 24-168
+      // 为了尽量匹配，这里的点数需要仔细校准，以下为基于视觉的粗略估算或简化
+
+      // Age (20-100岁): 对应点数大致 0-85 (Figure 1 Points scale)
+      // (age - 20) * (85 / (100-20))
+      const agePoints = Math.max(0, Math.min(85, (age - 20) * 1.0625)); 
+      
+      // Sex: Female 约 +10 点 (Figure 1 Female vs Male 在Points轴上的差值)
+      const sexPoints = sex === "Female" ? 10 : 0; 
+      
+      // CCI (0-9): 对应点数大致 0-63 (Figure 1 Points scale, 约 CCI * 7)
+      const cciPoints = Math.max(0, Math.min(63, cci * 7));
+      
+      // NYHA: I=0, II=~18, III=~35, IV=~48 (Figure 1 Points scale)
+      const nyhaPointsMap = { I: 0, II: 18, III: 35, IV: 48 };
+      const nyhaPoints = nyhaPointsMap[nyha] || 0;
+      
+      // AoDi (15-65 mm/m²): 对应点数大致 0-50 (Figure 1 Points scale)
+      // (aodi - 15) * (50 / (65-15))
+      const aodiPoints = Math.max(0, Math.min(50, (aodi - 15) * 1)); 
+      
+      // LVEF (20-80%): 对应点数大致 30-0 (Figure 1 Points scale, 逆向)
+      // (80 - lvef) * (30 / (80-20))
+      const lvefPoints = Math.max(0, Math.min(30, (80 - lvef) * 0.5)); 
+      
+      // LVESDi (10-50 mm/m²): 对应点数大致 0-40 (Figure 1 Points scale)
+      // (lvesdi - 10) * (40 / (50-10))
+      const lvesdiPoints = Math.max(0, Math.min(40, (lvesdi - 10) * 1));
+      
+      // AVS in 3 months: Yes=0, No=~20 (Figure 1 Points scale)
+      const avsPoints = avs === "No" ? 20 : 0; 
+      
+      return [agePoints, sexPoints, cciPoints, nyhaPoints, aodiPoints, lvefPoints, lvesdiPoints, avsPoints];
+    }
+
+    function calculateSurvivalRates(totalPoints) {
+      // 生存率基于列线图（Figure 1）最下方的生存率轴进行估算
+      // 这些映射点需要通过仔细读取Figure 1的 "Total Points" vs "Survival" 轴来校准
+      // 以下为非常粗略的示例，需要用您之前从官网获取的数据进行校准
+      const survivalMap1Year = [
+          [20, 0.99], [40, 0.97], [60, 0.93], [80, 0.87], [100, 0.78], 
+          [120, 0.65], [140, 0.50], [160, 0.35], [180, 0.22], [200, 0.10] 
+      ];
+      const survivalMap3Year = [
+          [20, 0.98], [40, 0.92], [60, 0.82], [80, 0.68], [100, 0.50],
+          [120, 0.35], [140, 0.22], [160, 0.15], [180, 0.08], [200, 0.04]
+      ];
+      const survivalMap5Year = [
+          [20, 0.97], [40, 0.88], [60, 0.72], [80, 0.55], [100, 0.38], 
+          [120, 0.22], [140, 0.12], [160, 0.08], [180, 0.04], [200, 0.02]
+      ];
+
+      // 辅助函数，用于从映射表中插值获取生存率
+      function getSurvival(points, map) {
+          if (points <= map[0][0]) return map[0][1]; // 小于等于最小点数，取最高生存率
+          for (let i = 0; i < map.length - 1; i++) {
+              const p1 = map[i]; // [point1, survival1]
+              const p2 = map[i+1]; // [point2, survival2]
+              if (points >= p1[0] && points < p2[0]) { 
+                  return p1[1] + ( (points - p1[0]) / (p2[0] - p1[0]) ) * (p2[1] - p1[1]);
+              }
+          }
+          return map[map.length - 1][1]; // 大于等于最大点数，取最低生存率
+      }
+      
+      // 论文中提到总点数范围 24-168。列线图Total Points轴显示约20-200。
+      // 我们需要确保totalPoints在用于查找生存率之前被合理地限制在映射表的范围内。
+      const clampedTotalPoints = Math.max(20, Math.min(200, totalPoints));
+
+
+      return {
+        1: getSurvival(clampedTotalPoints, survivalMap1Year),
+        3: getSurvival(clampedTotalPoints, survivalMap3Year),
+        5: getSurvival(clampedTotalPoints, survivalMap5Year)
+      };
+    }
+
+    function getRiskCategory(totalPoints, lang) {
+      // 根据论文 Figure 4 的分层: Low <85; Intermediate 85 to <107; High >=107
+      if (totalPoints < 85) return lang === "zh" ? "低风险" : "Low Risk";
+      if (totalPoints < 107) return lang === "zh" ? "中风险" : "Moderate Risk";
+      return lang === "zh" ? "高风险" : "High Risk";
+    }
+
+    function renderSurvivalChart(survivalRates, lang) {
+      const ctx = document.getElementById("survival-chart").getContext("2d");
+      const t = translations[lang];
+      const chartLabels = {
+          zh: ["1年", "3年", "5年"],
+          en: ["1-Year", "3-Year", "5-Year"]
+      };
+      const chartDatasetLabel = {
+          zh: "生存率 (%)",
+          en: "Survival Rate (%)"
+      };
+
+
+      if (window.survivalChart instanceof Chart) { // 检查实例
+        window.survivalChart.destroy();
+      }
+      window.survivalChart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: chartLabels[lang],
+          datasets: [{
+            label: chartDatasetLabel[lang],
+            data: [survivalRates[1] * 100, survivalRates[3] * 100, survivalRates[5] * 100],
+            borderColor: "#4CAF50", // 绿色线条
+            backgroundColor: "rgba(76, 175, 80, 0.1)", // 淡绿色背景
+            fill: true,
+            tension: 0.1 // 使线条略微平滑
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false, // 允许图表高度调整
+          scales: {
+            y: { 
+                beginAtZero: false, // Y轴不必从0开始，可以更好地显示高生存率的细微差别
+                min: Math.max(0, Math.floor(Math.min(survivalRates[1], survivalRates[3], survivalRates[5]) * 100) - 10), // 动态调整Y轴最小值
+                max: 100, 
+                title: { display: true, text: chartDatasetLabel[lang] } 
+            },
+            x: { title: { display: true, text: (lang === "zh" ? "时间" : "Time") } }
+          },
+          plugins: {
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        let label = context.dataset.label || '';
+                        if (label) {
+                            label += ': ';
+                        }
+                        if (context.parsed.y !== null) {
+                            label += context.parsed.y.toFixed(1) + '%';
+                        }
+                        return label;
+                    }
                 }
             }
-            return map[map.length - 1][1]; 
+          }
         }
-
-        function calculateAriseScore() {
-            const ageInput = document.getElementById('age');
-            const sexInput = document.getElementById('sex');
-            const cciInput = document.getElementById('cci');
-            const nyhaInput = document.getElementById('nyha');
-            const aodiInput = document.getElementById('aodi');
-            const lvefInput = document.getElementById('lvef');
-            const lvesdiInput = document.getElementById('lvesdi');
-            const avsIn3MonthsInput = document.getElementById('avsIn3Months');
-
-            const inputs = [ageInput, sexInput, cciInput, nyhaInput, aodiInput, lvefInput, lvesdiInput, avsIn3MonthsInput];
-            let allValid = true;
-            for (let input of inputs) {
-                if (!input.value && input.tagName !== 'BUTTON') { 
-                    allValid = false;
-                    break;
-                }
-            }
-
-            if (!allValid) {
-                alert('请填写所有必填字段！');
-                document.getElementById('totalPointsDisplay').textContent = '总点数 (估算): --';
-                document.getElementById('survival1yr').textContent = '1年生存率: --%';
-                document.getElementById('survival3yr').textContent = '3年生存率: --%';
-                document.getElementById('survival5yr').textContent = '5年生存率: --%';
-                return;
-            }
-
-            const age = parseFloat(ageInput.value);
-            const sex = sexInput.value;
-            const cci = parseFloat(cciInput.value);
-            const nyha = nyhaInput.value;
-            const aodi = parseFloat(aodiInput.value);
-            const lvef = parseFloat(lvefInput.value);
-            const lvesdi = parseFloat(lvesdiInput.value);
-            const avsIn3Months = avsIn3MonthsInput.value;
-
-            const clampedAge = Math.min(Math.max(age, 20), 100); 
-            let pointsAge = interpolate(clampedAge, [[20, 0], [100, 85]]);
-            
-            let pointsSex = (sex === 'female') ? 7 : 0; 
-            
-            const clampedCCI = Math.min(Math.max(cci, 0), 9); 
-            let pointsCCI = interpolate(clampedCCI, [[0, 0], [9, 63]]); 
-
-            let pointsNYHA = 0;
-            switch (nyha) {
-                case 'I': pointsNYHA = 0; break;
-                case 'II': pointsNYHA = 19; break;
-                case 'III': pointsNYHA = 32; break;
-                case 'IV': pointsNYHA = 42; break;
-            }
-
-            const clampedAoDi = Math.min(Math.max(aodi, 15), 65); 
-            let pointsAoDi = interpolate(clampedAoDi, [[15, 0], [65, 50]]);
-            
-            const clampedLVEF = Math.min(Math.max(lvef, 20), 80); 
-            let pointsLVEF = interpolate(clampedLVEF, [[80, 0], [20, 30]], true); 
-
-            const clampedLVESDi = Math.min(Math.max(lvesdi, 10), 50); 
-            let pointsLVESDi = interpolate(clampedLVESDi, [[10, 0], [50, 40]]);
-            
-            let pointsAVS = (avsIn3Months === 'no') ? 20 : 0; 
-
-            let totalPoints = pointsAge + pointsSex + pointsCCI + pointsNYHA + pointsAoDi + pointsLVEF + pointsLVESDi + pointsAVS;
-            totalPoints = Math.max(0, Math.round(totalPoints)); 
-
-            const survival1YrMap = [[0,1.0],[20,0.99],[40,0.97],[60,0.93],[80,0.87],[100,0.78],[120,0.65],[140,0.50],[160,0.35],[180,0.22],[200,0.10]];
-            const survival3YrMap = [[0,1.0],[20,0.98],[40,0.92],[60,0.82],[80,0.68],[100,0.50],[120,0.35],[140,0.22],[160,0.15],[180,0.08],[200,0.04]];
-            const survival5YrMap = [[0,1.0],[20,0.97],[40,0.88],[60,0.72],[80,0.55],[100,0.38],[120,0.22],[140,0.12],[160,0.08],[180,0.04],[200,0.02]];
-            
-            const clampedTotalPointsForSurvival = Math.min(Math.max(totalPoints, 0), 200); 
-
-            const survival1yr = getSurvivalProbability(clampedTotalPointsForSurvival, survival1YrMap);
-            const survival3yr = getSurvivalProbability(clampedTotalPointsForSurvival, survival3YrMap);
-            const survival5yr = getSurvivalProbability(clampedTotalPointsForSurvival, survival5YrMap);
-
-            document.getElementById('totalPointsDisplay').textContent = '总点数 (估算): ' + totalPoints;
-            document.getElementById('survival1yr').textContent = '1年生存率: ' + (survival1yr * 100).toFixed(1) + '%';
-            document.getElementById('survival3yr').textContent = '3年生存率: ' + (survival3yr * 100).toFixed(1) + '%';
-            document.getElementById('survival5yr').textContent = '5年生存率: ' + (survival5yr * 100).toFixed(1) + '%';
-        }
-    </script>
+      });
+    }
+  </script>
 </body>
 </html>
