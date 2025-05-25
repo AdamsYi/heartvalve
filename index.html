@@ -145,47 +145,63 @@
 
     <div class="container">
         <div id="avsModel" class="module">
-            <h2>ARISE Score 模型入口</h2>
-            <p>请输入以下信息以评估风险。字段参考 <a href="https://arise-score.vercel.app/" target="_blank">ARISE Score官网</a>。</p>
-            <form id="ariseForm">
+            <h2>心脏瓣膜预后评估 (基于列线图)</h2>
+            <p>请输入以下信息，以根据列线图 (源自您提供的PDF Figure S2) 评估1年、3年和5年生存率。结果仅供参考，实际应用请参照<a href="https://arise-score.vercel.app/" target="_blank">官方工具</a>或原始文献。</p>
+            <form id="nomogramForm">
                 <div>
                     <label for="age">年龄 (岁):</label>
-                    <input type="number" id="age" name="age" required>
+                    <input type="number" id="age" name="age" placeholder="例如: 65" required>
                 </div>
                 <div>
-                    <label for="nihss">NIHSS on admission (0-42):</label>
-                    <input type="number" id="nihss" name="nihss" min="0" max="42" required>
-                </div>
-                <div>
-                    <label for="reperfusion">Successful reperfusion (mTICI 2b-3):</label>
-                    <select id="reperfusion" name="reperfusion" required>
+                    <label for="sex">性别:</label>
+                    <select id="sex" name="sex" required>
                         <option value="">请选择</option>
-                        <option value="yes">是</option>
-                        <option value="no">否</option>
+                        <option value="male">男 (Male)</option>
+                        <option value="female">女 (Female)</option>
                     </select>
                 </div>
                 <div>
-                    <label for="symptomaticICH">Symptomatic ICH:</label>
-                    <select id="symptomaticICH" name="symptomaticICH" required>
+                    <label for="cci">CCI (Charlson合并症指数):</label>
+                    <input type="number" id="cci" name="cci" placeholder="例如: 0-9" min="0" required>
+                </div>
+                <div>
+                    <label for="nyha">NYHA 心功能分级:</label>
+                    <select id="nyha" name="nyha" required>
                         <option value="">请选择</option>
-                        <option value="yes">是</option>
-                        <option value="no">否</option>
+                        <option value="I">I级</option>
+                        <option value="II">II级</option>
+                        <option value="III">III级</option>
+                        <option value="IV">IV级</option>
                     </select>
                 </div>
                 <div>
-                    <label for="glucose">Glucose on admission (mg/dL):</label>
-                    <input type="number" id="glucose" name="glucose" required>
+                    <label for="aodi">主动脉直径指数 (AoDi, mm/m²):</label>
+                    <input type="number" id="aodi" name="aodi" step="0.1" placeholder="例如: 25.6" required>
                 </div>
                 <div>
-                    <label for="aspectScore">ASPECT score (0-10):</label>
-                    <input type="number" id="aspectScore" name="aspectScore" min="0" max="10" required>
+                    <label for="lvef">左心室射血分数 (LVEF, %):</label>
+                    <input type="number" id="lvef" name="lvef" placeholder="例如: 55" min="0" max="100" required>
                 </div>
-                <button type="button" onclick="calculateAriseScore()">计算 ARISE Score</button>
+                <div>
+                    <label for="lvesdi">左心室收缩末期内径指数 (LVESDi, mm/m²):</label>
+                    <input type="number" id="lvesdi" name="lvesdi" step="0.1" placeholder="例如: 24.6" required>
+                </div>
+                <div>
+                    <label for="avsIn6Months">6个月内是否进行主动脉瓣手术 (AVS):</label>
+                    <select id="avsIn6Months" name="avsIn6Months" required>
+                        <option value="">请选择</option>
+                        <option value="yes">是 (Yes)</option>
+                        <option value="no">否 (No)</option>
+                    </select>
+                </div>
+                <button type="button" onclick="calculateAriseScore()">计算生存率</button>
             </form>
             <div id="resultArea">
-                <h3>评估结果:</h3>
-                <p id="mortalityRisk">院内死亡风险: --%</p>
-                <p id="confidenceInterval">95% 置信区间: --% to --%</p>
+                <h3>评估结果 (基于列线图估算):</h3>
+                <p id="survival1yr">1年生存率: --%</p>
+                <p id="survival3yr">3年生存率: --%</p>
+                <p id="survival5yr">5年生存率: --%</p>
+                <p id="totalPoints" style="font-size:0.9em; color:#555;">总点数 (估算): --</p>
             </div>
         </div>
 
@@ -211,47 +227,37 @@
 
     <script>
         function calculateAriseScore() {
-            // 获取表单数据
-            const age = document.getElementById('age').value;
-            const nihss = document.getElementById('nihss').value;
-            const reperfusion = document.getElementById('reperfusion').value;
-            const symptomaticICH = document.getElementById('symptomaticICH').value;
-            const glucose = document.getElementById('glucose').value;
-            const aspectScore = document.getElementById('aspectScore').value;
+            // 获取新表单的数据 (示例，需要根据新的ID调整)
+            const age = document.getElementById('age') ? document.getElementById('age').value : null;
+            const sex = document.getElementById('sex') ? document.getElementById('sex').value : null;
+            // ... 需要获取所有新表单字段的值 ...
+            // const cci = document.getElementById('cci').value;
+            // const nyha = document.getElementById('nyha').value;
+            // ...等等...
 
-            // 简单的输入验证 (可以根据需要扩展)
-            if (!age || !nihss || !reperfusion || !symptomaticICH || !glucose || !aspectScore) {
-                alert('请填写所有必填字段！');
-                return;
-            }
+            // --- 重要的提示 ---
+            // 下面的计算逻辑仍然是旧的、非常简单的占位符，
+            // 并且它引用的字段ID (如 nihss, reperfusion 等) 已经和新的表单不匹配了。
+            // 我们会在下一步完全重写这部分逻辑来匹配新的列线图。
+            // 目前点击按钮可能不会正确计算或会报错，这是正常的。
 
-            // --- 占位符逻辑 ---
-            // 由于无法直接破解或调用 https://arise-score.vercel.app/ 的内部计算模型，
-            // 这里我们只使用一个非常简单的占位符来模拟输出。
-            // 真实场景下，如果官网提供了API，我们会调用API；
-            // 或者如果模型是公开的，我们会在这里实现该模型。
+            alert('注意：计算逻辑将在下一步更新以匹配新的表单和列线图！');
 
+            // 旧的占位符逻辑 (仅为演示，将在下一步被替换)
             let calculatedRisk = 0;
-            // 这是一个非常粗略的模拟，完全不代表真实 ARISE Score 算法
-            calculatedRisk += parseInt(age) * 0.1;
-            calculatedRisk += parseInt(nihss) * 0.2;
-            if (reperfusion === 'no') calculatedRisk += 10;
-            if (symptomaticICH === 'yes') calculatedRisk += 15;
-            calculatedRisk += parseInt(glucose) * 0.05;
-            calculatedRisk -= parseInt(aspectScore) * 0.5;
+            if (age) calculatedRisk += parseInt(age) * 0.1;
+            // calculatedRisk += parseInt(nihss) * 0.2; // 旧字段
+            // if (reperfusion === 'no') calculatedRisk += 10; // 旧字段
 
-            // 确保风险值在合理范围内 (0-100)
             calculatedRisk = Math.max(0, Math.min(100, calculatedRisk)); 
-
             const riskPercentage = calculatedRisk.toFixed(1);
-            const lowerCI = (Math.max(0, calculatedRisk - 5)).toFixed(1); // 示例CI
-            const upperCI = (Math.min(100, calculatedRisk + 5)).toFixed(1); // 示例CI
 
-            // 显示结果
-            document.getElementById('mortalityRisk').textContent = '院内死亡风险: ' + riskPercentage + '%';
-            document.getElementById('confidenceInterval').textContent = '95% 置信区间: ' + lowerCI + '% to ' + upperCI + '%';
+            // 更新新的结果区域 (示例)
+            document.getElementById('survival1yr').textContent = '1年生存率: ' + riskPercentage + '% (模拟)';
+            document.getElementById('survival3yr').textContent = '3年生存率: ' + (riskPercentage - 5 < 0 ? 0 : riskPercentage -5).toFixed(1) + '% (模拟)';
+            document.getElementById('survival5yr').textContent = '5年生存率: ' + (riskPercentage - 10 < 0 ? 0 : riskPercentage -10).toFixed(1) + '% (模拟)';
+            document.getElementById('totalPoints').textContent = '总点数 (估算): 模拟值';
 
-            // 提示用户这是模拟结果
             const resultArea = document.getElementById('resultArea');
             let notice = document.getElementById('simNotice');
             if (!notice) {
@@ -259,8 +265,10 @@
                 notice.id = 'simNotice';
                 notice.style.fontSize = '0.9em';
                 notice.style.color = 'red';
-                notice.textContent = '注意：当前结果为演示目的的模拟计算，并非真实的 ARISE Score。';
-                resultArea.appendChild(notice);
+                notice.textContent = '注意：当前计算逻辑为临时占位符，将在下一步根据您提供的PDF列线图进行更新。';
+                if (!resultArea.querySelector('#simNotice')) { // 避免重复添加
+                     resultArea.appendChild(notice);
+                }
             }
         }
     </script>
