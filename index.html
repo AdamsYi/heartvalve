@@ -9,7 +9,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             margin: 0; 
             padding: 0; 
-            background-color: #eef1f5;
+            background-color: #eef1f5; 
             color: #333; 
             line-height: 1.6;
         }
@@ -227,30 +227,26 @@
 
     <script>
         // 辅助函数：根据值在两个点之间进行线性插值来获取点数或概率
-        // pointsDef: 一个二维数组，例如 [[valueAtMinPoints, minPoints], [valueAtMaxPoints, maxPoints]]
-        // or for survival: [[totalPointsAtHighSurvival, highSurvival], [totalPointsAtLowSurvival, lowSurvival]]
-        // isInverse: 对于LVEF这类值越大点数越低的情况设为true
         function interpolate(value, pointsDef, isInverse = false) {
             value = parseFloat(value);
-            if (isNaN(value)) return 0;
+            if (isNaN(value)) return 0; 
 
             let val1, pt1, val2, pt2;
 
-            if (isInverse) { // 例如 LVEF: (80% -> 0pts, 20% -> 30pts)
-                val1 = pointsDef[0][0]; // e.g., 80 (LVEF at 0 points)
-                pt1 = pointsDef[0][1];  // e.g., 0 (points for LVEF 80)
-                val2 = pointsDef[1][0]; // e.g., 20 (LVEF at 30 points)
-                pt2 = pointsDef[1][1];  // e.g., 30 (points for LVEF 20)
+            if (isInverse) { 
+                val1 = pointsDef[0][0]; 
+                pt1 = pointsDef[0][1];  
+                val2 = pointsDef[1][0]; 
+                pt2 = pointsDef[1][1];  
 
-                if (value >= val1) return pt1; // If LVEF >= 80, points = 0
-                if (value <= val2) return pt2; // If LVEF <= 20, points = 30
-                // Interpolate: higher value means it's closer to pt1
-                return pt1 + ((val1 - value) / (val1 - val2)) * (pt2 - pt1);
-            } else { // For normal scales: (20 Age -> 0pts, 100 Age -> 85pts)
-                val1 = pointsDef[0][0]; // e.g., 20 (Age at 0 points)
-                pt1 = pointsDef[0][1];  // e.g., 0 (points for Age 20)
-                val2 = pointsDef[1][0]; // e.g., 100 (Age at 85 points)
-                pt2 = pointsDef[1][1];  // e.g., 85 (points for Age 100)
+                if (value >= val1) return pt1; 
+                if (value <= val2) return pt2; 
+                return ptMax - ((value - valMax) / (valMin - valMax)) * (ptMax - ptMin); // Corrected logic for inverse
+            } else { 
+                val1 = pointsDef[0][0]; 
+                pt1 = pointsDef[0][1];  
+                val2 = pointsDef[1][0]; 
+                pt2 = pointsDef[1][1];  
 
                 if (value <= val1) return pt1;
                 if (value >= val2) return pt2;
@@ -258,43 +254,42 @@
             }
         }
 
-        // 辅助函数：根据总点数从映射表获取生存率 (使用更精确的分段线性插值)
-        function getSurvivalFromMap(totalPoints, survivalMap) {
-            totalPoints = parseFloat(totalPoints);
-            if (isNaN(totalPoints)) return 0;
+        function getSurvivalProbability(points, map) {
+            points = parseFloat(points);
+            if (isNaN(points)) return 0; 
 
-            // Handle points outside the defined map range by clamping to the first/last probability
-            if (totalPoints <= survivalMap[0][0]) return survivalMap[0][1];
-            if (totalPoints >= survivalMap[survivalMap.length - 1][0]) return survivalMap[survivalMap.length - 1][1];
-
-            for (let i = 0; i < survivalMap.length - 1; i++) {
-                const p1 = survivalMap[i];      // [totalPoints1, survival1]
-                const p2 = survivalMap[i+1];    // [totalPoints2, survival2]
-                if (totalPoints >= p1[0] && totalPoints < p2[0]) {
-                    // Linear interpolation: y = y1 + (x - x1) * (y2 - y1) / (x2 - x1)
-                    return p1[1] + (totalPoints - p1[0]) * (p2[1] - p1[1]) / (p2[0] - p1[0]);
+            if (points <= map[0][0]) return map[0][1];
+            for (let i = 0; i < map.length - 1; i++) {
+                const p1 = map[i];      
+                const p2 = map[i+1];    
+                if (points >= p1[0] && points < p2[0]) {
+                    return p1[1] + (points - p1[0]) * (p2[1] - p1[1]) / (p2[0] - p1[0]);
                 }
             }
-            // Should be covered by clamping, but as a fallback
-            return survivalMap[survivalMap.length - 1][1]; 
+            return map[map.length - 1][1]; 
         }
 
-
         function calculateAriseScore() {
-            // --- 1. 读取所有输入值 ---
-            const ageVal = document.getElementById('age').value;
-            const sexVal = document.getElementById('sex').value;
-            const cciVal = document.getElementById('cci').value;
-            const nyhaVal = document.getElementById('nyha').value;
-            const aodiVal = document.getElementById('aodi').value;
-            const lvefVal = document.getElementById('lvef').value;
-            const lvesdiVal = document.getElementById('lvesdi').value;
-            const avsIn3MonthsVal = document.getElementById('avsIn3Months').value;
+            const ageInput = document.getElementById('age');
+            const sexInput = document.getElementById('sex');
+            const cciInput = document.getElementById('cci');
+            const nyhaInput = document.getElementById('nyha');
+            const aodiInput = document.getElementById('aodi');
+            const lvefInput = document.getElementById('lvef');
+            const lvesdiInput = document.getElementById('lvesdi');
+            const avsIn3MonthsInput = document.getElementById('avsIn3Months');
 
-            const formInputs = [ageVal, sexVal, cciVal, nyhaVal, aodiVal, lvefVal, lvesdiVal, avsIn3MonthsVal];
-            if (formInputs.some(val => val === "" || val === null)) {
+            const inputs = [ageInput, sexInput, cciInput, nyhaInput, aodiInput, lvefInput, lvesdiInput, avsIn3MonthsInput];
+            let allValid = true;
+            for (let input of inputs) {
+                if (!input.value && input.tagName !== 'BUTTON') { 
+                    allValid = false;
+                    break;
+                }
+            }
+
+            if (!allValid) {
                 alert('请填写所有必填字段！');
-                // Clear previous results
                 document.getElementById('totalPointsDisplay').textContent = '总点数 (估算): --';
                 document.getElementById('survival1yr').textContent = '1年生存率: --%';
                 document.getElementById('survival3yr').textContent = '3年生存率: --%';
@@ -302,69 +297,43 @@
                 return;
             }
 
-            const age = parseFloat(ageVal);
-            const cci = parseFloat(cciVal);
-            const aodi = parseFloat(aodiVal);
-            const lvef = parseFloat(lvefVal);
-            const lvesdi = parseFloat(lvesdiVal);
+            const age = parseFloat(ageInput.value);
+            const sex = sexInput.value;
+            const cci = parseFloat(cciInput.value);
+            const nyha = nyhaInput.value;
+            const aodi = parseFloat(aodiInput.value);
+            const lvef = parseFloat(lvefInput.value);
+            const lvesdi = parseFloat(lvesdiInput.value);
+            const avsIn3Months = avsIn3MonthsInput.value;
 
-            // --- 2. 为每个因素计算“点数”(基于论文 Figure 1 列线图的更仔细估算) ---
-            // Nomogram scales for points (Top "Points" axis is 0-100)
-            // Values are [value_at_0_points, value_at_X_points_on_nomogram_scale]
-            // Points are [0, X_points_on_nomogram_scale]
-
-            // Age (years): Nomogram 20yrs (0pts) to 100yrs (85pts)
             let pointsAge = interpolate(age, [[20, 0], [100, 85]]);
-
-            // Sex: Female (~7pts), Male (0pts)
-            let pointsSex = (sexVal === 'female') ? 7 : 0;
-
-            // CCI: Nomogram 0 (0pts) to 9 (63pts) -> approx. CCI * 7
+            let pointsSex = (sex === 'female') ? 7 : 0;
             let pointsCCI = interpolate(cci, [[0, 0], [9, 63]]);
-
-            // NYHA class: I (0pts), II (~19pts), III (~32pts), IV (~42pts)
             let pointsNYHA = 0;
-            switch (nyhaVal) {
+            switch (nyha) {
                 case 'I': pointsNYHA = 0; break;
                 case 'II': pointsNYHA = 19; break;
                 case 'III': pointsNYHA = 32; break;
                 case 'IV': pointsNYHA = 42; break;
             }
-
-            // AoDi (mm/m²): Nomogram 15 (0pts) to 65 (50pts)
             let pointsAoDi = interpolate(aodi, [[15, 0], [65, 50]]);
-
-            // LVEF (%): Nomogram 80% (0pts) to 20% (30pts) - Inverse
-            let pointsLVEF = interpolate(lvef, [[80, 0], [20, 30]], true);
-
-            // LVESDi (mm/m²): Nomogram 10 (0pts) to 50 (40pts)
+            let pointsLVEF = interpolate(lvef, [[80, 0], [20, 30]], true); // Corrected: valMin, ptMin, valMax, ptMax for invert
             let pointsLVESDi = interpolate(lvesdi, [[10, 0], [50, 40]]);
+            let pointsAVS = (avsIn3Months === 'no') ? 20 : 0;
 
-            // AVS in 3 months: No (~20pts), Yes (0pts)
-            let pointsAVS = (avsIn3MonthsVal === 'no') ? 20 : 0;
-
-            // --- 3. 计算总点数 ---
-            // Sum of points from individual factors (each factor's points are relative to the 0-100 top scale of the nomogram)
-            // The "Total Points" axis on the nomogram (Figure 1) is different, ranging from ~20 to ~200.
-            // The paper mentions "sum of the points for the combined LVEF and LVESDI algorithm ranged from 24 to 168" [cite: 106]
-            // This sum is what we use for the survival scales.
             let totalPoints = pointsAge + pointsSex + pointsCCI + pointsNYHA + pointsAoDi + pointsLVEF + pointsLVESDi + pointsAVS;
             totalPoints = Math.max(0, Math.round(totalPoints)); 
 
-            // --- 4. 根据总点数估算生存率 (使用更精确的映射点) ---
-            // Based on Figure 1 (Total Points vs Survival Scales)
             const survival1YrMap = [[0,1.0],[20,0.99],[40,0.97],[60,0.93],[80,0.87],[100,0.78],[120,0.65],[140,0.50],[160,0.35],[180,0.22],[200,0.10]];
             const survival3YrMap = [[0,1.0],[20,0.98],[40,0.92],[60,0.82],[80,0.68],[100,0.50],[120,0.35],[140,0.22],[160,0.15],[180,0.08],[200,0.04]];
             const survival5YrMap = [[0,1.0],[20,0.97],[40,0.88],[60,0.72],[80,0.55],[100,0.38],[120,0.22],[140,0.12],[160,0.08],[180,0.04],[200,0.02]];
 
-            // Clamp totalPoints to the range covered by the survival maps for interpolation
             const clampedTotalPoints = Math.min(Math.max(totalPoints, 0), 200);
 
-            const survival1yr = getSurvivalFromMap(clampedTotalPoints, survival1YrMap);
-            const survival3yr = getSurvivalFromMap(clampedTotalPoints, survival3YrMap);
-            const survival5yr = getSurvivalFromMap(clampedTotalPoints, survival5YrMap);
+            const survival1yr = getSurvivalProbability(clampedTotalPoints, survival1YrMap);
+            const survival3yr = getSurvivalProbability(clampedTotalPoints, survival3YrMap);
+            const survival5yr = getSurvivalProbability(clampedTotalPoints, survival5YrMap);
 
-            // --- 5. 显示结果 ---
             document.getElementById('totalPointsDisplay').textContent = '总点数 (估算): ' + totalPoints;
             document.getElementById('survival1yr').textContent = '1年生存率: ' + (survival1yr * 100).toFixed(1) + '%';
             document.getElementById('survival3yr').textContent = '3年生存率: ' + (survival3yr * 100).toFixed(1) + '%';
