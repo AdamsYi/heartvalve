@@ -1,510 +1,506 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ARISE Score 计算器 - HeartValve 专家</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.min.js"></script>
-  <style>
-    body { 
-        background-color: #f8fafc; /* Tailwind slate-50 */
-        padding-top: 2rem; 
-        padding-bottom: 2rem; 
-    }
-    .error { color: #ef4444; font-size: 0.875rem; margin-top: 0.25rem; }
-    .disclaimer { color: #6b7280; font-size: 0.875rem; margin-top: 1.5rem; }
-    #survival-chart-container {
-        position: relative;
-        margin: auto;
-        height: 280px; 
-        width: 100%;   
-        max-width: 600px; 
-        margin-top: 1.5rem;
-    }
-    .back-to-home {
-        display: inline-block; 
-        background-color: #6b7280; 
-        color: white;
-        font-weight: 500; 
-        padding: 0.5rem 1rem; 
-        border-radius: 0.375rem; 
-        transition: background-color 0.3s ease;
-        margin-bottom: 1.5rem; 
-        text-decoration: none;
-    }
-    .back-to-home:hover {
-        background-color: #4b5563; 
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARISE Score 预后评估工具 - HeartValve 专家</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .tab-button.active {
+            @apply bg-white text-slate-950 border-slate-300 shadow-sm; /* Active tab has border */
+        }
+        .tab-button {
+            @apply py-2 px-4 text-sm font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 border border-transparent rounded-t-lg;
+        }
+        .tab-content {
+            @apply p-6 border border-slate-300 rounded-b-lg rounded-tr-lg bg-white shadow-sm; /* Ensure top-right also rounded if tabs are not full width */
+        }
+        input[type="number"] {
+            @apply flex h-10 w-24 text-center rounded-md border border-slate-300 bg-white px-3 py-2 text-sm ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2;
+        }
+        select {
+             @apply flex h-10 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2;
+        }
+        input[type="range"] {
+            @apply w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer dark:bg-slate-700;
+        }
+        /* Thumb styles for Webkit (Chrome, Safari, Edge) */
+        input[type="range"]::-webkit-slider-thumb {
+            @apply appearance-none w-5 h-5 bg-blue-600 rounded-full cursor-pointer hover:bg-blue-700 active:bg-blue-800;
+        }
+        /* Thumb styles for Firefox */
+        input[type="range"]::-moz-range-thumb {
+            @apply w-5 h-5 bg-blue-600 rounded-full cursor-pointer border-0 hover:bg-blue-700 active:bg-blue-800;
+        }
+
+        .nomogram-placeholder {
+            @apply border border-dashed border-slate-300 p-4 mb-4 text-center text-slate-500 bg-slate-50 rounded;
+        }
+        .nomogram-axis { @apply mb-1 text-sm; }
+        .nomogram-label { @apply text-slate-700;}
+        .nomogram-value { @apply font-semibold text-blue-700;}
+        .points-line-container { 
+            @apply relative h-4 bg-slate-200 rounded mt-1 mb-4; /* Adjusted height and margin */
+        }
+        .points-line-marker { 
+            @apply absolute top-1/2 h-5 w-auto px-1 bg-red-500 rounded text-white text-xs flex items-center justify-center transform -translate-y-1/2 shadow; 
+            min-width: 20px; /* Ensure text fits */
+        }
+        .points-line-marker::after { /* Triangle pointing down */
+            @apply content-[''] absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-red-500;
+        }
+
+        .results-table th, .results-table td { @apply border border-slate-300 px-3 py-2 text-sm; }
+        .results-table th { @apply bg-slate-100 font-semibold text-slate-700; }
+        .results-table td { @apply text-slate-800 text-center; } /* Centered text in td for consistency */
+        .results-table td:first-child { @apply text-left; } /* Left align first column */
+         /* Active nav link style */
+        .nav-link-active {
+            @apply text-blue-600 font-semibold;
+        }
+    </style>
 </head>
-<body class="flex flex-col items-center min-h-screen"> 
-  <div class="container mx-auto p-4 max-w-3xl w-full"> 
-    <div class="w-full mb-6 text-left">
-        <a href="index.html" class="back-to-home">&larr; 返回首页</a>
-    </div>
-    <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
-        <h1 class="text-2xl font-bold text-center mb-6" id="calculatorTitleElement">ARISE Score: 心脏瓣膜预后评估</h1>
-        <div class="flex justify-end mb-4">
-          <select id="language" class="border rounded p-1 text-sm">
-            <option value="zh">中文</option>
-            <option value="en">English</option>
-          </select>
+<body class="bg-slate-100 text-gray-800">
+
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-blue-700">HeartValve 专家</a>
+            <div>
+                <a href="index.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">首页</a>
+                <a href="calculator.html" class="nav-link-active px-3 py-2 rounded-md text-sm">ARISE Score 工具</a>
+                <a href="disease-info.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">疾病知识</a>
+                <a href="surgical-options.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">手术方案</a>
+                <a href="expert-views.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">专家视角</a>
+                <a href="about.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">关于我们</a>
+            </div>
         </div>
-        <form id="arise-form" class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-          <div>
-            <label for="age" class="block text-sm font-medium text-gray-700" id="ageLabelElement">年龄 (Age, 年):</label>
-            <input type="number" id="age" min="20" max="100" class="mt-1 block w-full border rounded p-2" required>
-            <p id="age-error" class="error hidden"></p>
-          </div>
-          <div>
-            <label for="sex" class="block text-sm font-medium text-gray-700" id="sexLabelElement">性别 (Sex):</label>
-            <select id="sex" class="mt-1 block w-full border rounded p-2" required>
-              {/* Options populated by JS */}
-            </select>
-            <p id="sex-error" class="error hidden"></p>
-          </div>
-          <div>
-            <label for="cci" class="block text-sm font-medium text-gray-700" id="cciLabelElement">CCI (Charlson合并症指数):</label>
-            <input type="number" id="cci" min="0" max="9" class="mt-1 block w-full border rounded p-2" required>
-            <p id="cci-error" class="error hidden"></p>
-          </div>
-          <div>
-            <label for="nyha" class="block text-sm font-medium text-gray-700" id="nyhaLabelElement">NYHA 心功能分级:</label>
-            <select id="nyha" class="mt-1 block w-full border rounded p-2" required>
-              {/* Options populated by JS */}
-            </select>
-            <p id="nyha-error" class="error hidden"></p>
-          </div>
-          <div>
-            <label for="aodi" class="block text-sm font-medium text-gray-700" id="aodiLabelElement">主动脉直径指数 (AoDi, mm/m²):</label>
-            <input type="number" id="aodi" min="15" max="65" step="0.1" class="mt-1 block w-full border rounded p-2" required>
-            <p id="aodi-error" class="error hidden"></p>
-          </div>
-          <div>
-            <label for="lvef" class="block text-sm font-medium text-gray-700" id="lvefLabelElement">左心室射血分数 (LVEF, %):</label>
-            <input type="number" id="lvef" min="20" max="80" step="0.1" class="mt-1 block w-full border rounded p-2" required>
-            <p id="lvef-error" class="error hidden"></p>
-          </div>
-          <div>
-            <label for="lvesdi" class="block text-sm font-medium text-gray-700" id="lvesdiLabelElement">左心室收缩末期内径指数 (LVESDi, mm/m²):</label>
-            <input type="number" id="lvesdi" min="10" max="50" step="0.1" class="mt-1 block w-full border rounded p-2" required>
-            <p id="lvesdi-error" class="error hidden"></p>
-          </div>
-          <div>
-            <label for="avsIn3Months" class="block text-sm font-medium text-gray-700" id="avsLabelElement">3个月内是否进行主动脉瓣手术 (AVS):</label>
-            <select id="avsIn3Months" class="mt-1 block w-full border rounded p-2" required>
-                {/* Options populated by JS */}
-            </select>
-            <p id="avsIn3Months-error" class="error hidden"></p> 
-          </div>
-          <div class="col-span-1 md:col-span-2 mt-2">
-            <button type="button" id="calculate" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" id="calculateButtonElement">计算</button>
-          </div>
-        </form>
-        <div id="results" class="mt-6 hidden">
-          <h2 class="text-xl font-semibold mb-4" id="resultsTitleElement">计算结果</h2>
-          <p><strong id="totalPointsLabelElement">总点数:</strong> <span id="total-points"></span></p>
-          <p><strong id="riskCategoryLabelElement">风险类别:</strong> <span id="risk-category"></span></p>
-          <p><strong id="survival1yLabelElement">1年生存率:</strong> <span id="survival-1y"></span></p>
-          <p><strong id="survival3yLabelElement">3年生存率:</strong> <span id="survival-3y"></span></p>
-          <p><strong id="survival5yLabelElement">5年生存率:</strong> <span id="survival-5y"></span></p>
-          <div id="survival-chart-container">
-            <canvas id="survival-chart"></canvas>
-          </div>
-          <p class="disclaimer" id="disclaimerElement">注意：ARISE Score不适用于术后30天内死亡风险评估，仅供参考，请结合临床判断。</p>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="pb-6 xl:pb-8 2xl:pb-10 space-y-1">
+            <h1 class="font-semibold text-[22px] md:text-2xl 2xl:text-3xl text-gray-700">ARISE (Aortic Regurgitation/Insufficiency Survival Estimation) Score</h1>
+            <h2 class="text-slate-500 text-sm md:text-base 2xl:text-lg">Predict survival with and without aortic valve repair/replacement in 3 months for patients with moderately-severe to severe AR</h2>
         </div>
-    </div>
-  </div>
-  <script>
-    const translations = {
-      zh: {
-        pageTitle: "ARISE Score 计算器 - HeartValve 专家",
-        calculatorTitle: "ARISE Score: 心脏瓣膜预后评估",
-        ageLabel: "年龄 (Age, 年):",
-        sexLabel: "性别 (Sex):",
-        sexOptions: { "": "请选择", Male: "男 (Male)", Female: "女 (Female)" },
-        cciLabel: "CCI (Charlson合并症指数):",
-        nyhaLabel: "NYHA 心功能分级:",
-        nyhaOptions: { "": "请选择", I: "I级", II: "II级", III: "III级", IV: "IV级" },
-        aodiLabel: "主动脉直径指数 (AoDi, mm/m²):",
-        lvefLabel: "左心室射血分数 (LVEF, %):",
-        lvesdiLabel: "左心室收缩末期内径指数 (LVESDi, mm/m²):",
-        avsLabel: "3个月内是否进行主动脉瓣手术 (AVS):",
-        avsOptions: { "": "请选择", Yes: "是 (Yes)", No: "否 (No)" },
-        calculateButton: "计算",
-        resultsTitle: "计算结果",
-        totalPointsLabel: "总点数:",
-        riskCategoryLabel: "风险类别:",
-        survival1yLabel: "1年生存率:",
-        survival3yLabel: "3年生存率:",
-        survival5yLabel: "5年生存率:",
-        disclaimer: "注意：ARISE Score不适用于术后30天内死亡风险评估，仅供参考，请结合临床判断。",
-        chartLabel: "生存率 (%)", chartTimeLabel: "时间",
-        errors: {
-          age: "年龄必须在20-100之间", sex: "请选择性别", cci: "CCI必须在0-9之间",
-          nyha: "请选择NYHA分级", aodi: "AoDi必须在15-65之间", lvef: "LVEF必须在20-80之间",
-          lvesdi: "LVESDi必须在10-50之间", avsIn3Months: "请选择AVS状态"
+
+        <div class="lg:grid lg:grid-cols-12 lg:gap-6 xl:gap-8">
+            <section class="lg:col-span-5 space-y-6">
+                <div class="mb-4">
+                    <div class="flex border-b border-slate-300">
+                        <button id="tab-who" class="tab-button active" onclick="showTab('who')">Who</button>
+                        <button id="tab-how" class="tab-button" onclick="showTab('how')">How</button>
+                        <button id="tab-why" class="tab-button" onclick="showTab('why')">Why</button>
+                    </div>
+                    <div id="content-who" class="tab-content">For patients with <strong>moderately-severe to severe chronic aortic regurgitation (AR)</strong>.</div>
+                    <div id="content-how" class="tab-content hidden"><strong>Estimate and compare 1-, 3-, and 5-year survival</strong> with and without aortic valve repair/ replacement, stratified by three risk levels: low, intermediate, and high. While our nomogram provides survival estimates, it is essential to consider baseline survival trajectory, net surgical benefit, and guideline recommendations during the shared decision-making process.</div>
+                    <div id="content-why" class="tab-content hidden">Designed for <strong>individual risk estimation</strong> in daily practice, this tool empowers physicians to clearly communicate the benefits and risks of surgery, enhancing patient-doctor relationships.</div>
+                </div>
+
+                <div class="rounded-lg border border-slate-300 bg-white text-slate-950 shadow-lg">
+                    <form id="ariseForm" class="p-6 space-y-5">
+                        <div>
+                            <label for="age" class="font-medium text-md flex items-center">Age <span class="text-slate-500 text-xs ml-1">(10-100 years)</span></label>
+                            <div class="flex items-center mt-1 space-x-3">
+                                <input type="range" id="age_slider" name="age_slider" min="10" max="100" value="65">
+                                <input type="number" id="age" name="age" min="10" max="100" value="65">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="sex" class="font-medium text-md block">Sex</label>
+                            <select id="sex" name="sex" class="mt-1">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="cci" class="font-medium text-md flex items-center">CCI <span class="text-slate-500 text-xs ml-1">(0-9 points)</span></label>
+                            <div class="flex items-center mt-1 space-x-3">
+                                <input type="range" id="cci_slider" name="cci_slider" min="0" max="9" value="0" step="1">
+                                <input type="number" id="cci" name="cci" min="0" max="9" value="0" step="1">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="nyha" class="font-medium text-md block">NYHA Class</label>
+                            <select id="nyha" name="nyha" class="mt-1">
+                                <option value="1">NYHA I</option>
+                                <option value="2">NYHA II</option>
+                                <option value="3">NYHA III</option>
+                                <option value="4">NYHA IV</option>
+                            </select>
+                        </div>
+                         <div>
+                            <label for="aodi" class="font-medium text-md flex items-center">AoDi <span class="text-slate-500 text-xs ml-1">(15-70 mm/m²)</span></label>
+                            <div class="flex items-center mt-1 space-x-3">
+                                <input type="range" id="aodi_slider" name="aodi_slider" min="15" max="70" value="25">
+                                <input type="number" id="aodi" name="aodi" min="15" max="70" value="25">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="lvef" class="font-medium text-md flex items-center">LVEF <span class="text-slate-500 text-xs ml-1">(20-80 %)</span></label>
+                            <div class="flex items-center mt-1 space-x-3">
+                                <input type="range" id="lvef_slider" name="lvef_slider" min="20" max="80" value="60">
+                                <input type="number" id="lvef" name="lvef" min="20" max="80" value="60">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="lvesdi" class="font-medium text-md flex items-center">LVESDi <span class="text-slate-500 text-xs ml-1">(10-50 mm/m²)</span></label>
+                            <div class="flex items-center mt-1 space-x-3">
+                                <input type="range" id="lvesdi_slider" name="lvesdi_slider" min="10" max="50" value="20">
+                                <input type="number" id="lvesdi" name="lvesdi" min="10" max="50" value="20">
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between gap-3 pt-4">
+                            <button type="button" id="resetButton" class="bg-slate-200 hover:bg-slate-300 text-slate-800 h-10 px-4 py-2 rounded-md text-sm font-medium">Reset</button>
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white h-10 px-6 py-2 rounded-md text-base font-medium">Submit</button>
+                        </div>
+                        <div id="validationError" class="text-red-500 text-sm mt-2"></div>
+                    </form>
+                </div>
+            </section>
+
+            <section class="lg:col-span-7 space-y-6 mt-8 lg:mt-0">
+                <div class="rounded-lg border border-slate-300 bg-white text-slate-950 shadow-lg p-6">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-700">Prognostic Nomogram & Points</h3>
+                    <div class="nomogram-placeholder">
+                        <p>列线图 (Nomogram) 图形区域</p>
+                        <p class="text-xs mt-2">(此处的精确图形化列线图需要使用专门的图表库或SVG技术绘制。下方将展示各变量点数和总分点数。)</p>
+                    </div>
+                    <div id="nomogram-points-display" class="space-y-2 text-sm mb-6">
+                        <div class="font-semibold text-slate-800">Points from each variable:</div>
+                        <div class="nomogram-axis"><span class="nomogram-label">Age, year:</span> <span id="nomogram_age_points" class="nomogram-value">0</span> points</div>
+                        <div class="nomogram-axis"><span class="nomogram-label">Sex:</span> <span id="nomogram_sex_points" class="nomogram-value">0</span> points</div>
+                        <div class="nomogram-axis"><span class="nomogram-label">CCI:</span> <span id="nomogram_cci_points" class="nomogram-value">0</span> points</div>
+                        <div class="nomogram-axis"><span class="nomogram-label">NYHA, class:</span> <span id="nomogram_nyha_points" class="nomogram-value">0</span> points</div>
+                        <div class="nomogram-axis"><span class="nomogram-label">AoDi, mm/m²:</span> <span id="nomogram_aodi_points" class="nomogram-value">0</span> points</div>
+                        <div class="nomogram-axis"><span class="nomogram-label">LVEF, %:</span> <span id="nomogram_lvef_points" class="nomogram-value">0</span> points</div>
+                        <div class="nomogram-axis"><span class="nomogram-label">LVESDi, mm/m²:</span> <span id="nomogram_lvesdi_points" class="nomogram-value">0</span> points</div>
+                        <hr class="my-3 border-slate-300">
+                        <div class="nomogram-axis font-bold"><span class="nomogram-label">Total Points (AVS in 3 months: NO):</span> <span id="nomogram_total_points_no" class="nomogram-value">0</span></div>
+                        <div class="points-line-container">
+                             <div id="marker_no_avs" class="points-line-marker" style="left: 0%;">0</div>
+                        </div>
+                        <div class="nomogram-axis font-bold"><span class="nomogram-label">Total Points (AVS in 3 months: YES):</span> <span id="nomogram_total_points_yes" class="nomogram-value">0</span></div>
+                        <div class="points-line-container">
+                             <div id="marker_yes_avs" class="points-line-marker" style="left: 0%;">0</div>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">Points scale approximation: 0 to 150</p>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-3 text-gray-700">Survival Estimation</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full results-table text-left">
+                            <thead>
+                                <tr>
+                                    <th class="whitespace-nowrap">Parameter</th>
+                                    <th class="whitespace-nowrap">AVS in 3 months: NO</th>
+                                    <th class="whitespace-nowrap">AVS in 3 months: YES</th>
+                                    <th class="whitespace-nowrap">Survival benefit of AVS</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultsBody">
+                                <tr>
+                                    <td class="font-medium">Total Points</td>
+                                    <td id="totalPoints_no">--</td>
+                                    <td id="totalPoints_yes">--</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="font-medium">1-year survival</td>
+                                    <td id="survival_1y_no">--</td>
+                                    <td id="survival_1y_yes">--</td>
+                                    <td id="benefit_1y">--</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-medium">3-year survival</td>
+                                    <td id="survival_3y_no">--</td>
+                                    <td id="survival_3y_yes">--</td>
+                                    <td id="benefit_3y">--</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-medium">5-year survival</td>
+                                    <td id="survival_5y_no">--</td>
+                                    <td id="survival_5y_yes">--</td>
+                                    <td id="benefit_5y">--</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-medium">Risk group</td>
+                                    <td id="riskGroup_no">--</td>
+                                    <td id="riskGroup_yes">--</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-gray-300 py-8 text-center mt-12">
+        <div class="container mx-auto px-6">
+            <p>&copy; 2025 HeartValve 专家. 版权所有.</p>
+            <p class="text-sm mt-2">本网站信息仅供参考，不能替代专业医疗建议、诊断或治疗。</p>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('ariseForm');
+    const resetButton = document.getElementById('resetButton');
+    const validationErrorDiv = document.getElementById('validationError');
+
+    const inputsConfig = [
+        { id: 'age', sliderId: 'age_slider', min: 10, max: 100, default: 65 },
+        { id: 'cci', sliderId: 'cci_slider', min: 0, max: 9, default: 0, step: 1 },
+        { id: 'aodi', sliderId: 'aodi_slider', min: 15, max: 70, default: 25 },
+        { id: 'lvef', sliderId: 'lvef_slider', min: 20, max: 80, default: 60 },
+        { id: 'lvesdi', sliderId: 'lvesdi_slider', min: 10, max: 50, default: 20 }
+    ];
+
+    inputsConfig.forEach(inputConf => {
+        const numberInput = document.getElementById(inputConf.id);
+        const sliderInput = document.getElementById(inputConf.sliderId);
+        if (numberInput && sliderInput) {
+            sliderInput.step = inputConf.step || 1; // Set step for slider
+            numberInput.step = inputConf.step || 1; // Set step for number input
+
+            sliderInput.addEventListener('input', () => numberInput.value = sliderInput.value);
+            numberInput.addEventListener('input', () => { // Validate number input on change
+                let value = parseFloat(numberInput.value);
+                if (isNaN(value)) value = inputConf.min; // Or handle error
+                value = Math.max(inputConf.min, Math.min(inputConf.max, value));
+                numberInput.value = value;
+                sliderInput.value = value;
+            });
         }
-      },
-      en: {
-        pageTitle: "ARISE Score Calculator - HeartValve Expert",
-        calculatorTitle: "ARISE Score: Cardiac Valve Prognosis Assessment",
-        ageLabel: "Age (years):",
-        sexLabel: "Sex:",
-        sexOptions: { "": "Please select", Male: "Male", Female: "Female" },
-        cciLabel: "CCI (Charlson Comorbidity Index):",
-        nyhaLabel: "NYHA Functional Class:",
-        nyhaOptions: { "": "Please select", I: "Class I", II: "Class II", III: "Class III", IV: "Class IV" },
-        aodiLabel: "Aortic Diameter Index (AoDi, mm/m²):",
-        lvefLabel: "Left Ventricular Ejection Fraction (LVEF, %):",
-        lvesdiLabel: "Left Ventricular End-Systolic Diameter Index (LVESDi, mm/m²):",
-        avsLabel: "Aortic Valve Surgery within 3 Months (AVS):",
-        avsOptions: { "": "Please select", Yes: "Yes", No: "No" },
-        calculateButton: "Calculate",
-        resultsTitle: "Results",
-        totalPointsLabel: "Total Points:",
-        riskCategoryLabel: "Risk Category:",
-        survival1yLabel: "1-Year Survival Rate:",
-        survival3yLabel: "3-Year Survival Rate:",
-        survival5yLabel: "5-Year Survival Rate:",
-        disclaimer: "Note: ARISE Score is not suitable for assessing mortality risk within 30 days post-surgery. For reference only, please consult clinical judgment.",
-        chartLabel: "Survival Rate (%)", chartTimeLabel: "Time",
-        errors: {
-          age: "Age must be between 20 and 100", sex: "Please select sex", cci: "CCI must be between 0 and 9",
-          nyha: "Please select NYHA class", aodi: "AoDi must be between 15 and 65", lvef: "LVEF must be between 20 and 80",
-          lvesdi: "LVESDi must be between 10 and 50", avsIn3Months: "Please select AVS status"
-        }
-      }
+    });
+    
+    window.showTab = function(tabName) {
+        const contents = ['who', 'how', 'why'];
+        contents.forEach(content => {
+            document.getElementById('content-' + content).classList.add('hidden');
+            document.getElementById('tab-' + content).classList.remove('active', 'bg-white', 'text-slate-950', 'border-slate-300', 'shadow-sm');
+            document.getElementById('tab-' + content).classList.add('bg-slate-100', 'text-slate-600', 'border-transparent');
+        });
+        document.getElementById('content-' + tabName).classList.remove('hidden');
+        const activeTabButton = document.getElementById('tab-' + tabName);
+        activeTabButton.classList.add('active', 'bg-white', 'text-slate-950', 'border-slate-300', 'shadow-sm');
+        activeTabButton.classList.remove('bg-slate-100', 'text-slate-600', 'border-transparent');
+    }
+
+    const schema = {
+        age: { min: 10, max: 100, message: "年龄必须在 10 到 100 之间。" },
+        sex: { enum: ["male", "female"], message: "性别必须是 male 或 female。" },
+        cci: { min: 0, max: 9, message: "CCI 必须在 0 到 9 之间。" },
+        nyha: { enum: ["1", "2", "3", "4"], message: "NYHA 分级必须是 I, II, III, 或 IV。" },
+        aodi: { min: 15, max: 70, message: "AoDi 必须在 15 到 70 之间。" },
+        lvef: { min: 20, max: 80, message: "LVEF 必须在 20 到 80 之间。" },
+        lvesdi: { min: 10, max: 50, message: "LVESDi 必须在 10 到 50 之间。" }
     };
 
-    function updateLanguage(lang) {
-        const t = translations[lang];
-        document.title = t.pageTitle;
-        document.getElementById("calculatorTitleElement").textContent = t.calculatorTitle;
-        
-        const labelMap = {
-            "ageLabelElement": "ageLabel", "sexLabelElement": "sexLabel", "cciLabelElement": "cciLabel", 
-            "nyhaLabelElement": "nyhaLabel", "aodiLabelElement": "aodiLabel", "lvefLabelElement": "lvefLabel", 
-            "lvesdiLabelElement": "lvesdiLabel", "avsLabelElement": "avsLabel"
+    function validateInput(name, value) {
+        const rule = schema[name];
+        if (!rule) return null;
+        const numValue = (name !== 'sex' && name !== 'nyha') ? parseFloat(value) : value;
+
+        if (rule.enum && !rule.enum.includes(numValue)) return rule.message;
+        if (typeof rule.min !== 'undefined' && numValue < rule.min) return rule.message;
+        if (typeof rule.max !== 'undefined' && numValue > rule.max) return rule.message;
+        if (isNaN(numValue) && (name !== 'sex' && name !== 'nyha')) return "请输入有效的数字：" + name;
+        return null;
+    }
+
+    const calculatePerVariableScores = (inputs) => {
+        const { age, sex, cci, nyha, aodi, lvef, lvesdi } = inputs;
+        return {
+            age: -11.111111 + 1.111111 * age,
+            sex: sex === "female" ? 5.092295 : 0,
+            cci: 3.49046 * cci,
+            nyha: -3.541039 + 3.541039 * parseInt(nyha),
+            aodi: -7.241847 + 0.48279 * aodi,
+            lvef: 21.697412 - 0.271218 * lvef,
+            lvesdi: -4.527494 + 0.452749 * lvesdi
         };
-        Object.entries(labelMap).forEach(([elementId, langKey]) => {
-            const el = document.getElementById(elementId);
-            if(el && t[langKey]) el.textContent = t[langKey];
-        });
-        
-        document.getElementById("calculate").textContent = t.calculateButton; // Corrected ID for calculate button
-        
-        const resultsTitleEl = document.getElementById("resultsTitleElement");
-        if(resultsTitleEl) resultsTitleEl.textContent = t.resultsTitle;
+    };
 
-        const totalPointsLabelEl = document.getElementById("totalPointsLabelElement");
-        if(totalPointsLabelEl) totalPointsLabelEl.textContent = t.totalPointsLabel;
-        
-        const riskCategoryLabelEl = document.getElementById("riskCategoryLabelElement");
-        if(riskCategoryLabelEl) riskCategoryLabelEl.textContent = t.riskCategoryLabel;
+    const calculateTotalPoints = (perVariableScores) => {
+        let sum_of_scores = Object.values(perVariableScores).reduce((sum, val) => sum + (val != null ? val : 0), 0);
+        sum_of_scores = sum_of_scores < 1e-6 ? 0 : sum_of_scores;
+        const total_points_no_AVS = sum_of_scores;
+        const total_points_with_AVS = total_points_no_AVS + 11.042254;
+        return [total_points_with_AVS, total_points_no_AVS];
+    };
+    
+    const riskThresholds = { Intermediate: 85, High: 107 };
 
-        const survival1yLabelEl = document.getElementById("survival1yLabelElement");
-        if(survival1yLabelEl) survival1yLabelEl.textContent = t.survival1yLabel;
+    const classifyRiskGroup = (totalPointsArray) => {
+        const [points_with_AVS, points_no_AVS] = totalPointsArray;
+        const classify = (p) => {
+            if (p < riskThresholds.Intermediate) return "Low";
+            if (p < riskThresholds.High) return "Intermediate";
+            return "High";
+        };
+        return [classify(points_with_AVS), classify(points_no_AVS)];
+    };
 
-        const survival3yLabelEl = document.getElementById("survival3yLabelElement");
-        if(survival3yLabelEl) survival3yLabelEl.textContent = t.survival3yLabel;
-        
-        const survival5yLabelEl = document.getElementById("survival5yLabelElement");
-        if(survival5yLabelEl) survival5yLabelEl.textContent = t.survival5yLabel;
-        
-        document.getElementById("disclaimerElement").textContent = t.disclaimer;
+    const calculateSurvivalProbabilities = (totalPointsArray) => {
+        const [points_with_AVS, points_no_AVS] = totalPointsArray;
+        const calculateProbs = (P) => {
+            const lp = (P - 93.903984) / 18.131663;
+            const exp_lp = Math.exp(lp);
+            return [
+                Math.pow(0.977952, exp_lp), Math.pow(0.9343029, exp_lp), Math.pow(0.8886656, exp_lp)
+            ];
+        };
+        return [calculateProbs(points_with_AVS), calculateProbs(points_no_AVS)];
+    };
+    
+    const NOMOGRAM_TOTAL_POINTS_MAX = 150; 
 
-        function populateSelect(selectId, optionsObj) {
-            const selectEl = document.getElementById(selectId);
-            if (!selectEl) return;
-            const currentVal = selectEl.value;
-            selectEl.innerHTML = ""; 
-            Object.entries(optionsObj).forEach(([value, text]) => {
-                const option = document.createElement('option');
-                option.value = value;
-                option.textContent = text;
-                if (value === "") option.selected = true; // Default "Please select"
-                selectEl.appendChild(option);
-            });
-            if (selectEl.querySelector(`option[value="${currentVal}"]`)) {
-                 selectEl.value = currentVal;
-            } else {
-                 selectEl.value = ""; 
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        validationErrorDiv.textContent = ''; 
+
+        const formData = new FormData(form);
+        const rawInputs = {
+            age: parseFloat(formData.get('age')),
+            sex: formData.get('sex'),
+            cci: parseFloat(formData.get('cci')),
+            nyha: formData.get('nyha'),
+            aodi: parseFloat(formData.get('aodi')),
+            lvef: parseFloat(formData.get('lvef')),
+            lvesdi: parseFloat(formData.get('lvesdi'))
+        };
+
+        let isValid = true;
+        let errorMessages = [];
+        for (const key in rawInputs) {
+            const error = validateInput(key, rawInputs[key]);
+            if (error) {
+                isValid = false;
+                errorMessages.push(error);
             }
         }
-        populateSelect("sex", t.sexOptions);
-        populateSelect("nyha", t.nyhaOptions);
-        populateSelect("avsIn3Months", t.avsOptions); 
-        
-        Object.keys(t.errors).forEach(id => {
-            const errorEl = document.getElementById(`${id}-error`);
-            if (errorEl && !errorEl.classList.contains("hidden")) {
-                errorEl.textContent = t.errors[id] || "";
-            } else if (errorEl) { 
-                 errorEl.textContent = ""; 
-                 // Ensure error messages are set according to the selected language for future display
-                 if (id === "avsIn3Months") errorEl.textContent = t.errors.avsIn3Months;
-                 else errorEl.textContent = t.errors[id];
-            }
-        });
-        
-        if (window.survivalChart instanceof Chart) {
-            window.survivalChart.options.scales.y.title.text = t.chartLabel;
-            window.survivalChart.options.scales.x.title.text = t.chartTimeLabel;
-            window.survivalChart.data.datasets[0].label = t.chartLabel;
-            window.survivalChart.data.labels = lang === 'zh' ? ["1年", "3年", "5年"] : ["1-Year", "3-Year", "5-Year"];
-            window.survivalChart.update('none'); 
+
+        if (!isValid) {
+            validationErrorDiv.innerHTML = errorMessages.join('<br>');
+            clearResultsAndNomogramPoints();
+            return;
         }
+
+        const perVariableScores = calculatePerVariableScores(rawInputs);
+        const totalPoints = calculateTotalPoints(perVariableScores); 
+        const riskGroups = classifyRiskGroup(totalPoints);       
+        const survivalProbs = calculateSurvivalProbabilities(totalPoints);
+
+        updateNomogramPointsDisplay(perVariableScores, totalPoints);
+        updateResultsTable(totalPoints, survivalProbs, riskGroups);
+    });
+    
+    function updateNomogramPointsDisplay(perVarScores, totalPts) {
+        document.getElementById('nomogram_age_points').textContent = perVarScores.age.toFixed(1);
+        document.getElementById('nomogram_sex_points').textContent = perVarScores.sex.toFixed(1);
+        document.getElementById('nomogram_cci_points').textContent = perVarScores.cci.toFixed(1);
+        document.getElementById('nomogram_nyha_points').textContent = perVarScores.nyha.toFixed(1);
+        document.getElementById('nomogram_aodi_points').textContent = perVarScores.aodi.toFixed(1);
+        document.getElementById('nomogram_lvef_points').textContent = perVarScores.lvef.toFixed(1);
+        document.getElementById('nomogram_lvesdi_points').textContent = perVarScores.lvesdi.toFixed(1);
+        
+        const tpNoAvs = totalPts[1]; // NO AVS
+        const tpYesAvs = totalPts[0]; // YES AVS
+        document.getElementById('nomogram_total_points_no').textContent = tpNoAvs.toFixed(1);
+        document.getElementById('nomogram_total_points_yes').textContent = tpYesAvs.toFixed(1);
+        
+        const markerNoAvs = document.getElementById('marker_no_avs');
+        const markerYesAvs = document.getElementById('marker_yes_avs');
+        
+        // Calculate percentage for marker position (0-100%)
+        let percentNoAvs = (tpNoAvs / NOMOGRAM_TOTAL_POINTS_MAX) * 100;
+        percentNoAvs = Math.min(100, Math.max(0, percentNoAvs)); // Clamp between 0 and 100
+        markerNoAvs.style.left = `calc(${percentNoAvs}% - ${markerNoAvs.offsetWidth / 2}px)`; // Center marker
+        markerNoAvs.textContent = tpNoAvs.toFixed(0);
+
+        let percentYesAvs = (tpYesAvs / NOMOGRAM_TOTAL_POINTS_MAX) * 100;
+        percentYesAvs = Math.min(100, Math.max(0, percentYesAvs));
+        markerYesAvs.style.left = `calc(${percentYesAvs}% - ${markerYesAvs.offsetWidth / 2}px)`;
+        markerYesAvs.textContent = tpYesAvs.toFixed(0);
+    }
+
+    function updateResultsTable(totalPts, survProbs, riskGps) {
+        document.getElementById('totalPoints_no').textContent = totalPts[1].toFixed(1);
+        document.getElementById('totalPoints_yes').textContent = totalPts[0].toFixed(1);
+
+        document.getElementById('survival_1y_no').textContent = (survProbs[1][0] * 100).toFixed(1) + '%';
+        document.getElementById('survival_1y_yes').textContent = (survProbs[0][0] * 100).toFixed(1) + '%';
+        document.getElementById('benefit_1y').textContent = ((survProbs[0][0] - survProbs[1][0]) * 100).toFixed(1) + '%';
+        
+        document.getElementById('survival_3y_no').textContent = (survProbs[1][1] * 100).toFixed(1) + '%';
+        document.getElementById('survival_3y_yes').textContent = (survProbs[0][1] * 100).toFixed(1) + '%';
+        document.getElementById('benefit_3y').textContent = ((survProbs[0][1] - survProbs[1][1]) * 100).toFixed(1) + '%';
+
+        document.getElementById('survival_5y_no').textContent = (survProbs[1][2] * 100).toFixed(1) + '%';
+        document.getElementById('survival_5y_yes').textContent = (survProbs[0][2] * 100).toFixed(1) + '%';
+        document.getElementById('benefit_5y').textContent = ((survProbs[0][2] - survProbs[1][2]) * 100).toFixed(1) + '%';
+
+        document.getElementById('riskGroup_no').textContent = riskGps[1];
+        document.getElementById('riskGroup_yes').textContent = riskGps[0];
     }
     
-    document.addEventListener('DOMContentLoaded', () => {
-        const preferredLang = localStorage.getItem('preferredLang') || 'zh';
-        document.getElementById("language").value = preferredLang;
-        updateLanguage(preferredLang); // Initialize language on load
-
-        document.getElementById("language").addEventListener("change", (e) => {
-            const selectedLang = e.target.value;
-            updateLanguage(selectedLang);
-            localStorage.setItem('preferredLang', selectedLang);
+    function clearResultsAndNomogramPoints() {
+        const nomogramPointIds = [
+            'nomogram_age_points', 'nomogram_sex_points', 'nomogram_cci_points', 'nomogram_nyha_points', 
+            'nomogram_aodi_points', 'nomogram_lvef_points', 'nomogram_lvesdi_points',
+            'nomogram_total_points_no', 'nomogram_total_points_yes'
+        ];
+        nomogramPointIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = '0';
         });
 
-        // Initialize Chart.js instance holder
-        window.survivalChart = null; 
-    });
-
-    document.getElementById("calculate").addEventListener("click", function() {
-      const lang = document.getElementById("language").value;
-      const t = translations[lang];
-      const inputs = {
-        age: document.getElementById("age").value,
-        sex: document.getElementById("sex").value,
-        cci: document.getElementById("cci").value,
-        nyha: document.getElementById("nyha").value,
-        aodi: document.getElementById("aodi").value,
-        lvef: document.getElementById("lvef").value,
-        lvesdi: document.getElementById("lvesdi").value,
-        avsIn3Months: document.getElementById("avsIn3Months").value
-      };
-
-      const errors = validateInputs(inputs, t);
-      let hasErrors = false;
-      document.querySelectorAll('.error').forEach(el => el.classList.add('hidden'));
-
-      Object.keys(inputs).forEach(id => {
-        const errorKey = id; 
-        const errorEl = document.getElementById(`${id}-error`);
-        if (errors[errorKey] && errorEl) { 
-            errorEl.textContent = errors[errorKey];
-            errorEl.classList.remove("hidden");
-            hasErrors = true;
-        }
-      });
-
-      if (hasErrors) {
-        document.getElementById("results").classList.add("hidden");
-        if (window.survivalChart instanceof Chart) { // Destroy chart if there are errors
-            window.survivalChart.destroy();
-            window.survivalChart = null;
-        }
-        return;
-      }
-      
-      const processedInputs = {
-        age: parseInt(inputs.age),
-        sex: inputs.sex,
-        cci: parseInt(inputs.cci),
-        nyha: inputs.nyha,
-        aodi: parseFloat(inputs.aodi),
-        lvef: parseFloat(inputs.lvef),
-        lvesdi: parseFloat(inputs.lvesdi),
-        avs: inputs.avsIn3Months 
-      };
-
-      const pointsArray = calculatePoints(processedInputs);
-      const totalPoints = pointsArray.reduce((sum, p) => sum + p, 0);
-      const survivalRates = calculateSurvivalRates(Math.round(totalPoints));
-
-      document.getElementById("total-points").textContent = Math.round(totalPoints).toFixed(0);
-      document.getElementById("risk-category").textContent = getRiskCategory(Math.round(totalPoints), lang);
-      document.getElementById("survival-1y").textContent = (survivalRates[1] * 100).toFixed(1) + "%";
-      document.getElementById("survival-3y").textContent = (survivalRates[3] * 100).toFixed(1) + "%";
-      document.getElementById("survival-5y").textContent = (survivalRates[5] * 100).toFixed(1) + "%";
-      document.getElementById("results").classList.remove("hidden");
-      renderSurvivalChart(survivalRates, lang);
-    });
-
-    function validateInputs({ age, sex, cci, nyha, aodi, lvef, lvesdi, avsIn3Months }, t) { 
-      const errors = {};
-      const ageNum = parseInt(age);
-      const cciNum = parseInt(cci);
-      const aodiNum = parseFloat(aodi);
-      const lvefNum = parseFloat(lvef);
-      const lvesdiNum = parseFloat(lvesdi);
-
-      if (age === "" || isNaN(ageNum) || ageNum < 20 || ageNum > 100) errors.age = t.errors.age;
-      if (sex === "") errors.sex = t.errors.sex; 
-      if (cci === "" || isNaN(cciNum) || cciNum < 0 || cciNum > 9) errors.cci = t.errors.cci;
-      if (nyha === "") errors.nyha = t.errors.nyha; 
-      if (aodi === "" || isNaN(aodiNum) || aodiNum < 15 || aodiNum > 65) errors.aodi = t.errors.aodi;
-      if (lvef === "" || isNaN(lvefNum) || lvefNum < 20 || lvefNum > 80) errors.lvef = t.errors.lvef;
-      if (lvesdi === "" || isNaN(lvesdiNum) || lvesdiNum < 10 || lvesdiNum > 50) errors.lvesdi = t.errors.lvesdi;
-      if (avsIn3Months === "") errors.avsIn3Months = t.errors.avsIn3Months;
-      return errors;
+        const tableResultIds = [
+            'totalPoints_no', 'totalPoints_yes',
+            'survival_1y_no', 'survival_1y_yes', 'benefit_1y',
+            'survival_3y_no', 'survival_3y_yes', 'benefit_3y',
+            'survival_5y_no', 'survival_5y_yes', 'benefit_5y',
+            'riskGroup_no', 'riskGroup_yes'
+        ];
+        tableResultIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = '--';
+        });
+        
+        const markerNoAvs = document.getElementById('marker_no_avs');
+        const markerYesAvs = document.getElementById('marker_yes_avs');
+        if(markerNoAvs) { markerNoAvs.style.left = `calc(0% - ${markerNoAvs.offsetWidth / 2}px)`; markerNoAvs.textContent = '0';}
+        if(markerYesAvs) { markerYesAvs.style.left = `calc(0% - ${markerYesAvs.offsetWidth / 2}px)`; markerYesAvs.textContent = '0';}
     }
     
-    function interpolate(value, pointsDef, isInverse = false) {
-        value = parseFloat(value);
-        if (isNaN(value)) return 0; 
-
-        let val1 = pointsDef[0][0]; 
-        let pt1 = pointsDef[0][1];  
-        let val2 = pointsDef[1][0]; 
-        let pt2 = pointsDef[1][1];  
-
-        if (isInverse) {
-            if (value >= val1) return pt1; 
-            if (value <= val2) return pt2; 
-            return pt1 + ((val1 - value) / (val1 - val2)) * (pt2 - pt1);
-        } else {
-            if (value <= val1) return pt1;
-            if (value >= val2) return pt2;
-            return pt1 + ((value - val1) / (val2 - val1)) * (pt2 - pt1);
-        }
-    }
-
-    function calculatePoints({ age, sex, cci, nyha, aodi, lvef, lvesdi, avs }) { 
-      // Based on Liu et al. JAHA 2025 Figure 1 (visual approximation)
-      const clampedAge = Math.min(Math.max(age, 20), 100);
-      let pointsAge = interpolate(clampedAge, [[20, 0], [100, 85]]);
-      
-      let pointsSex = (sex === 'Female') ? 7 : 0; 
-      
-      const clampedCCI = Math.min(Math.max(cci, 0), 9); 
-      let pointsCCI = interpolate(clampedCCI, [[0, 0], [9, 63]]); 
-
-      let pointsNYHA = 0;
-      switch (nyha) {
-          case 'I': pointsNYHA = 0; break;
-          case 'II': pointsNYHA = 19; break;
-          case 'III': pointsNYHA = 32; break;
-          case 'IV': pointsNYHA = 42; break;
-      }
-
-      const clampedAoDi = Math.min(Math.max(aodi, 15), 65); 
-      let pointsAoDi = interpolate(clampedAoDi, [[15, 0], [65, 50]]);
-      
-      const clampedLVEF = Math.min(Math.max(lvef, 20), 80); 
-      let pointsLVEF = interpolate(clampedLVEF, [[80, 0], [20, 30]], true); 
-
-      const clampedLVESDi = Math.min(Math.max(lvesdi, 10), 50); 
-      let pointsLVESDi = interpolate(clampedLVESDi, [[10, 0], [50, 40]]);
-      
-      let pointsAVS = (avs === 'No') ? 11 : 0; // Using 11 points for AVS No based on earlier calibration attempt
-      
-      return [pointsAge, pointsSex, pointsCCI, pointsNYHA, pointsAoDi, pointsLVEF, pointsLVESDi, pointsAVS];
-    }
-
-    function getSurvivalFromMultiPointMap(points, map) {
-        points = parseFloat(points);
-        if (isNaN(points)) return 0; 
-
-        if (points <= map[0][0]) return map[0][1]; 
-        for (let i = 0; i < map.length - 1; i++) {
-            const p1_data = map[i];      
-            const p2_data = map[i+1];    
-            if (points >= p1_data[0] && points < p2_data[0]) { 
-                return p1_data[1] + ( (points - p1_data[0]) / (p2_data[0] - p1_data[0]) ) * (p2_data[1] - p1_data[1]);
+    resetButton.addEventListener('click', function() {
+        form.reset();
+        inputsConfig.forEach(inputConf => {
+            const numberInput = document.getElementById(inputConf.id);
+            const sliderInput = document.getElementById(inputConf.sliderId);
+            if (numberInput && sliderInput) {
+                numberInput.value = inputConf.default;
+                sliderInput.value = inputConf.default;
             }
-        }
-        return map[map.length - 1][1]; 
-    }
+        });
+        document.getElementById('nyha').value = "1";
+        document.getElementById('sex').value = "male";
+        validationErrorDiv.textContent = '';
+        clearResultsAndNomogramPoints();
+        // Manually trigger an initial display of 0 points for nomogram section
+        const defaultRawInputs = { age: 65, sex: 'male', cci: 0, nyha: '1', aodi: 25, lvef: 60, lvesdi: 20 };
+        inputsConfig.forEach(inputConf => defaultRawInputs[inputConf.id] = inputConf.default);
 
-    function calculateSurvivalRates(totalPoints) {
-      // These maps are based on our previous refined estimations (Turn 45) and may need further calibration
-      const survivalMap1Year = [[0,1.0],[20,0.999],[40,0.9985],[46,0.998],[57,0.997],[60,0.996],[80,0.95],[100,0.85],[120,0.70],[140,0.55],[160,0.40],[180,0.25],[200,0.15]];
-      const survivalMap3Year = [[0,1.0],[20,0.998],[40,0.996],[46,0.995],[57,0.991],[60,0.99],[80,0.90],[100,0.75],[120,0.55],[140,0.35],[160,0.20],[180,0.10],[200,0.05]];
-      const survivalMap5Year = [[0,1.0],[20,0.995],[40,0.992],[46,0.991],[57,0.984],[60,0.98],[80,0.85],[100,0.65],[120,0.45],[140,0.25],[160,0.15],[180,0.08],[200,0.04]];
-      
-      const clampedTotalPoints = Math.min(Math.max(totalPoints, 0), 200);
+        const perVarScores = calculatePerVariableScores(defaultRawInputs);
+        const totalPoints = calculateTotalPoints(perVarScores);
+        updateNomogramPointsDisplay(perVarScores, totalPoints); // Update nomogram points with defaults
+    });
 
-      return {
-        1: getSurvivalFromMultiPointMap(clampedTotalPoints, survivalMap1Year),
-        3: getSurvivalFromMultiPointMap(clampedTotalPoints, survivalMap3Year),
-        5: getSurvivalFromMultiPointMap(clampedTotalPoints, survivalMap5Year)
-      };
-    }
+    resetButton.click(); // Initialize with default values and clear/update display
+});
+</script>
 
-    function getRiskCategory(totalPoints, lang) {
-      if (totalPoints < 85) return lang === "zh" ? "低风险" : "Low Risk";
-      if (totalPoints < 107) return lang === "zh" ? "中风险" : "Moderate Risk";
-      return lang === "zh" ? "高风险" : "High Risk";
-    }
-
-    function renderSurvivalChart(survivalRates, lang) {
-      const ctx = document.getElementById("survival-chart").getContext("2d");
-      const t = translations[lang];
-      const chartLabels = { zh: ["1年", "3年", "5年"], en: ["1-Year", "3-Year", "5-Year"] };
-      const chartDatasetLabel = { zh: "生存率 (%)", en: "Survival Rate (%)" };
-
-      const dataValues = [
-          survivalRates[1] * 100, 
-          survivalRates[3] * 100, 
-          survivalRates[5] * 100
-      ];
-      
-      let minYValue = 100; // Start with max possible survival
-      for(let val of dataValues) {
-          if (val < minYValue) minYValue = val;
-      }
-      const yMinScale = Math.max(0, Math.floor(minYValue / 10) * 10 - 5);
-
-      if (window.survivalChart instanceof Chart) {
-        window.survivalChart.destroy();
-        window.survivalChart = null; // Ensure old instance is cleared
-      }
-      window.survivalChart = new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: chartLabels[lang],
-          datasets: [{
-            label: chartDatasetLabel[lang],
-            data: dataValues,
-            borderColor: "#4CAF50", 
-            backgroundColor: "rgba(76, 175, 80, 0.1)", 
-            fill: true,
-            tension: 0.1 
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false, 
-          scales: {
-            y: { 
-                beginAtZero: false, 
-                min: yMinScale, 
-                max: 100, 
-                title: { display: true, text: chartDatasetLabel[lang] } 
-            },
-            x: { title: { display: true, text: (lang === "zh" ? "时间" : "Time") } }
-          },
-          plugins: {
-            tooltip: {
-                callbacks: {
-                    label: function(context) {
-                        let label = context.dataset.label || '';
-                        if (label) { label += ': '; }
-                        if (context.parsed.y !== null) {
-                            label += context.parsed.y.toFixed(1) + '%';
-                        }
-                        return label;
-                    }
-                }
-            }
-          }
-        }
-      });
-    }
-  </script>
 </body>
 </html>

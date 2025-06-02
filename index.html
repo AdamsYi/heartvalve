@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .hero-bg {
-            background-image: url('https://images.pexels.com/photos/4021775/pexels-photo-4021775.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'); 
+            background-image: url('https://images.pexels.com/photos/4021775/pexels-photo-4021775.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
             background-size: cover;
             background-position: center;
         }
@@ -18,16 +18,20 @@
             @apply bg-white rounded-xl shadow-lg p-6 m-4 hover:shadow-2xl transition-shadow duration-300 flex flex-col items-center text-center;
         }
         .feature-card img {
-            @apply h-20 w-20 mb-4 object-contain; 
+            @apply h-20 w-20 mb-4 object-contain;
         }
         .feature-card h3 {
             @apply text-xl font-semibold text-blue-700 mb-3;
         }
         .feature-card p {
-            @apply text-gray-600 text-sm mb-4 flex-grow; 
+            @apply text-gray-600 text-sm mb-4 flex-grow;
         }
         .feature-card a {
-            @apply inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300 mt-auto; 
+            @apply inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300 mt-auto;
+        }
+        /* Active nav link style */
+        .nav-link-active {
+            @apply text-blue-600 font-semibold;
         }
     </style>
 </head>
@@ -37,7 +41,7 @@
         <div class="container mx-auto px-6 py-3 flex justify-between items-center">
             <a href="index.html" class="text-2xl font-bold text-blue-700">HeartValve 专家</a>
             <div>
-                <a href="index.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">首页</a>
+                <a href="index.html" class="nav-link-active px-3 py-2 rounded-md text-sm">首页</a>
                 <a href="calculator.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">ARISE Score 工具</a>
                 <a href="disease-info.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">疾病知识</a>
                 <a href="surgical-options.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">手术方案</a>
@@ -59,37 +63,37 @@
         <section id="learn-more" class="py-12">
             <h2 class="section-title">核心内容与工具</h2>
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                
+
                 <div class="feature-card">
-                    <img src="https://images.pexels.com/photos/5327653/pexels-photo-5327653.jpeg?auto=compress&cs=tinysrgb&w=160&h=160&dpr=1" alt="ARISE Score 评估工具">
+                    <img src="https://images.pexels.com/photos/5327653/pexels-photo-5327653.jpeg?auto=compress&cs=tinysrgb&w=160&h=160&dpr=1" alt="ARISE Score 评估工具图标">
                     <h3>ARISE Score 预后评估</h3>
                     <p>基于最新研究（Liu et al., JAHA 2025），为主动脉瓣反流患者提供1、3、5年生存率估算。</p>
                     <a href="calculator.html">使用评估工具</a>
                 </div>
 
                 <div class="feature-card">
-                    <img src="images/bicuspid-valve-user.jpg" alt="主动脉瓣二叶畸形专题">
+                    <img src="images/bicuspid-valve-user.jpg" alt="主动脉瓣二叶畸形示意图">
                     <h3>主动脉瓣二叶畸形专题</h3>
                     <p>深入了解主动脉瓣二叶畸形的诊断、分型、并发症及最新治疗策略。</p>
                     <a href="bicuspid-aortic-valve-info.html">阅读专题</a>
                 </div>
 
                 <div class="feature-card">
-                    <img src="https://images.pexels.com/photos/5721906/pexels-photo-5721906.jpeg?auto=compress&cs=tinysrgb&w=160&h=160&dpr=1" alt="手术方案解析">
+                    <img src="https://images.pexels.com/photos/5721906/pexels-photo-5721906.jpeg?auto=compress&cs=tinysrgb&w=160&h=160&dpr=1" alt="手术室场景">
                     <h3>手术方案解析</h3>
                     <p>详细介绍各类主动脉瓣手术（如AVR, TAVR, Ross手术等）的适应症、流程与预后。</p>
                     <a href="surgical-options.html">查看手术方案</a>
                 </div>
-                
+
                 <div class="feature-card">
-                    <img src="https://images.pexels.com/photos/3184328/pexels-photo-3184328.jpeg?auto=compress&cs=tinysrgb&w=160&h=160&dpr=1" alt="专家视角与病例">
+                    <img src="https://images.pexels.com/photos/3184328/pexels-photo-3184328.jpeg?auto=compress&cs=tinysrgb&w=160&h=160&dpr=1" alt="专家讨论会议">
                     <h3>专家视角与病例</h3>
                     <p>分享领域内专家的最新观点、研究进展以及典型病例讨论。</p>
                     <a href="expert-views.html">阅读专家观点</a>
                 </div>
 
                 <div class="feature-card md:col-span-2 lg:col-span-2">
-                    <img src="https://images.pexels.com/photos/261909/pexels-photo-261909.jpeg?auto=compress&cs=tinysrgb&w=160&h=160&dpr=1" alt="心脏瓣膜疾病知识库">
+                    <img src="https://images.pexels.com/photos/261909/pexels-photo-261909.jpeg?auto=compress&cs=tinysrgb&w=160&h=160&dpr=1" alt="医学书籍和听诊器">
                     <h3>心脏瓣膜疾病知识库</h3>
                     <p>提供全面的心脏瓣膜疾病基础知识、预防、诊断和康复指南。</p>
                     <a href="disease-info.html">探索知识库</a>
