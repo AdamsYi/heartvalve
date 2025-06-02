@@ -112,8 +112,8 @@
                         <div>
                             <label for="cci" class="font-medium text-md flex items-center">CCI评分 <span class="text-slate-500 text-xs ml-1">(0-9 分)</span></label>
                             <div class="flex items-center mt-1 space-x-3">
-                                <input type="range" id="cci_slider" name="cci_slider" min="0" max="9" value="0" step="1">
-                                <input type="number" id="cci" name="cci" min="0" max="9" value="0" step="1">
+                                <input type="range" id="cci_slider" name="cci_slider" min="0" max="9" value="1" step="1">
+                                <input type="number" id="cci" name="cci" min="0" max="9" value="1" step="1">
                             </div>
                         </div>
                         <div>
@@ -128,22 +128,22 @@
                         <div>
                             <label for="aodi" class="font-medium text-md flex items-center">主动脉根部内径指数 (AoDi) <span class="text-slate-500 text-xs ml-1">(15-70 mm/m²)</span></label>
                             <div class="flex items-center mt-1 space-x-3">
-                                <input type="range" id="aodi_slider" name="aodi_slider" min="15" max="70" value="25" step="0.1">
-                                <input type="number" id="aodi" name="aodi" min="15" max="70" value="25" step="0.1">
+                                <input type="range" id="aodi_slider" name="aodi_slider" min="15" max="70" value="25" step="1">
+                                <input type="number" id="aodi" name="aodi" min="15" max="70" value="25" step="1">
                             </div>
                         </div>
                         <div>
                             <label for="lvef" class="font-medium text-md flex items-center">左室射血分数 (LVEF) <span class="text-slate-500 text-xs ml-1">(20-80 %)</span></label>
                             <div class="flex items-center mt-1 space-x-3">
-                                <input type="range" id="lvef_slider" name="lvef_slider" min="20" max="80" value="60" step="0.1">
-                                <input type="number" id="lvef" name="lvef" min="20" max="80" value="60" step="0.1">
+                                <input type="range" id="lvef_slider" name="lvef_slider" min="20" max="80" value="60" step="1">
+                                <input type="number" id="lvef" name="lvef" min="20" max="80" value="60" step="1">
                             </div>
                         </div>
                         <div>
                             <label for="lvesdi" class="font-medium text-md flex items-center">左室收缩末期内径指数 (LVESDi) <span class="text-slate-500 text-xs ml-1">(10-50 mm/m²)</span></label>
                             <div class="flex items-center mt-1 space-x-3">
-                                <input type="range" id="lvesdi_slider" name="lvesdi_slider" min="10" max="50" value="20" step="0.1">
-                                <input type="number" id="lvesdi" name="lvesdi" min="10" max="50" value="20" step="0.1">
+                                <input type="range" id="lvesdi_slider" name="lvesdi_slider" min="10" max="50" value="20" step="1">
+                                <input type="number" id="lvesdi" name="lvesdi" min="10" max="50" value="20" step="1">
                             </div>
                         </div>
 
@@ -245,18 +245,20 @@
 // =============================================================================
 // ARISE Score Calculator - Full Calculation Logic
 // Version: 2025-06-02 (Based on confirmed logic from arise-score.vercel.app)
+// All numerical inputs are treated as integers as per user request.
 // =============================================================================
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('ariseForm');
     const resetButton = document.getElementById('resetButton');
     const validationErrorDiv = document.getElementById('validationError');
 
+    // Configuration for inputs that have sliders and number boxes
     const inputsConfig = [
         { id: 'age',    sliderId: 'age_slider',    min: 10, max: 100, default: 20, step: 1 },
-        { id: 'cci',    sliderId: 'cci_slider',    min: 0,  max: 9,   default: 1,  step: 1 }, // Default CCI set to 1 for example
-        { id: 'aodi',   sliderId: 'aodi_slider',   min: 15, max: 70,  default: 25, step: 0.1 },
-        { id: 'lvef',   sliderId: 'lvef_slider',   min: 20, max: 80,  default: 60, step: 0.1 },
-        { id: 'lvesdi', sliderId: 'lvesdi_slider', min: 10, max: 50,  default: 20, step: 0.1 }
+        { id: 'cci',    sliderId: 'cci_slider',    min: 0,  max: 9,   default: 1,  step: 1 },
+        { id: 'aodi',   sliderId: 'aodi_slider',   min: 15, max: 70,  default: 25, step: 1 }, // step to 1 for integer
+        { id: 'lvef',   sliderId: 'lvef_slider',   min: 20, max: 80,  default: 60, step: 1 }, // step to 1 for integer
+        { id: 'lvesdi', sliderId: 'lvesdi_slider', min: 10, max: 50,  default: 20, step: 1 }  // step to 1 for integer
     ];
 
     function setDefaultFormValues() {
@@ -268,7 +270,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         document.getElementById('sex').value = "male";
         document.getElementById('nyha').value = "1";
-        // Trigger a calculation with default values if desired
+         // Trigger a calculation with default values if desired (can be uncommented)
         // form.dispatchEvent(new Event('submit', { cancelable: true }));
     }
 
@@ -276,20 +278,25 @@ document.addEventListener('DOMContentLoaded', function () {
         const numberInput = document.getElementById(inputConf.id);
         const sliderInput = document.getElementById(inputConf.sliderId);
         if (numberInput && sliderInput) {
-            sliderInput.step = inputConf.step;
-            numberInput.step = inputConf.step;
+            sliderInput.step = inputConf.step; // All steps are 1 now
+            numberInput.step = inputConf.step; // All steps are 1 now
+
             sliderInput.addEventListener('input', () => {
-                const precision = inputConf.step.toString().includes('.') ? inputConf.step.toString().split('.')[1].length : 0;
-                numberInput.value = parseFloat(sliderInput.value).toFixed(precision);
+                numberInput.value = parseInt(sliderInput.value); // Ensure integer
             });
             numberInput.addEventListener('input', () => {
-                let value = parseFloat(numberInput.value);
-                if (isNaN(value)) value = inputConf.default;
+                let value = parseInt(numberInput.value); // Ensure integer
+                if (isNaN(value)) { // Handle cases where input might not be a number temporarily
+                    value = Math.round(parseFloat(numberInput.value || inputConf.default)); // Try to parse then round
+                    if (isNaN(value)) value = inputConf.default;
+                }
                 value = Math.max(inputConf.min, Math.min(inputConf.max, value));
-                const precision = inputConf.step.toString().includes('.') ? inputConf.step.toString().split('.')[1].length : 0;
-                numberInput.value = value.toFixed(precision);
+                numberInput.value = value; // Already integer
                 sliderInput.value = value;
             });
+            // Ensure initial value is an integer
+            numberInput.value = parseInt(numberInput.value);
+            sliderInput.value = parseInt(sliderInput.value);
         }
     });
 
@@ -306,26 +313,33 @@ document.addEventListener('DOMContentLoaded', function () {
         activeTabButton.classList.add('active', 'bg-white', 'text-slate-950', 'border-slate-300', 'shadow-sm');
         activeTabButton.classList.remove('bg-slate-100', 'text-slate-600', 'border-transparent');
     }
-    showTab('who'); // Initialize with the 'who' tab visible
+    showTab('who');
 
+    // Validation schema (ranges remain the same, but input will be forced to integer)
     const schema = {
-        age:    { min: 10, max: 100, message: "年龄必须在 10 到 100 岁之间。" },
+        age:    { min: 10, max: 100, message: "年龄必须是 10 到 100 之间的整数。" },
         sex:    { enum: ["male", "female"], message: "性别必须选择“男性”或“女性”。" },
-        cci:    { min: 0,  max: 9,   message: "CCI 评分必须在 0 到 9 分之间。" },
+        cci:    { min: 0,  max: 9,   message: "CCI 评分必须是 0 到 9 之间的整数。" },
         nyha:   { enum: ["1", "2", "3", "4"], message: "NYHA 心功能分级必须是 I, II, III, 或 IV 级。" },
-        aodi:   { min: 15, max: 70,  message: "AoDi 必须在 15 到 70 mm/m² 之间。" },
-        lvef:   { min: 20, max: 80,  message: "LVEF 必须在 20 到 80 % 之间。" },
-        lvesdi: { min: 10, max: 50,  message: "LVESDi 必须在 10 到 50 mm/m² 之间。" }
+        aodi:   { min: 15, max: 70,  message: "AoDi 必须是 15 到 70 之间的整数 (mm/m²)。" },
+        lvef:   { min: 20, max: 80,  message: "LVEF 必须是 20 到 80 之间的整数 (%)。" },
+        lvesdi: { min: 10, max: 50,  message: "LVESDi 必须是 10 到 50 之间的整数 (mm/m²)。" }
     };
 
     function validateInput(name, value, label) {
         const rule = schema[name];
         if (!rule) return null;
-        const numValue = (name !== 'sex' && name !== 'nyha') ? parseFloat(value) : value;
-
-        if (value === '' || ( (typeof rule.min !== 'undefined' || typeof rule.max !== 'undefined') && isNaN(numValue) ) ) {
-            return `${label}：请输入一个有效的值。`;
+        
+        let numValue;
+        if (name !== 'sex' && name !== 'nyha') {
+            numValue = parseInt(value); // Ensure integer for validation
+            if (value === '' || isNaN(numValue) || value !== numValue.toString()) { // Also check if original string was an integer
+                 return `${label}：请输入一个有效的整数。`;
+            }
+        } else {
+            numValue = value;
         }
+
         if (rule.enum && !rule.enum.includes(numValue)) return rule.message;
         if (typeof rule.min !== 'undefined' && numValue < rule.min) return rule.message;
         if (typeof rule.max !== 'undefined' && numValue > rule.max) return rule.message;
@@ -341,14 +355,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function calculateFactorPoints_ARISE(factors) {
         const { age, sex, cci, nyha, aodi, lvef, lvesdi } = factors;
+        // Using the formulas confirmed from the application's actual code
         return {
-            age: -11.111111 + 1.111111 * parseFloat(age),
+            age: -11.111111 + 1.111111 * parseInt(age), // Ensuring integer input for calculation
             sex: "female" === sex ? 5.092295 : 0,
-            cci: 0 + 3.49046 * parseFloat(cci),
+            cci: 0 + 3.49046 * parseInt(cci),
             nyha: -3.541039 + 3.541039 * parseInt(nyha),
-            aodi: -7.241847 + 0.48279 * parseFloat(aodi),
-            lvef: 21.697412 - 0.271218 * parseFloat(lvef),
-            lvesdi: -4.527494 + 0.452749 * parseFloat(lvesdi)
+            aodi: -7.241847 + 0.48279 * parseInt(aodi), // Using the confirmed intercept
+            lvef: 21.697412 - 0.271218 * parseInt(lvef),
+            lvesdi: -4.527494 + 0.452749 * parseInt(lvesdi)
         };
     }
 
@@ -358,7 +373,7 @@ document.addEventListener('DOMContentLoaded', function () {
             sumOfFactorPoints = 0;
         }
         const avsOffset = 11.042254;
-        return [sumOfFactorPoints + avsOffset, sumOfFactorPoints]; // [NO AVS total_raw, YES AVS total_raw]
+        return [sumOfFactorPoints + avsOffset, sumOfFactorPoints];
     }
 
     function calculateSurvivalProbabilities_ARISE(rawTotalPointsMatrix) {
@@ -396,7 +411,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const rawTotalPointsMatrix = calculateRawTotalPoints_ARISE(factorPoints);
         const truncatedTotalPointsMatrix = rawTotalPointsMatrix.map(points => Math.trunc(points));
         const survivalProbabilities = calculateSurvivalProbabilities_ARISE(rawTotalPointsMatrix);
-        const riskGroups = calculateRiskGroups_ARISE(truncatedTotalPointsMatrix); // Pass truncated points
+        const riskGroups = calculateRiskGroups_ARISE(truncatedTotalPointsMatrix);
 
         return {
             "输入参数": factors,
@@ -421,7 +436,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     // --- End of ARISE SCORE CALCULATION LOGIC ---
 
-    const NOMOGRAM_TOTAL_POINTS_MAX_SCALE = 150;
+    const NOMOGRAM_TOTAL_POINTS_MAX_SCALE = 150; // Max value for nomogram points scale
 
     form.addEventListener('submit', function (event) {
         event.preventDefault();
@@ -455,17 +470,15 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
         
-        // Convert to numbers after validation (except for sex and nyha which are handled in calculation)
         const processedInputs = {
-            age:    parseFloat(rawInputs.age),
+            age:    parseInt(rawInputs.age),
             sex:    rawInputs.sex,
-            cci:    parseFloat(rawInputs.cci),
-            nyha:   rawInputs.nyha,
-            aodi:   parseFloat(rawInputs.aodi),
-            lvef:   parseFloat(rawInputs.lvef),
-            lvesdi: parseFloat(rawInputs.lvesdi)
+            cci:    parseInt(rawInputs.cci),
+            nyha:   rawInputs.nyha, // NYHA is already string "1"-"4"
+            aodi:   parseInt(rawInputs.aodi),
+            lvef:   parseInt(rawInputs.lvef),
+            lvesdi: parseInt(rawInputs.lvesdi)
         };
-
 
         const results = getAriseScoreCalculatorResults_Main(processedInputs);
         
@@ -546,8 +559,8 @@ document.addEventListener('DOMContentLoaded', function () {
         
         const markerNoAvs = document.getElementById('marker_no_avs');
         const markerYesAvs = document.getElementById('marker_yes_avs');
-        if(markerNoAvs) { markerNoAvs.style.left = `0%`; markerNoAvs.textContent = '0';} // Adjusted for initial state
-        if(markerYesAvs) { markerYesAvs.style.left = `0%`; markerYesAvs.textContent = '0';} // Adjusted for initial state
+        if(markerNoAvs) { markerNoAvs.style.left = `0%`; markerNoAvs.textContent = '0';}
+        if(markerYesAvs) { markerYesAvs.style.left = `0%`; markerYesAvs.textContent = '0';}
     }
     
     resetButton.addEventListener('click', function() {
@@ -557,10 +570,25 @@ document.addEventListener('DOMContentLoaded', function () {
         clearResultsAndNomogramPoints();
     });
 
+    // Initialize form values and clear results on page load
     setDefaultFormValues();
     clearResultsAndNomogramPoints();
-    // Optionally, trigger calculation on load with default values
-    // setTimeout(() => form.dispatchEvent(new Event('submit', { cancelable: true })), 100);
+    
+    // Optionally trigger initial calculation on load with default values (e.g., your "正版结果" example)
+    // This ensures the calculator shows results for the default inputs when the page loads.
+    // You might want to set the default values in inputsConfig to match your example for this.
+    setTimeout(() => {
+        // Example: set form to the user's specific test case by default
+        document.getElementById('age').value = 20; document.getElementById('age_slider').value = 20;
+        document.getElementById('sex').value = "male";
+        document.getElementById('cci').value = 1; document.getElementById('cci_slider').value = 1;
+        document.getElementById('nyha').value = "1";
+        document.getElementById('aodi').value = 25; document.getElementById('aodi_slider').value = 25;
+        document.getElementById('lvef').value = 60; document.getElementById('lvef_slider').value = 60;
+        document.getElementById('lvesdi').value = 20; document.getElementById('lvesdi_slider').value = 20;
+        form.dispatchEvent(new Event('submit', { cancelable: true }));
+    }, 100); // Small delay to ensure DOM is fully ready for marker width calculation
+
 });
 </script>
 
