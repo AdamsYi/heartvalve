@@ -12,22 +12,20 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
         }
         .tab-button.active {
-            @apply bg-white text-slate-950 border-slate-300 shadow-sm;
+            @apply bg-white text-slate-950 border-slate-300 dark:bg-slate-700 dark:text-white dark:border-slate-500 shadow-sm;
         }
         .tab-button {
-            @apply py-2 px-4 text-sm font-semibold text-slate-600 bg-slate-50 hover:bg-slate-200 border border-transparent rounded-t-lg transition-colors;
+            @apply py-2 px-4 text-sm font-semibold text-slate-600 bg-slate-50 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700 border border-transparent rounded-t-lg transition-colors;
         }
         .tab-content {
-            @apply p-6 border border-t-0 border-slate-300 rounded-b-lg bg-white shadow-sm;
+            @apply p-6 border border-t-0 border-slate-300 dark:border-slate-700 rounded-b-lg bg-white dark:bg-slate-800 shadow-sm;
         }
-        input[type="number"].main-form-input, select.main-form-input {
-             @apply flex h-10 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
-        }
-        input[type="number"].slider-value-input { /* For number inputs linked with sliders */
-            @apply flex h-10 w-24 text-center rounded-md border border-slate-300 bg-white px-3 py-2 text-sm ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2;
+        /* Standard input field style */
+        input[type="number"].form-input-number, select.form-input-select {
+             @apply flex h-10 w-full rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-3 py-2 text-sm text-slate-900 dark:text-slate-100 ring-offset-white dark:ring-offset-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
         }
         input[type="range"] {
-            @apply w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer dark:bg-slate-700;
+            @apply w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer;
         }
         input[type="range"]::-webkit-slider-thumb {
             @apply appearance-none w-5 h-5 bg-blue-600 rounded-full cursor-pointer hover:bg-blue-700 active:bg-blue-800 shadow;
@@ -36,24 +34,24 @@
             @apply w-5 h-5 bg-blue-600 rounded-full cursor-pointer border-0 hover:bg-blue-700 active:bg-blue-800 shadow;
         }
 
-        .nomogram-placeholder { @apply border border-dashed border-slate-300 p-4 mb-4 text-center text-slate-500 bg-slate-50 rounded; }
-        .nomogram-axis { @apply mb-1 text-sm; }
-        .nomogram-label { @apply text-slate-700;}
-        .nomogram-value { @apply font-semibold text-blue-700;}
-        .points-line-container { @apply relative h-4 bg-slate-200 rounded mt-1 mb-4 w-full; }
+        .nomogram-placeholder { @apply border border-dashed border-slate-300 dark:border-slate-600 p-4 mb-4 text-center text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/50 rounded; }
+        .nomogram-axis { @apply mb-1.5 text-sm; } /* Increased mb slightly */
+        .nomogram-label { @apply text-slate-700 dark:text-slate-300;}
+        .nomogram-value { @apply font-semibold text-blue-700 dark:text-blue-400;}
+        .points-line-container { @apply relative h-4 bg-slate-200 dark:bg-slate-700 rounded mt-1 mb-4 w-full; }
         .points-line-marker {
             @apply absolute top-1/2 h-5 w-auto px-1 bg-red-500 rounded text-white text-xs flex items-center justify-center transform -translate-y-1/2 shadow;
             min-width: 20px;
         }
         .points-line-marker::after { @apply content-[''] absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-red-500; }
 
-        .results-table th, .results-table td { @apply border border-slate-300 px-3 py-2 text-sm; }
-        .results-table th { @apply bg-slate-100 font-semibold text-slate-700 text-center; }
-        .results-table td { @apply text-slate-800 text-center; }
+        .results-table th, .results-table td { @apply border border-slate-300 dark:border-slate-600 px-3 py-2 text-sm; }
+        .results-table th { @apply bg-slate-100 dark:bg-slate-700 font-semibold text-slate-700 dark:text-slate-200 text-center; }
+        .results-table td { @apply text-slate-800 dark:text-slate-200 text-center; }
         .results-table td:first-child { @apply text-left font-medium; }
 
-        .nav-link-active { @apply text-blue-600 font-semibold border-b-2 border-blue-600; }
-        .error-message { color: #EF4444; font-size: 0.875rem; margin-top: 0.25rem; min-height: 1.25rem; /* Reserve space for error message */ }
+        .nav-link-active { @apply text-blue-600 dark:text-blue-400 font-semibold border-b-2 border-blue-600 dark:border-blue-400; }
+        .error-message { color: #EF4444; font-size: 0.875rem; margin-top: 0.25rem; min-height: 1.25rem; }
         .input-error-border { border-color: #EF4444 !important; }
 
         .modal { transition: opacity 0.25s ease; z-index: 100; }
@@ -64,7 +62,7 @@
             border: 4px solid #E5E7EB; 
             border-top: 4px solid #3B82F6; 
             border-radius: 50%;
-            width: 20px; /* Slightly smaller loader */
+            width: 20px; 
             height: 20px;
             animation: spin 1s linear infinite;
             display: none; 
@@ -97,117 +95,117 @@
 
     <main class="container mx-auto px-4 py-8">
         <div class="pb-6 xl:pb-8 2xl:pb-10 space-y-2 text-center">
-            <h1 class="font-semibold text-[22px] md:text-2xl 2xl:text-3xl text-gray-800 dark:text-slate-100" data-lang-key="pageH1">ARISE (Aortic Regurgitation/Insufficiency Survival Estimation) Score</h1>
-            <h2 class="text-slate-600 dark:text-slate-400 text-sm md:text-base 2xl:text-lg" data-lang-key="pageH2">用于评估中重度至重度慢性主动脉瓣反流患者在3个月内接受或不接受主动脉瓣修复/置换术的生存率。</h2>
+            <h1 class="font-semibold text-[22px] md:text-2xl 2xl:text-3xl text-gray-800 dark:text-slate-100" data-lang-key="pageH1">ARISE Score</h1>
+            <h2 class="text-slate-600 dark:text-slate-400 text-sm md:text-base 2xl:text-lg" data-lang-key="pageH2">评估慢性主动脉瓣反流患者接受或不接受手术的生存率。</h2>
         </div>
 
         <div class="mb-8">
             <div class="flex border-b border-slate-300 dark:border-slate-700">
-                <button id="tab-who" class="tab-button active" onclick="showTab('who')" data-lang-key="tabWho">适用人群 (Who)</button>
-                <button id="tab-how" class="tab-button" onclick="showTab('how')" data-lang-key="tabHow">如何使用 (How)</button>
-                <button id="tab-why" class="tab-button" onclick="showTab('why')" data-lang-key="tabWhy">为何使用 (Why)</button>
+                <button id="tab-who" class="tab-button active" onclick="showTab('who')" data-lang-key="tabWho">适用人群</button>
+                <button id="tab-how" class="tab-button" onclick="showTab('how')" data-lang-key="tabHow">如何使用</button>
+                <button id="tab-why" class="tab-button" onclick="showTab('why')" data-lang-key="tabWhy">为何使用</button>
             </div>
             <div id="content-who" class="tab-content dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300" data-lang-key="contentWho">适用于患有 **中重度至重度慢性主动脉瓣反流 (AR)** 的患者。</div>
             <div id="content-how" class="tab-content hidden dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300" data-lang-key="contentHow">通过该工具**估算和比较**在接受或不接受主动脉瓣修复/置换术情况下，患者1年、3年和5年的生存率。生存率根据低、中、高三个风险等级进行分层。虽然我们的列线图提供了生存率估算，但在共同决策过程中，必须综合考虑基线生存轨迹、净手术获益以及指南建议。</div>
             <div id="content-why" class="tab-content hidden dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300" data-lang-key="contentWhy">此工具专为日常实践中的**个体化风险评估**而设计，帮助医生清晰地沟通手术的获益与风险，从而加强医患关系。</div>
         </div>
         
-        <div class="lg:grid lg:grid-cols-12 lg:gap-8">
-            <section class="lg:col-span-5 space-y-6">
-                <div class="rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-950 dark:text-slate-50 shadow-lg">
-                    <form id="ariseForm" class="p-6 space-y-5">
+        <div class="lg:grid lg:grid-cols-12 lg:gap-8 xl:gap-10">
+            <section class="lg:col-span-5 space-y-5">
+                <div class="rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-950 dark:text-slate-50 shadow-lg p-6">
+                    <form id="ariseForm" class="space-y-5">
                         <div>
                             <label for="age" class="font-medium text-md flex items-center justify-between text-slate-700 dark:text-slate-300">
                                 <span data-lang-key="labelAge">年龄 (Age)</span>
                                 <span class="text-slate-500 dark:text-slate-400 text-xs" data-lang-key="rangeAge">(10-100 岁)</span>
                             </label>
-                            <div class="flex items-center mt-1.5 space-x-3">
-                                <input type="range" id="age_slider" name="age_slider" min="10" max="100" value="20" step="1">
-                                <input type="number" id="age" name="age" min="10" max="100" value="20" step="1" class="slider-value-input dark:bg-slate-700 dark:border-slate-600 dark:text-slate-200">
-                            </div>
-                            <div class="error-message mt-1" id="ageError"></div>
+                            <input type="number" id="age" name="age" min="10" max="100" value="20" step="1" class="form-input-number mt-1.5">
+                            <input type="range" id="age_slider" name="age_slider" min="10" max="100" value="20" step="1" class="mt-2">
+                            <div class="error-message" id="ageError"></div>
                         </div>
+
                         <div>
                             <label for="sex" class="font-medium text-md block text-slate-700 dark:text-slate-300" data-lang-key="labelSex">性别 (Sex)</label>
-                            <select id="sex" name="sex" class="mt-1.5 main-form-input dark:bg-slate-700 dark:border-slate-600 dark:text-slate-200">
+                            <select id="sex" name="sex" class="form-input-select mt-1.5">
                                 <option value="male" data-lang-key="sexMale">男性 (Male)</option>
                                 <option value="female" data-lang-key="sexFemale">女性 (Female)</option>
                             </select>
-                            <div class="error-message mt-1" id="sexError"></div>
+                            <div class="error-message" id="sexError"></div>
                         </div>
+
                         <div>
                             <label for="cci" class="font-medium text-md flex items-center justify-between text-slate-700 dark:text-slate-300">
                                 <span data-lang-key="labelCCI">CCI评分</span>
-                                <span class="text-slate-500 dark:text-slate-400 text-xs" data-lang-key="rangeCCI">(0-9 分)</span>
+                                 <span class="text-slate-500 dark:text-slate-400 text-xs" data-lang-key="rangeCCI">(0-9 分)</span>
                             </label>
-                            <div class="flex items-center mt-1.5 space-x-3">
-                                <input type="range" id="cci_slider" name="cci_slider" min="0" max="9" value="0" step="1">
-                                <input type="number" id="cci" name="cci" min="0" max="9" value="0" step="1" class="slider-value-input dark:bg-slate-700 dark:border-slate-600 dark:text-slate-200">
-                                <button type="button" id="openCciModalButton" class="px-3 py-1.5 bg-sky-500 hover:bg-sky-600 text-white text-xs rounded-md whitespace-nowrap transition-colors" data-lang-key="calculateCciButtonKey">计算CCI</button>
+                             <div class="flex items-end space-x-2 mt-1.5"> <div class="flex-grow">
+                                    <input type="number" id="cci" name="cci" min="0" max="9" value="0" step="1" class="form-input-number w-full">
+                                    <input type="range" id="cci_slider" name="cci_slider" min="0" max="9" value="0" step="1" class="mt-2">
+                                </div>
+                                <button type="button" id="openCciModalButton" class="px-3 h-10 bg-sky-500 hover:bg-sky-600 text-white text-xs rounded-md whitespace-nowrap transition-colors self-center" data-lang-key="calculateCciButtonKey">计算CCI</button>
                             </div>
-                             <div class="error-message mt-1" id="cciError"></div>
+                             <div class="error-message" id="cciError"></div>
                         </div>
+                        
                         <div>
                             <label for="nyha" class="font-medium text-md block text-slate-700 dark:text-slate-300" data-lang-key="labelNYHA">NYHA 心功能分级</label>
-                            <select id="nyha" name="nyha" class="mt-1.5 main-form-input dark:bg-slate-700 dark:border-slate-600 dark:text-slate-200">
+                            <select id="nyha" name="nyha" class="form-input-select mt-1.5">
                                 <option value="1" data-lang-key="nyhaI">NYHA I</option>
                                 <option value="2" data-lang-key="nyhaII">NYHA II</option>
                                 <option value="3" data-lang-key="nyhaIII">NYHA III</option>
                                 <option value="4" data-lang-key="nyhaIV">NYHA IV</option>
                             </select>
-                            <div class="error-message mt-1" id="nyhaError"></div>
+                            <div class="error-message" id="nyhaError"></div>
                         </div>
+
                         <div>
                             <label for="aodi" class="font-medium text-md flex items-center justify-between text-slate-700 dark:text-slate-300">
                                 <span data-lang-key="labelAoDi">主动脉根部内径指数 (AoDi)</span>
                                 <span class="text-slate-500 dark:text-slate-400 text-xs" data-lang-key="rangeAoDi">(15-70 mm/m²)</span>
                             </label>
-                            <div class="flex items-center mt-1.5 space-x-3">
-                                <input type="range" id="aodi_slider" name="aodi_slider" min="15" max="70" value="15" step="1">
-                                <input type="number" id="aodi" name="aodi" min="15" max="70" value="15" step="1" class="slider-value-input dark:bg-slate-700 dark:border-slate-600 dark:text-slate-200">
-                            </div>
-                            <div class="error-message mt-1" id="aodiError"></div>
+                            <input type="number" id="aodi" name="aodi" min="15" max="70" value="15" step="1" class="form-input-number mt-1.5">
+                            <input type="range" id="aodi_slider" name="aodi_slider" min="15" max="70" value="15" step="1" class="mt-2">
+                            <div class="error-message" id="aodiError"></div>
                         </div>
+
                         <div>
                             <label for="lvef" class="font-medium text-md flex items-center justify-between text-slate-700 dark:text-slate-300">
                                 <span data-lang-key="labelLVEF">左室射血分数 (LVEF)</span>
                                 <span class="text-slate-500 dark:text-slate-400 text-xs" data-lang-key="rangeLVEF">(20-80 %)</span>
                             </label>
-                            <div class="flex items-center mt-1.5 space-x-3">
-                                <input type="range" id="lvef_slider" name="lvef_slider" min="20" max="80" value="20" step="1">
-                                <input type="number" id="lvef" name="lvef" min="20" max="80" value="20" step="1" class="slider-value-input dark:bg-slate-700 dark:border-slate-600 dark:text-slate-200">
-                            </div>
-                             <div class="error-message mt-1" id="lvefError"></div>
+                            <input type="number" id="lvef" name="lvef" min="20" max="80" value="20" step="1" class="form-input-number mt-1.5">
+                            <input type="range" id="lvef_slider" name="lvef_slider" min="20" max="80" value="20" step="1" class="mt-2">
+                             <div class="error-message" id="lvefError"></div>
                         </div>
+
                         <div>
                             <label for="lvesdi" class="font-medium text-md flex items-center justify-between text-slate-700 dark:text-slate-300">
                                 <span data-lang-key="labelLVESDi">左室收缩末期内径指数 (LVESDi)</span>
                                 <span class="text-slate-500 dark:text-slate-400 text-xs" data-lang-key="rangeLVESDi">(10-50 mm/m²)</span>
                             </label>
-                            <div class="flex items-center mt-1.5 space-x-3">
-                                <input type="range" id="lvesdi_slider" name="lvesdi_slider" min="10" max="50" value="10" step="1">
-                                <input type="number" id="lvesdi" name="lvesdi" min="10" max="50" value="10" step="1" class="slider-value-input dark:bg-slate-700 dark:border-slate-600 dark:text-slate-200">
-                            </div>
-                            <div class="error-message mt-1" id="lvesdiError"></div>
-                             <button type="button" id="toggleLvesdiEstimatorButton" class="mt-2.5 text-xs text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 flex items-center">
+                            <input type="number" id="lvesdi" name="lvesdi" min="10" max="50" value="10" step="1" class="form-input-number mt-1.5">
+                            <input type="range" id="lvesdi_slider" name="lvesdi_slider" min="10" max="50" value="10" step="1" class="mt-2">
+                            <div class="error-message" id="lvesdiError"></div>
+                            
+                            <button type="button" id="toggleLvesdiEstimatorButton" class="mt-2.5 text-xs text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 flex items-center">
                                 <span data-lang-key="toggleLvesdiEstimatorButtonKey">可选：通过LVDd等估算LVESDi</span>
                                 <i id="lvesdiEstimatorIcon" class="fas fa-chevron-down ml-1 transform transition-transform text-xs"></i>
                             </button>
-                            <div id="lvesdiEstimatorSection" class="hidden mt-3 p-3 border border-slate-200 dark:border-slate-700 rounded-md bg-slate-50 dark:bg-slate-800/60 space-y-3">
+                            <div id="lvesdiEstimatorSection" class="hidden mt-3 p-4 border border-slate-200 dark:border-slate-700 rounded-md bg-slate-50 dark:bg-slate-800/60 space-y-3">
                                 <p class="text-xs text-slate-500 dark:text-slate-400" data-lang-key="lvesdiEstimatorInfo">输入LVDd、身高和体重估算LVESDi。LVEF将从上方主表单获取。</p>
                                 <div>
                                     <label for="estimatorLvdd" class="block text-xs font-medium text-slate-600 dark:text-slate-300" data-lang-key="labelLVDD">LVDd (mm) <span class="text-slate-400 text-xs" data-lang-key="rangeEstLVDD">(20-100)</span></label>
-                                    <input type="number" id="estimatorLvdd" step="1" min="20" max="100" placeholder="例如: 50" class="mt-1 block w-full px-2 py-1.5 text-sm bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                                    <input type="number" id="estimatorLvdd" step="1" min="20" max="100" placeholder="例如: 50" class="form-input-number mt-1 text-sm">
                                     <div class="error-message text-xs" id="estimatorLvddError"></div>
                                 </div>
                                 <div>
                                     <label for="estimatorHeight" class="block text-xs font-medium text-slate-600 dark:text-slate-300" data-lang-key="labelHeight">身高 (cm) <span class="text-slate-400 text-xs" data-lang-key="rangeEstHeight">(100-250)</span></label>
-                                    <input type="number" id="estimatorHeight" step="1" min="100" max="250" placeholder="例如: 170" class="mt-1 block w-full px-2 py-1.5 text-sm bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                                    <input type="number" id="estimatorHeight" step="1" min="100" max="250" placeholder="例如: 170" class="form-input-number mt-1 text-sm">
                                     <div class="error-message text-xs" id="estimatorHeightError"></div>
                                 </div>
                                 <div>
                                     <label for="estimatorWeight" class="block text-xs font-medium text-slate-600 dark:text-slate-300" data-lang-key="labelWeight">体重 (kg) <span class="text-slate-400 text-xs" data-lang-key="rangeEstWeight">(20-250)</span></label>
-                                    <input type="number" id="estimatorWeight" step="0.1" min="20" max="250" placeholder="例如: 70" class="mt-1 block w-full px-2 py-1.5 text-sm bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                                    <input type="number" id="estimatorWeight" step="0.1" min="20" max="250" placeholder="例如: 70" class="form-input-number mt-1 text-sm">
                                     <div class="error-message text-xs" id="estimatorWeightError"></div>
                                 </div>
                                 <button type="button" id="calculateLvesdiButton" class="w-full px-3 py-1.5 bg-indigo-500 hover:bg-indigo-600 text-white text-xs rounded-md transition-colors" data-lang-key="estimateLvesdiButtonKey">估算LVESDi并填充</button>
@@ -215,14 +213,14 @@
                             </div>
                         </div>
 
-                        <div class="flex justify-between gap-3 pt-5 md:col-span-2">
+                        <div class="flex justify-between gap-4 pt-5 md:col-span-2">
                             <button type="button" id="resetButton" class="flex-1 bg-slate-200 hover:bg-slate-300 dark:bg-slate-600 dark:hover:bg-slate-500 text-slate-800 dark:text-slate-200 h-10 px-4 py-2 rounded-md text-sm font-medium transition-colors" data-lang-key="resetButtonKey">重置 (Reset)</button>
                             <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white h-10 px-6 py-2 rounded-md text-base font-medium transition-colors flex items-center justify-center" data-lang-key="submitButtonKey">
                                 <i class="fas fa-calculator mr-2"></i>提交 (Submit)
                                 <div id="calculationLoader" class="loader ml-2"></div>
                             </button>
                         </div>
-                        <div id="validationError" class="text-red-500 text-sm mt-2 md:col-span-2"></div>
+                        <div id="validationErrorOverall" class="text-red-500 text-sm mt-2 md:col-span-2"></div>
                     </form>
                 </div>
             </section>
@@ -234,8 +232,7 @@
                         <p data-lang-key="nomogramPlaceholder">列线图 (Nomogram) 图形区域</p>
                         <p class="text-xs mt-2" data-lang-key="nomogramInfo">(官网的动态SVG列线图需要专门文件和代码。下方为数值点数展示和简易标尺。)</p>
                     </div>
-                    <div id="nomogram-points-display" class="space-y-2 text-sm mb-6">
-                        <div class="font-semibold text-slate-800 dark:text-slate-200" data-lang-key="variablePointsTitle">各变量点数:</div>
+                    <div id="nomogram-points-display" class="space-y-1.5 text-sm mb-6"> <div class="font-semibold text-slate-800 dark:text-slate-200" data-lang-key="variablePointsTitle">各变量点数:</div>
                         <div class="nomogram-axis"><span class="nomogram-label dark:text-slate-300" data-lang-key="pointsAge">年龄 (Age, year):</span> <span id="nomogram_age_points" class="nomogram-value dark:text-blue-400">0</span> points</div>
                         <div class="nomogram-axis"><span class="nomogram-label dark:text-slate-300" data-lang-key="pointsSex">性别 (Sex):</span> <span id="nomogram_sex_points" class="nomogram-value dark:text-blue-400">0</span> points</div>
                         <div class="nomogram-axis"><span class="nomogram-label dark:text-slate-300" data-lang-key="pointsCCI">CCI:</span> <span id="nomogram_cci_points" class="nomogram-value dark:text-blue-400">0</span> points</div>
@@ -243,10 +240,10 @@
                         <div class="nomogram-axis"><span class="nomogram-label dark:text-slate-300" data-lang-key="pointsAoDi">AoDi (mm/m²):</span> <span id="nomogram_aodi_points" class="nomogram-value dark:text-blue-400">0</span> points</div>
                         <div class="nomogram-axis"><span class="nomogram-label dark:text-slate-300" data-lang-key="pointsLVEF">LVEF (%):</span> <span id="nomogram_lvef_points" class="nomogram-value dark:text-blue-400">0</span> points</div>
                         <div class="nomogram-axis"><span class="nomogram-label dark:text-slate-300" data-lang-key="pointsLVESDi">LVESDi (mm/m²):</span> <span id="nomogram_lvesdi_points" class="nomogram-value dark:text-blue-400">0</span> points</div>
-                        <hr class="my-3 border-slate-300 dark:border-slate-600">
-                        <div class="nomogram-axis font-bold"><span class="nomogram-label dark:text-slate-200" data-lang-key="pointsTotalNoAVS">总点数 (3月内未行AVS):</span> <span id="nomogram_total_points_no" class="nomogram-value dark:text-blue-400">0</span></div>
+                        <hr class="my-2 border-slate-300 dark:border-slate-600">
+                        <div class="nomogram-axis font-bold text-base"><span class="nomogram-label dark:text-slate-200" data-lang-key="pointsTotalNoAVS">总点数 (3月内未行AVS):</span> <span id="nomogram_total_points_no" class="nomogram-value dark:text-blue-400">0</span></div>
                         <div class="points-line-container dark:bg-slate-700"><div id="marker_no_avs" class="points-line-marker" style="left: 0%;">0</div></div>
-                        <div class="nomogram-axis font-bold"><span class="nomogram-label dark:text-slate-200" data-lang-key="pointsTotalYesAVS">总点数 (3月内已行AVS):</span> <span id="nomogram_total_points_yes" class="nomogram-value dark:text-blue-400">0</span></div>
+                        <div class="nomogram-axis font-bold text-base"><span class="nomogram-label dark:text-slate-200" data-lang-key="pointsTotalYesAVS">总点数 (3月内已行AVS):</span> <span id="nomogram_total_points_yes" class="nomogram-value dark:text-blue-400">0</span></div>
                         <div class="points-line-container dark:bg-slate-700"><div id="marker_yes_avs" class="points-line-marker" style="left: 0%;">0</div></div>
                         <p class="text-xs text-slate-500 dark:text-slate-400 mt-1" data-lang-key="pointsScaleInfo">点数标尺估算范围: 0 到 150</p>
                     </div>
@@ -263,27 +260,7 @@
                                 </tr>
                             </thead>
                             <tbody id="resultsBody" class="bg-white dark:bg-slate-800">
-                                <tr>
-                                    <td class="font-medium text-slate-700 dark:text-slate-300" data-lang-key="tableRowTotalPoints">总点数 (取整)</td>
-                                    <td id="totalPoints_no" class="dark:text-slate-300">--</td> <td id="totalPoints_yes" class="dark:text-slate-300">--</td> <td class="dark:text-slate-300"></td>
-                                </tr>
-                                <tr>
-                                    <td class="font-medium text-slate-700 dark:text-slate-300" data-lang-key="tableRow1YrSurvival">1年生存率</td>
-                                    <td id="survival_1y_no" class="dark:text-slate-300">--</td> <td id="survival_1y_yes" class="dark:text-slate-300">--</td> <td id="benefit_1y" class="dark:text-slate-300">--</td>
-                                </tr>
-                                <tr>
-                                    <td class="font-medium text-slate-700 dark:text-slate-300" data-lang-key="tableRow3YrSurvival">3年生存率</td>
-                                    <td id="survival_3y_no" class="dark:text-slate-300">--</td> <td id="survival_3y_yes" class="dark:text-slate-300">--</td> <td id="benefit_3y" class="dark:text-slate-300">--</td>
-                                </tr>
-                                <tr>
-                                    <td class="font-medium text-slate-700 dark:text-slate-300" data-lang-key="tableRow5YrSurvival">5年生存率</td>
-                                    <td id="survival_5y_no" class="dark:text-slate-300">--</td> <td id="survival_5y_yes" class="dark:text-slate-300">--</td> <td id="benefit_5y" class="dark:text-slate-300">--</td>
-                                </tr>
-                                <tr>
-                                    <td class="font-medium text-slate-700 dark:text-slate-300" data-lang-key="tableRowRiskGroup">风险分组</td>
-                                    <td id="riskGroup_no" class="dark:text-slate-300">--</td> <td id="riskGroup_yes" class="dark:text-slate-300">--</td> <td class="dark:text-slate-300"></td>
-                                </tr>
-                            </tbody>
+                                </tbody>
                         </table>
                     </div>
                      <p class="text-xs text-center mt-4 text-slate-500 dark:text-slate-400" data-lang-key="accuracyDisclaimer">
@@ -308,7 +285,7 @@
         </div>
     </footer>
     
-    <div id="cciModal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 hidden">
+    <div id="cciModal" class="modal fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 hidden">
         <div class="modal-content bg-white dark:bg-slate-800 rounded-lg shadow-xl w-full max-w-xl">
             <div class="flex justify-between items-center p-5 border-b border-slate-200 dark:border-slate-700">
                 <h2 class="text-lg font-semibold text-slate-800 dark:text-slate-100" data-lang-key="cciModalTitle">Charlson合并症指数 (CCI) 计算器</h2>
@@ -335,32 +312,36 @@
 <script>
 // =============================================================================
 // ARISE Score Calculator - Based on User Provided HTML & Core JS Logic (Turn 24)
-// Enhancements: CCI Calculator, LVESDi Estimator, Chart.js, Language Toggle,
-//               No default auto-calc, default Chinese, improved input sync, integer LVESDi from estimator.
-// Date: 2025-06-03
+// Enhancements: 
+// - UI layout closer to screenshot (input above slider)
+// - Fixed Sex validation bug
+// - Improved slider/number input sync
+// - LVESDi estimator outputs rounded integer
+// - Default Chinese language
+// - No auto-calculation or specific pre-filled values on load
+// - Integrated CCI Calculator & LVESDi Estimator & Chart.js
+// Date: 2025-06-03 (Based on Turn 37 feedback)
 // =============================================================================
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('ariseForm');
     const resetButton = document.getElementById('resetButton');
-    const validationErrorDiv = document.getElementById('validationError');
+    const validationErrorOverallDiv = document.getElementById('validationErrorOverall'); // Changed ID for global errors
     const languageSelector = document.getElementById('languageSelector');
     const calculationLoader = document.getElementById('calculationLoader');
     const currentYearSpan = document.getElementById('currentYear');
     if(currentYearSpan) currentYearSpan.textContent = new Date().getFullYear();
 
-
-    // Translations object (Expanded)
-    const translations = {
+    const translations = { /* सेम अस प्रेविओउस् तुर्न ३५, बट इन्क्लुदे नेव लबकेय्स् */
         zh: {
             navHome: "首页", navCalculator: "ARISE Score 工具", navDiseaseInfo: "疾病知识", navSurgicalOptions: "手术方案", navExpertViews: "专家视角", navAbout: "关于我们",
-            pageH1: "ARISE (Aortic Regurgitation/Insufficiency Survival Estimation) Score",
-            pageH2: "用于评估中重度至重度慢性主动脉瓣反流患者在3个月内接受或不接受主动脉瓣修复/置换术的生存率。",
-            tabWho: "适用人群 (Who)", tabHow: "如何使用 (How)", tabWhy: "为何使用 (Why)",
+            pageH1: "ARISE Score", // Simplified
+            pageH2: "评估慢性主动脉瓣反流患者接受或不接受手术的生存率。", // Simplified
+            tabWho: "适用人群", tabHow: "如何使用", tabWhy: "为何使用", // Simplified
             contentWho: "适用于患有 **中重度至重度慢性主动脉瓣反流 (AR)** 的患者。",
             contentHow: "通过该工具**估算和比较**在接受或不接受主动脉瓣修复/置换术情况下，患者1年、3年和5年的生存率。生存率根据低、中、高三个风险等级进行分层。虽然我们的列线图提供了生存率估算，但在共同决策过程中，必须综合考虑基线生存轨迹、净手术获益以及指南建议。",
             contentWhy: "此工具专为日常实践中的**个体化风险评估**而设计，帮助医生清晰地沟通手术的获益与风险，从而加强医患关系。",
-            labelAge: "年龄 (Age)", rangeAge: "(10-100 岁)",
-            labelSex: "性别 (Sex)", sexMale: "男性 (Male)", sexFemale: "女性 (Female)",
+            labelAge: "年龄", rangeAge: "(10-100 岁)",
+            labelSex: "性别", sexMale: "男性 (Male)", sexFemale: "女性 (Female)",
             labelCCI: "CCI评分", rangeCCI: "(0-9 分)", calculateCciButtonKey: "计算CCI",
             labelNYHA: "NYHA 心功能分级", nyhaI: "NYHA I", nyhaII: "NYHA II", nyhaIII: "NYHA III", nyhaIV: "NYHA IV",
             labelAoDi: "主动脉根部内径指数 (AoDi)", rangeAoDi: "(15-70 mm/m²)",
@@ -387,11 +368,11 @@ document.addEventListener('DOMContentLoaded', function () {
             tableRowTotalPoints: "总点数 (取整)", tableRow1YrSurvival: "1年生存率", tableRow3YrSurvival: "3年生存率", tableRow5YrSurvival: "5年生存率", tableRowRiskGroup: "风险分组",
             accuracyDisclaimer: "* 当前计算基于原始研究中的列线图及其风险评分系统，旨在辅助理解。实际临床决策需综合更多因素。",
             survivalCurveTitle: "生存率曲线 (估算)",
-            resetButtonKey: "重置 (Reset)", submitButtonKey: "提交 (Submit)",
-            errorRequired: "此字段为必填项。", errorInteger: "请输入一个有效的整数。", errorNumber: "请输入一个有效的数字。",
+            resetButtonKey: "重置", submitButtonKey: "提交", // Simplified button text for consistency
+            errorRequired: "此字段为必填项。", errorInteger: "{label}请输入一个有效的整数。", errorNumber: "{label}请输入一个有效的数字。",
             errorRange: "{label}必须是 {min} 到 {max} 之间的整数。",
             errorSelect: "{label}是必选项。",
-            errorLVEFForEstimator: "请输入有效的主表单LVEF值 (20-80%) 以估算LVESDi。",
+            errorLVEFForEstimator: "请在主表单输入有效的LVEF值 (20-80%) 以估算LVESDi。",
             footerRights: "版权所有.", footerDisclaimer: "本网站信息仅供参考，不能替代专业医疗建议、诊断或治疗。",
             langEnglish: "English", langChinese: "中文", pageTitle: "ARISE Score 预后评估 - HeartValve 专家",
             selectOption: "请选择", 
@@ -409,10 +390,10 @@ document.addEventListener('DOMContentLoaded', function () {
             chartSurvivalNoAVS: "生存率 (未行AVS)", chartSurvivalYesAVS: "生存率 (已行AVS)",
             chartLabelTimeYears: "时间 (年)", chartLabelSurvivalRate: "生存率 (%)", chartLabelBaseline: "基线"
         },
-        en: {
+        en: { // Ensure all keys from ZH exist here for complete translation
             navHome: "Home", navCalculator: "ARISE Score Tool", navDiseaseInfo: "Disease Info", navSurgicalOptions: "Surgical Options", navExpertViews: "Expert Views", navAbout: "About Us",
-            pageH1: "ARISE (Aortic Regurgitation/Insufficiency Survival Estimation) Score",
-            pageH2: "For estimating survival in patients with moderate-to-severe or severe chronic aortic regurgitation with or without aortic valve surgery within 3 months.",
+            pageH1: "ARISE Score",
+            pageH2: "Estimating survival in patients with chronic aortic regurgitation with or without surgery.",
             tabWho: "Who", tabHow: "How", tabWhy: "Why",
             contentWho: "Applicable to patients with **moderate-to-severe or severe chronic aortic regurgitation (AR)**.",
             contentHow: "Use this tool to **estimate and compare** 1-year, 3-year, and 5-year survival rates with or without aortic valve repair/replacement. Survival rates are stratified into low, intermediate, and high-risk groups. While our nomogram provides survival estimates, baseline survival trajectory, net surgical benefit, and guideline recommendations must be considered in shared decision-making.",
@@ -446,7 +427,7 @@ document.addEventListener('DOMContentLoaded', function () {
             accuracyDisclaimer: "* Current calculation is based on the nomogram and risk scoring system from the original research and is intended for informational purposes. Clinical decisions require comprehensive assessment.",
             survivalCurveTitle: "Survival Curve (Estimated)",
             resetButtonKey: "Reset", submitButtonKey: "Submit",
-            errorRequired: "This field is required.", errorInteger: "Please enter a valid integer.", errorNumber: "Please enter a valid number.",
+            errorRequired: "This field is required.", errorInteger: "{label}: please enter a valid integer.", errorNumber: "{label}: please enter a valid number.",
             errorRange: "{label} must be an integer between {min} and {max}.",
             errorSelect: "{label} is required.",
             errorLVEFForEstimator: "Please enter a valid LVEF (20-80%) from main form to estimate LVESDi.",
@@ -471,12 +452,12 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentLanguage = 'zh'; 
     let chartInstance = null;
 
-    const inputsConfig = [ // From user's HTML
-        { id: 'age',    sliderId: 'age_slider',    min: 10, max: 100, defaultVal: 20, step: 1 },
-        { id: 'cci',    sliderId: 'cci_slider',    min: 0,  max: 9,   defaultVal: 0,  step: 1 }, // Default CCI 0
-        { id: 'aodi',   sliderId: 'aodi_slider',   min: 15, max: 70,  defaultVal: 15, step: 1 },
-        { id: 'lvef',   sliderId: 'lvef_slider',   min: 20, max: 80,  defaultVal: 20, step: 1 },
-        { id: 'lvesdi', sliderId: 'lvesdi_slider', min: 10, max: 50,  defaultVal: 10, step: 1 }
+    const inputsConfig = [ // From user's HTML, values are initial defaults now, not for auto-calc
+        { id: 'age',    sliderId: 'age_slider',    min: 10, max: 100, defaultVal: '' /*20*/, step: 1 },
+        { id: 'cci',    sliderId: 'cci_slider',    min: 0,  max: 9,   defaultVal: '' /*0*/,  step: 1 },
+        { id: 'aodi',   sliderId: 'aodi_slider',   min: 15, max: 70,  defaultVal: '' /*15*/, step: 1 },
+        { id: 'lvef',   sliderId: 'lvef_slider',   min: 20, max: 80,  defaultVal: '' /*20*/, step: 1 },
+        { id: 'lvesdi', sliderId: 'lvesdi_slider', min: 10, max: 50,  defaultVal: '' /*10*/, step: 1 }
     ];
 
     // Improved Slider and Number Input Synchronization
@@ -486,76 +467,42 @@ document.addEventListener('DOMContentLoaded', function () {
         if (numberInput && sliderInput) {
             sliderInput.step = inputConf.step;
             numberInput.step = inputConf.step;
-            // Set initial values from config if not pre-filling from specific clinical profile
-            // numberInput.value = inputConf.defaultVal; // Removed: No pre-fill
-            // sliderInput.value = inputConf.defaultVal; // Removed: No pre-fill
+            numberInput.value = inputConf.defaultVal; // Set to blank initially
+            sliderInput.value = inputConf.defaultVal || inputConf.min; // Slider needs a value, default to min if blank
 
             sliderInput.addEventListener('input', () => {
                 numberInput.value = sliderInput.value;
-                validateSingleField(inputConf.id, numberInput.value, inputConf.min, inputConf.max, true, true); // Validate on slider change
+                // No auto-validate on slider input, user expects to submit to see errors for main form
             });
-            // Change event for number input to update slider after user finishes typing
+            
+            // Use 'change' for number input to update slider after user finishes typing
             numberInput.addEventListener('change', () => {
                 let value = parseInt(numberInput.value);
-                if (isNaN(value)) value = inputConf.min; // Or some other default if NaN
+                const errorElement = document.getElementById(inputConf.id + 'Error');
+                if (errorElement) errorElement.textContent = ''; // Clear previous error
+                inputElement.classList.remove('input-error-border');
+
+                if (isNaN(value)) {
+                    // If NaN after trying to parse, could set to min or leave for main validation
+                    // For now, let main validation handle it on submit. Slider won't update if NaN.
+                    // Or, revert to slider's current value if input is invalid
+                    // numberInput.value = sliderInput.value; 
+                    return; 
+                }
                 value = Math.max(inputConf.min, Math.min(inputConf.max, value));
-                numberInput.value = value;
+                numberInput.value = value; // Update with clamped value
                 sliderInput.value = value;
-                validateSingleField(inputConf.id, value, inputConf.min, inputConf.max, true, true); // Validate on number change
-            });
-             // Also validate on blur to catch final input
-            numberInput.addEventListener('blur', () => {
-                validateSingleField(inputConf.id, numberInput.value, inputConf.min, inputConf.max, true, true);
             });
         }
     });
     
-    // Simplified single field validation helper for immediate feedback
-    function validateSingleField(id, valueStr, min, max, isRequired = true, isInteger = true) {
-        const inputElement = document.getElementById(id);
-        const errorElement = document.getElementById(id + 'Error');
-        if (!inputElement || !errorElement) return true;
-
-        errorElement.textContent = '';
-        inputElement.classList.remove('input-error-border');
-        const label = translations[currentLanguage][`label${id.charAt(0).toUpperCase() + id.slice(1)}`] || id;
-
-        if (isRequired && valueStr.trim() === '') {
-            errorElement.textContent = translations[currentLanguage].errorRequired;
-            inputElement.classList.add('input-error-border');
-            return false;
-        }
-        if (valueStr.trim() === '' && !isRequired) return true;
-
-        const valueNum = parseFloat(valueStr);
-        if (isNaN(valueNum)) {
-            errorElement.textContent = translations[currentLanguage].errorNumber;
-            inputElement.classList.add('input-error-border');
-            return false;
-        }
-        if (isInteger && !Number.isInteger(valueNum)) {
-             errorElement.textContent = translations[currentLanguage].errorInteger;
-             inputElement.classList.add('input-error-border');
-             return false;
-        }
-        if ((min !== undefined && valueNum < min) || (max !== undefined && valueNum > max)) {
-            errorElement.textContent = (translations[currentLanguage].errorRange || "{label} must be between {min} and {max}.")
-                .replace('{label}', label).replace('{min}', min).replace('{max}', max);
-            inputElement.classList.add('input-error-border');
-            return false;
-        }
-        return true;
-    }
-
-
-    // Tab switching (from user's provided code)
-    window.showTab = function(tabName) {
+    window.showTab = function(tabName) { /* User's tab logic from Turn 24 */
         ['who', 'how', 'why'].forEach(contentId => {
             const contentEl = document.getElementById('content-' + contentId);
             const tabButton = document.getElementById('tab-' + contentId);
             if(contentEl) contentEl.classList.add('hidden');
             if(tabButton) {
-                tabButton.classList.remove('active', 'bg-white', 'text-slate-950', 'border-slate-300', 'dark:bg-slate-700', 'dark:text-white');
+                tabButton.classList.remove('active', 'bg-white', 'text-slate-950', 'border-slate-300', 'dark:bg-slate-700', 'dark:text-white', 'shadow-sm');
                 tabButton.classList.add('bg-slate-50', 'text-slate-600', 'border-transparent', 'dark:bg-slate-800', 'dark:text-slate-400');
             }
         });
@@ -563,100 +510,111 @@ document.addEventListener('DOMContentLoaded', function () {
         const activeTabButton = document.getElementById('tab-' + tabName);
         if(activeContentEl) activeContentEl.classList.remove('hidden');
         if(activeTabButton) {
-            activeTabButton.classList.add('active', 'bg-white', 'text-slate-950', 'border-slate-300', 'dark:bg-slate-700', 'dark:text-white');
+            activeTabButton.classList.add('active', 'bg-white', 'text-slate-950', 'border-slate-300', 'dark:bg-slate-700', 'dark:text-white', 'shadow-sm');
             activeTabButton.classList.remove('bg-slate-50', 'text-slate-600', 'border-transparent', 'dark:bg-slate-800', 'dark:text-slate-400');
         }
     }
 
     // --- START: User's Core ARISE Calculation Logic (UNCHANGED - from Turn 24) ---
-    const RISK_THRESHOLDS = { Low: 0, Intermediate: 85, High: 107 }; // User's constants
-    function calculateFactorPoints_ARISE(factors) { // User's function
+    const RISK_THRESHOLDS = { Low: 0, Intermediate: 85, High: 107 };
+    function calculateFactorPoints_ARISE(factors) { /* ... same as Turn 24/35 ... */ 
         const { age, sex, cci, nyha, aodi, lvef, lvesdi } = factors;
         return {
-            age: -11.111111 + 1.111111 * parseInt(age),
-            sex: "female" === sex ? 5.092295 : 0,
-            cci: 0 + 3.49046 * parseInt(cci),
-            nyha: -3.541039 + 3.541039 * parseInt(nyha), // nyha is "1","2","3","4"
-            aodi: -7.241847 + 0.48279 * parseInt(aodi),
-            lvef: 21.697412 - 0.271218 * parseInt(lvef),
+            age: -11.111111 + 1.111111 * parseInt(age), sex: "female" === sex ? 5.092295 : 0,
+            cci: 0 + 3.49046 * parseInt(cci), nyha: -3.541039 + 3.541039 * parseInt(nyha),
+            aodi: -7.241847 + 0.48279 * parseInt(aodi), lvef: 21.697412 - 0.271218 * parseInt(lvef),
             lvesdi: -4.527494 + 0.452749 * parseInt(lvesdi)
         };
     }
-    function calculateRawTotalPoints_ARISE(factorPoints) { // User's function
-        let sumOfFactorPoints = Object.values(factorPoints).reduce((sum, points) => sum + (points != null ? points : 0), 0);
-        if (sumOfFactorPoints < 1e-6 && sumOfFactorPoints > -1e-6) sumOfFactorPoints = 0;
-        const avsOffset = 11.042254; // User's constant
-        return [sumOfFactorPoints + avsOffset, sumOfFactorPoints]; // [No AVS, Yes AVS]
+    function calculateRawTotalPoints_ARISE(factorPoints) { /* ... same as Turn 24/35 ... */ 
+        let sum = Object.values(factorPoints).reduce((s, p) => s + (p || 0), 0);
+        if (Math.abs(sum) < 1e-6) sum = 0;
+        return [sum + 11.042254, sum];
     }
-    function calculateSurvivalProbabilities_ARISE(rawTotalPointsMatrix) { // User's function
-        const [rawTotalPointsNoAVS, rawTotalPointsYesAVS] = rawTotalPointsMatrix;
-        const getProbs = (totalPoints) => {
-            const linearPredictor = (totalPoints - 93.903984) / 18.131663; // User's constants
-            const expLP = Math.exp(linearPredictor);
-            return { // User's constants for survival
-                oneYear: Math.pow(0.977952, expLP),
-                threeYear: Math.pow(0.9343029, expLP),
-                fiveYear: Math.pow(0.8886656, expLP)
-            };
-        };
-        return { noAVS: getProbs(rawTotalPointsNoAVS), yesAVS: getProbs(rawTotalPointsYesAVS) };
+    function calculateSurvivalProbabilities_ARISE(rawTotalPointsMatrix) { /* ... same as Turn 24/35 ... */ 
+        const [noAVS, yesAVS] = rawTotalPointsMatrix;
+        const getP = (tp) => { const lp = (tp - 93.903984) / 18.131663; const e = Math.exp(lp); return {oneYear:Math.pow(.977952,e),threeYear:Math.pow(.9343029,e),fiveYear:Math.pow(.8886656,e)};};
+        return { noAVS: getP(noAVS), yesAVS: getP(yesAVS) };
     }
-    function calculateRiskGroups_ARISE(truncatedTotalPointsMatrix) { // User's function
-        const [truncatedTotalPointsNoAVS, truncatedTotalPointsYesAVS] = truncatedTotalPointsMatrix;
-        const getGroup = (points) => {
-            if (points < RISK_THRESHOLDS.Intermediate) return translations[currentLanguage].riskLow;
-            if (points < RISK_THRESHOLDS.High) return translations[currentLanguage].riskMedium;
-            return translations[currentLanguage].riskHigh;
-        };
-        return { noAVS: getGroup(truncatedTotalPointsNoAVS), yesAVS: getGroup(truncatedTotalPointsYesAVS) };
+    function calculateRiskGroups_ARISE(truncatedTotalPointsMatrix) { /* ... same as Turn 24/35 ... */
+        const [noAVS, yesAVS] = truncatedTotalPointsMatrix;
+        const getG = (p) => { if (p < RISK_THRESHOLDS.Intermediate) return translations[currentLanguage].riskLow; if (p < RISK_THRESHOLDS.High) return translations[currentLanguage].riskMedium; return translations[currentLanguage].riskHigh;};
+        return { noAVS: getG(noAVS), yesAVS: getG(yesAVS) };
     }
-    function getAriseScoreCalculatorResults_Main(factors) { // User's function
-        const factorPoints = calculateFactorPoints_ARISE(factors);
-        const rawTotalPointsMatrix = calculateRawTotalPoints_ARISE(factorPoints);
-        const truncatedTotalPointsMatrix = rawTotalPointsMatrix.map(points => Math.trunc(points));
-        const survivalProbabilities = calculateSurvivalProbabilities_ARISE(rawTotalPointsMatrix);
-        const riskGroups = calculateRiskGroups_ARISE(truncatedTotalPointsMatrix);
-        return {
-            factorPoints: factorPoints,
-            rawTotalPoints: { noAVS: rawTotalPointsMatrix[0], yesAVS: rawTotalPointsMatrix[1] },
-            totalPoints: { noAVS: truncatedTotalPointsMatrix[0], yesAVS: truncatedTotalPointsMatrix[1] },
-            survivalProbabilities: survivalProbabilities,
-            riskGroups: riskGroups
-        };
+    function getAriseScoreCalculatorResults_Main(factors) { /* ... same as Turn 24/35 ... */
+        const fp = calculateFactorPoints_ARISE(factors); const rtp = calculateRawTotalPoints_ARISE(fp);
+        const ttp = rtp.map(p=>Math.trunc(p)); const sp = calculateSurvivalProbabilities_ARISE(rtp);
+        const rg = calculateRiskGroups_ARISE(ttp);
+        return { factorPoints: fp, rawTotalPoints: {noAVS:rtp[0],yesAVS:rtp[1]}, totalPoints: {noAVS:ttp[0],yesAVS:ttp[1]}, survivalProbabilities: sp, riskGroups: rg };
     }
     // --- END: User's Core ARISE Calculation Logic ---
 
-    // Main form validation schema (from user's code, adapted)
-    const mainFormSchema = {
-        age:    { min: 10, max: 100, labelKey: "labelAge", isInteger: true },
-        sex:    { enum: ["male", "female"], labelKey: "labelSex", isRequired: true },
-        cci:    { min: 0,  max: 9,   labelKey: "labelCCI", isInteger: true },
-        nyha:   { enum: ["1", "2", "3", "4"], labelKey: "labelNYHA", isRequired: true },
-        aodi:   { min: 15, max: 70,  labelKey: "labelAoDi", isInteger: true }, // Made integer as per user's HTML slider step
-        lvef:   { min: 20, max: 80,  labelKey: "labelLVEF", isInteger: true },
-        lvesdi: { min: 10, max: 50,  labelKey: "labelLVESDi", isInteger: true } // Made integer
-    };
+    // Refined Validation for individual fields and main form
+    function validateSingleAriseField(id, valueStr) {
+        const rule = mainFormSchema[id]; // Use mainFormSchema defined earlier
+        const errorElement = document.getElementById(id + 'Error');
+        const inputElement = document.getElementById(id);
+        const label = translations[currentLanguage][rule.labelKey] || id;
+
+        if (errorElement) errorElement.textContent = '';
+        if (inputElement) inputElement.classList.remove('input-error-border');
+
+        if (!valueStr && rule.isRequired !== false) { // Check for empty if required (most are)
+            if (errorElement) errorElement.textContent = translations[currentLanguage].errorRequired;
+            if (inputElement) inputElement.classList.add('input-error-border');
+            return false;
+        }
+        if (!valueStr && rule.isRequired === false) return true; // Optional and empty is fine
+
+        if (rule.enum) {
+            if (!rule.enum.includes(valueStr)) {
+                if (errorElement) errorElement.textContent = (translations[currentLanguage].errorSelect || "{label} is required.").replace('{label}', label);
+                if (inputElement) inputElement.classList.add('input-error-border');
+                return false;
+            }
+            return true;
+        }
+
+        const valueNum = parseFloat(valueStr); // All main ARISE inputs are parsed as numbers for min/max check
+                                              // Integer check for display/slider interaction is separate
+
+        if (isNaN(valueNum)) {
+            if (errorElement) errorElement.textContent = (translations[currentLanguage].errorNumber || "{label}: please enter a valid number.").replace('{label}', label);
+            if (inputElement) inputElement.classList.add('input-error-border');
+            return false;
+        }
+        // Check if it should be an integer (all slider-linked inputs from user's HTML are integers)
+        if (rule.isInteger && !Number.isInteger(valueNum)) {
+            if (errorElement) errorElement.textContent = (translations[currentLanguage].errorInteger || "{label} must be an integer.").replace('{label}', label);
+            if (inputElement) inputElement.classList.add('input-error-border');
+            return false;
+        }
+
+        if ((typeof rule.min !== 'undefined' && valueNum < rule.min) || (typeof rule.max !== 'undefined' && valueNum > rule.max)) {
+            if (errorElement) errorElement.textContent = (translations[currentLanguage].errorRange || "{label} must be between {min} and {max}.")
+                .replace('{label}', label).replace('{min}', rule.min).replace('{max}', rule.max);
+            if (inputElement) inputElement.classList.add('input-error-border');
+            return false;
+        }
+        return true;
+    }
     
     function validateMainAriseForm() {
         let isValid = true;
-        if(validationErrorDiv) validationErrorDiv.innerHTML = ''; // Clear global errors
-        let errorMessagesArray = [];
-
+        if(validationErrorOverallDiv) validationErrorOverallDiv.textContent = '';
+        
         for (const key in mainFormSchema) {
             const inputElement = document.getElementById(key);
-            if (!inputElement) continue;
-            const value = inputElement.value;
-            const rule = mainFormSchema[key];
-            const validationResult = validateSingleField(key, value, rule.min, rule.max, rule.isRequired !== false, rule.isInteger, rule.enum, rule.labelKey);
-            if (!validationResult) { // validateSingleField now just returns true/false
-                isValid = false;
-                // Error message is displayed by validateSingleField itself
+            if (inputElement) {
+                if (!validateSingleAriseField(key, inputElement.value)) {
+                    isValid = false;
+                }
             }
         }
         return isValid;
     }
     
-    if(form) form.addEventListener('submit', function (event) {
+    if(form) form.addEventListener('submit', function (event) { /* ... same submit logic as Turn 35, but calls validateMainAriseForm ... */
         event.preventDefault();
         if(calculationLoader) calculationLoader.style.display = 'inline-block';
         
@@ -664,17 +622,12 @@ document.addEventListener('DOMContentLoaded', function () {
             if(calculationLoader) calculationLoader.style.display = 'none';
             return;
         }
-        
-        const processedInputs = { // Ensure these match the exact keys and types for user's functions
-            age:    parseInt(document.getElementById('age').value),
-            sex:    document.getElementById('sex').value,
-            cci:    parseInt(document.getElementById('cci').value),
-            nyha:   document.getElementById('nyha').value, // This is "1", "2", "3", "4"
-            aodi:   parseInt(document.getElementById('aodi').value),
-            lvef:   parseInt(document.getElementById('lvef').value),
+        const processedInputs = {
+            age:    parseInt(document.getElementById('age').value), sex:    document.getElementById('sex').value,
+            cci:    parseInt(document.getElementById('cci').value), nyha:   document.getElementById('nyha').value,
+            aodi:   parseInt(document.getElementById('aodi').value), lvef:   parseInt(document.getElementById('lvef').value),
             lvesdi: parseInt(document.getElementById('lvesdi').value)
         };
-
         setTimeout(() => {
             const results = getAriseScoreCalculatorResults_Main(processedInputs);
             updateNomogramPointsDisplay(results.factorPoints, results.totalPoints);
@@ -684,142 +637,95 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 300);
     });
 
-    // Update Nomogram display (from user's code, adapted)
-    function updateNomogramPointsDisplay(perVarScores, totalPts) { // totalPts is {noAVS, yesAVS}
-        if(document.getElementById('nomogram_age_points')) document.getElementById('nomogram_age_points').textContent = perVarScores.age.toFixed(1);
-        if(document.getElementById('nomogram_sex_points')) document.getElementById('nomogram_sex_points').textContent = perVarScores.sex.toFixed(1);
-        if(document.getElementById('nomogram_cci_points')) document.getElementById('nomogram_cci_points').textContent = perVarScores.cci.toFixed(1);
-        if(document.getElementById('nomogram_nyha_points')) document.getElementById('nomogram_nyha_points').textContent = perVarScores.nyha.toFixed(1);
-        if(document.getElementById('nomogram_aodi_points')) document.getElementById('nomogram_aodi_points').textContent = perVarScores.aodi.toFixed(1);
-        if(document.getElementById('nomogram_lvef_points')) document.getElementById('nomogram_lvef_points').textContent = perVarScores.lvef.toFixed(1);
-        if(document.getElementById('nomogram_lvesdi_points')) document.getElementById('nomogram_lvesdi_points').textContent = perVarScores.lvesdi.toFixed(1);
-        
-        if(document.getElementById('nomogram_total_points_no')) document.getElementById('nomogram_total_points_no').textContent = totalPts.noAVS;
-        if(document.getElementById('nomogram_total_points_yes')) document.getElementById('nomogram_total_points_yes').textContent = totalPts.yesAVS;
-        
-        const NOMOGRAM_TOTAL_POINTS_MAX_SCALE = 150; // From user's HTML
-        const markerNoAvs = document.getElementById('marker_no_avs');
-        const markerYesAvs = document.getElementById('marker_yes_avs');
-        
-        if (markerNoAvs) {
-            let percentNoAvs = (totalPts.noAVS / NOMOGRAM_TOTAL_POINTS_MAX_SCALE) * 100;
-            percentNoAvs = Math.min(100, Math.max(0, percentNoAvs)); 
-            markerNoAvs.style.left = `calc(${percentNoAvs}% - ${markerNoAvs.offsetWidth / 2}px)`; 
-            markerNoAvs.textContent = totalPts.noAVS;
-        }
-        if (markerYesAvs) {
-            let percentYesAvs = (totalPts.yesAVS / NOMOGRAM_TOTAL_POINTS_MAX_SCALE) * 100;
-            percentYesAvs = Math.min(100, Math.max(0, percentYesAvs));
-            markerYesAvs.style.left = `calc(${percentYesAvs}% - ${markerYesAvs.offsetWidth / 2}px)`;
-            markerYesAvs.textContent = totalPts.yesAVS;
-        }
-    }
-
-    // Update results table (from user's code, adapted)
-    function updateResultsTable(totalPts, survivalProbs, riskGroups) { // totalPts, survivalProbs, riskGroups are {noAVS, yesAVS}
-        if(document.getElementById('totalPoints_no')) document.getElementById('totalPoints_no').textContent = totalPts.noAVS;
-        if(document.getElementById('totalPoints_yes')) document.getElementById('totalPoints_yes').textContent = totalPts.yesAVS;
-
-        if(document.getElementById('survival_1y_no')) document.getElementById('survival_1y_no').textContent = (survivalProbs.noAVS.oneYear * 100).toFixed(1) + '%';
-        if(document.getElementById('survival_1y_yes')) document.getElementById('survival_1y_yes').textContent = (survivalProbs.yesAVS.oneYear * 100).toFixed(1) + '%';
-        if(document.getElementById('benefit_1y')) document.getElementById('benefit_1y').textContent = ((survivalProbs.yesAVS.oneYear - survivalProbs.noAVS.oneYear) * 100).toFixed(1) + '%';
-        
-        if(document.getElementById('survival_3y_no')) document.getElementById('survival_3y_no').textContent = (survivalProbs.noAVS.threeYear * 100).toFixed(1) + '%';
-        if(document.getElementById('survival_3y_yes')) document.getElementById('survival_3y_yes').textContent = (survivalProbs.yesAVS.threeYear * 100).toFixed(1) + '%';
-        if(document.getElementById('benefit_3y')) document.getElementById('benefit_3y').textContent = ((survivalProbs.yesAVS.threeYear - survivalProbs.noAVS.threeYear) * 100).toFixed(1) + '%';
-
-        if(document.getElementById('survival_5y_no')) document.getElementById('survival_5y_no').textContent = (survivalProbs.noAVS.fiveYear * 100).toFixed(1) + '%';
-        if(document.getElementById('survival_5y_yes')) document.getElementById('survival_5y_yes').textContent = (survivalProbs.yesAVS.fiveYear * 100).toFixed(1) + '%';
-        if(document.getElementById('benefit_5y')) document.getElementById('benefit_5y').textContent = ((survivalProbs.yesAVS.fiveYear - survivalProbs.noAVS.fiveYear) * 100).toFixed(1) + '%';
-
-        if(document.getElementById('riskGroup_no')) document.getElementById('riskGroup_no').textContent = riskGroups.noAVS;
-        if(document.getElementById('riskGroup_yes')) document.getElementById('riskGroup_yes').textContent = riskGroups.yesAVS;
-    }
-    
-    // Clear results (from user's code, adapted)
-    function clearResultsAndNomogramPoints() {
-        const nomogramPointIds = ['nomogram_age_points', 'nomogram_sex_points', 'nomogram_cci_points', 'nomogram_nyha_points', 'nomogram_aodi_points', 'nomogram_lvef_points', 'nomogram_lvesdi_points', 'nomogram_total_points_no', 'nomogram_total_points_yes'];
-        nomogramPointIds.forEach(id => { if(document.getElementById(id)) document.getElementById(id).textContent = '0'; });
-        const tableResultIds = ['totalPoints_no', 'totalPoints_yes', 'survival_1y_no', 'survival_1y_yes', 'benefit_1y', 'survival_3y_no', 'survival_3y_yes', 'benefit_3y', 'survival_5y_no', 'survival_5y_yes', 'benefit_5y', 'riskGroup_no', 'riskGroup_yes'];
-        tableResultIds.forEach(id => { if(document.getElementById(id)) document.getElementById(id).textContent = '--'; });
-        const markerNoAvs = document.getElementById('marker_no_avs');
-        const markerYesAvs = document.getElementById('marker_yes_avs');
-        if(markerNoAvs) { markerNoAvs.style.left = `0%`; markerNoAvs.textContent = '0';}
-        if(markerYesAvs) { markerYesAvs.style.left = `0%`; markerYesAvs.textContent = '0';}
-        if(chartInstance) { // Clear chart data
-            chartInstance.data.datasets[0].data = [100, null, null, null];
-            chartInstance.data.datasets[1].data = [100, null, null, null];
-            chartInstance.update();
-        } else {
-            initChart(); // Initialize chart if it wasn't already
-        }
-    }
-    
-    // Reset form (from user's code, adapted for no auto-calc)
-    if(resetButton) resetButton.addEventListener('click', function() {
-        if(form) form.reset(); // Resets to HTML default values
-        inputsConfig.forEach(conf => { // Explicitly set to HTML default values for sliders and number inputs
-            const numInput = document.getElementById(conf.id);
-            const sliderInput = document.getElementById(conf.sliderId);
-            if (numInput) numInput.value = numInput.defaultValue || conf.defaultVal || ''; // Use HTML default or configured default
-            if (sliderInput) sliderInput.value = sliderInput.defaultValue || conf.defaultVal || '';
-        });
-        // Reset select elements
-        if(document.getElementById('sex')) document.getElementById('sex').value = "male"; // Or its HTML default
-        if(document.getElementById('nyha')) document.getElementById('nyha').value = "1";   // Or its HTML default
-        
-        if(validationErrorDiv) validationErrorDiv.textContent = '';
-        clearResultsAndNomogramPoints();
-        // Remove auto-calculation on reset
-    });
-
-    // Language Switcher and Initial Language Setting
-    function updateAllText() {
-        document.documentElement.lang = currentLanguage;
-        document.querySelectorAll('[data-lang-key]').forEach(el => {
-            const key = el.getAttribute('data-lang-key');
-            const translation = translations[currentLanguage]?.[key];
-            if (translation) {
-                if (el.tagName === 'INPUT' && (el.type === 'submit' || el.type === 'button')) el.value = translation;
-                else if (el.tagName === 'TITLE') document.title = translation;
-                else el.innerHTML = translation; // Use innerHTML for elements that might contain icons like <i>
+    function updateNomogramPointsDisplay(perVarScores, totalPts) { /* ... same as Turn 35 ... */ 
+        const ids = ['age', 'sex', 'cci', 'nyha', 'aodi', 'lvef', 'lvesdi'];
+        ids.forEach(id => {
+            if(document.getElementById(`nomogram_${id}_points`) && perVarScores[id] !== undefined) {
+                document.getElementById(`nomogram_${id}_points`).textContent = perVarScores[id].toFixed(1);
             }
         });
-        if (chartInstance) { // Update chart labels and titles
-            chartInstance.data.labels = [
-                translations[currentLanguage].chartLabelBaseline,
-                `1 ${translations[currentLanguage].chartLabelTimeYears}`,
-                `3 ${translations[currentLanguage].chartLabelTimeYears}`,
-                `5 ${translations[currentLanguage].chartLabelTimeYears}`
-            ];
+        if(document.getElementById('nomogram_total_points_no')) document.getElementById('nomogram_total_points_no').textContent = totalPts.noAVS;
+        if(document.getElementById('nomogram_total_points_yes')) document.getElementById('nomogram_total_points_yes').textContent = totalPts.yesAVS;
+        const NOMOGRAM_MAX = 150;
+        ['no_avs', 'yes_avs'].forEach(type => {
+            const marker = document.getElementById(`marker_${type}`);
+            const points = type === 'no_avs' ? totalPts.noAVS : totalPts.yesAVS;
+            if (marker) {
+                let percent = (points / NOMOGRAM_MAX) * 100;
+                percent = Math.min(100, Math.max(0, percent)); 
+                marker.style.left = `calc(${percent}% - ${marker.offsetWidth / 2}px)`; 
+                marker.textContent = points;
+            }
+        });
+    }
+    function updateResultsTable(totalPts, survivalProbs, riskGroups) { /* ... same as Turn 35 ... */ 
+        const fields = {
+            totalPoints_no: totalPts.noAVS, totalPoints_yes: totalPts.yesAVS,
+            survival_1y_no: (survivalProbs.noAVS.oneYear*100).toFixed(1)+'%', survival_1y_yes: (survivalProbs.yesAVS.oneYear*100).toFixed(1)+'%',
+            benefit_1y: ((survivalProbs.yesAVS.oneYear - survivalProbs.noAVS.oneYear)*100).toFixed(1)+'%',
+            survival_3y_no: (survivalProbs.noAVS.threeYear*100).toFixed(1)+'%', survival_3y_yes: (survivalProbs.yesAVS.threeYear*100).toFixed(1)+'%',
+            benefit_3y: ((survivalProbs.yesAVS.threeYear - survivalProbs.noAVS.threeYear)*100).toFixed(1)+'%',
+            survival_5y_no: (survivalProbs.noAVS.fiveYear*100).toFixed(1)+'%', survival_5y_yes: (survivalProbs.yesAVS.fiveYear*100).toFixed(1)+'%',
+            benefit_5y: ((survivalProbs.yesAVS.fiveYear - survivalProbs.noAVS.fiveYear)*100).toFixed(1)+'%',
+            riskGroup_no: riskGroups.noAVS, riskGroup_yes: riskGroups.yesAVS
+        };
+        for(const id in fields) { if(document.getElementById(id)) document.getElementById(id).textContent = fields[id];}
+    }
+    function clearResultsAndNomogramPoints() { /* ... same as Turn 35 ... */ 
+        const nomoIds = ['age', 'sex', 'cci', 'nyha', 'aodi', 'lvef', 'lvesdi'];
+        nomoIds.forEach(id => {if(document.getElementById(`nomogram_${id}_points`)) document.getElementById(`nomogram_${id}_points`).textContent = '0';});
+        ['nomogram_total_points_no', 'nomogram_total_points_yes'].forEach(id => {if(document.getElementById(id)) document.getElementById(id).textContent = '0';});
+        const tableIds = ['totalPoints_no', 'totalPoints_yes', 'survival_1y_no', 'survival_1y_yes', 'benefit_1y', 'survival_3y_no', 'survival_3y_yes', 'benefit_3y', 'survival_5y_no', 'survival_5y_yes', 'benefit_5y', 'riskGroup_no', 'riskGroup_yes'];
+        tableIds.forEach(id => { if(document.getElementById(id)) document.getElementById(id).textContent = '--'; });
+        ['marker_no_avs', 'marker_yes_avs'].forEach(id => { const m = document.getElementById(id); if(m){ m.style.left = '0%'; m.textContent = '0';}});
+        if(chartInstance) { chartInstance.data.datasets.forEach(ds => ds.data = [100, null, null, null]); chartInstance.update('none');} else { initChart(); }
+    }
+    
+    if(resetButton) resetButton.addEventListener('click', function() { /* ... same as Turn 35, no auto-calc ... */
+        if(form) form.reset(); 
+        inputsConfig.forEach(conf => { 
+            const numInput = document.getElementById(conf.id); const sliderInput = document.getElementById(conf.sliderId);
+            const valToSet = numInput.defaultValue || conf.defaultVal || ''; // Use HTML default value if present, else configured default, else blank
+            if (numInput) numInput.value = valToSet; 
+            if (sliderInput) sliderInput.value = valToSet || conf.min; // Slider needs a value
+        });
+        if(document.getElementById('sex')) document.getElementById('sex').value = document.getElementById('sex').options[0].value;
+        if(document.getElementById('nyha')) document.getElementById('nyha').value = document.getElementById('nyha').options[0].value;
+        if(validationErrorOverallDiv) validationErrorOverallDiv.textContent = '';
+        ['age', 'sex', 'cci', 'nyha', 'aodi', 'lvef', 'lvesdi'].forEach(id => { if(document.getElementById(id+'Error')) document.getElementById(id+'Error').textContent = ''; if(document.getElementById(id)) document.getElementById(id).classList.remove('input-error-border');});
+        clearResultsAndNomogramPoints();
+    });
+
+    function updateAllText() { /* ... same as Turn 35 ... */ 
+        document.documentElement.lang = currentLanguage;
+        document.querySelectorAll('[data-lang-key]').forEach(el => {
+            const key = el.getAttribute('data-lang-key'); const translation = translations[currentLanguage]?.[key];
+            if (translation) {
+                if (el.tagName === 'INPUT' && (el.type === 'submit' || el.type === 'button')) el.value = translation;
+                else if (el.tagName === 'TITLE') document.title = translation; else el.innerHTML = translation;
+            }
+        });
+        if (chartInstance) { 
+            chartInstance.data.labels = [ translations[currentLanguage].chartLabelBaseline, `1 ${translations[currentLanguage].chartLabelTimeYears.split(' ')[0]}`, `3 ${translations[currentLanguage].chartLabelTimeYears.split(' ')[0]}`, `5 ${translations[currentLanguage].chartLabelTimeYears.split(' ')[0]}`];
             chartInstance.data.datasets[0].label = translations[currentLanguage].chartSurvivalNoAVS;
             chartInstance.data.datasets[1].label = translations[currentLanguage].chartSurvivalYesAVS;
             chartInstance.options.scales.y.title.text = translations[currentLanguage].chartLabelSurvivalRate;
             chartInstance.options.scales.x.title.text = translations[currentLanguage].chartLabelTimeYears;
-            chartInstance.update('none'); // 'none' for no animation
+            chartInstance.update('none'); 
         }
-        if (document.getElementById('cciModal')) {
-            populateCciConditions(); 
-            const cciModalTitle = document.querySelector('#cciModal [data-lang-key="cciModalTitle"]');
-            if(cciModalTitle) cciModalTitle.textContent = translations[currentLanguage].cciModalTitle;
-            const cciModalScore = document.querySelector('#cciModal [data-lang-key="cciModalTotalScore"]');
-            if(cciModalScore) cciModalScore.textContent = translations[currentLanguage].cciModalTotalScore;
-            const cciModalNote = document.querySelector('#cciModal [data-lang-key="cciModalNote"]');
-            if(cciModalNote) cciModalNote.textContent = translations[currentLanguage].cciModalNote;
-            const cciModalCancel = document.querySelector('#cciModal [data-lang-key="cciModalCancel"]');
-            if(cciModalCancel) cciModalCancel.textContent = translations[currentLanguage].cciModalCancel;
-            const cciModalApply = document.querySelector('#cciModal [data-lang-key="cciModalApply"]');
-            if(cciModalApply) cciModalApply.textContent = translations[currentLanguage].cciModalApply;
+        if (document.getElementById('cciModal')) { populateCciConditions(); 
+            ['cciModalTitle', 'cciModalTotalScore', 'cciModalNote', 'cciModalCancel', 'cciModalApply'].forEach(key => {
+                const el = document.querySelector(`#cciModal [data-lang-key="${key}"], [data-lang-key="${key}"]`); // Broader query for modal elements
+                if(el && translations[currentLanguage][key]) el.textContent = translations[currentLanguage][key];
+            });
         }
     }
 
-    if(languageSelector) languageSelector.addEventListener('change', (e) => {
-        currentLanguage = e.target.value;
-        localStorage.setItem('ariseCalculatorLanguage', currentLanguage);
-        updateAllText();
+    if(languageSelector) languageSelector.addEventListener('change', (e) => { /* ... same as Turn 35 ... */ 
+        currentLanguage = e.target.value; localStorage.setItem('ariseCalculatorLanguage', currentLanguage); updateAllText();
     });
 
-    // --- CCI Calculator Logic ---
+    // --- CCI Calculator (Modal) ---
     const cciModal = document.getElementById('cciModal');
     const openCciModalButton = document.getElementById('openCciModalButton');
     const closeCciModalButton = document.getElementById('closeCciModalButton');
@@ -830,64 +736,37 @@ document.addEventListener('DOMContentLoaded', function () {
     const mainCciInput = document.getElementById('cci');
     const mainCciSlider = document.getElementById('cci_slider');
 
-    // Standard Charlson points (excluding age, as ARISE model handles age separately)
-    const cciConditionPoints = {
-        mi: 1, chf: 1, pvd: 1, cvd: 1, dementia: 1, cpd: 1, ctd: 1, pud: 1, mld: 1, diabetes_no_ed: 1,
-        hemiplegia: 2, renal_mod_sev: 2, diabetes_ed: 2, tumor_no_meta: 2, leukemia: 2, lymphoma: 2,
-        liver_mod_sev: 3, tumor_meta: 6, aids: 6
-    };
+    // (cciConditionPoints object from Turn 35 is already defined above with translations)
 
-    function populateCciConditions() {
-        if (!cciConditionsContainer) return;
-        cciConditionsContainer.innerHTML = ''; 
+    function populateCciConditions() { /* ... same as Turn 35 ... */ 
+        if (!cciConditionsContainer) return; cciConditionsContainer.innerHTML = ''; 
         Object.keys(cciConditionPoints).forEach(key => {
-            const conditionName = translations[currentLanguage]?.[key] || key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-            const points = cciConditionPoints[key];
-            const label = document.createElement('label');
-            label.className = 'flex items-center space-x-3 p-2.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer transition-colors duration-150';
-            label.innerHTML = `
-                <input type="checkbox" name="cci_condition" value="${points}" data-condition-key="${key}" class="form-checkbox h-4 w-4 text-blue-600 border-slate-300 dark:border-slate-500 rounded bg-white dark:bg-slate-600 focus:ring-blue-500 focus:ring-offset-0 dark:focus:ring-offset-slate-800">
-                <span class="text-slate-700 dark:text-slate-300">${conditionName} <span class="text-xs text-slate-500 dark:text-slate-400">(+${points})</span></span>
-            `;
-            cciConditionsContainer.appendChild(label);
+            const name = translations[currentLanguage]?.[key] || key; const pts = cciConditionPoints[key];
+            const lbl = document.createElement('label'); lbl.className = 'flex items-center space-x-3 p-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer';
+            lbl.innerHTML = `<input type="checkbox" name="cci_cond" value="${pts}" class="form-checkbox h-4 w-4 accent-blue-600"><span class="text-slate-700 dark:text-slate-300">${name} (+${pts})</span>`;
+            cciConditionsContainer.appendChild(lbl);
         });
-        cciConditionsContainer.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-            checkbox.addEventListener('change', updateCciScoreDisplayFromModal);
-        });
+        cciConditionsContainer.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.addEventListener('change', updateCciScoreInModal));
     }
-
-    function updateCciScoreDisplayFromModal() {
-        if (!cciScoreDisplay || !cciConditionsContainer) return;
-        let totalCciPoints = 0;
-        cciConditionsContainer.querySelectorAll('input[type="checkbox"][name="cci_condition"]:checked').forEach(checkbox => {
-            totalCciPoints += parseInt(checkbox.value);
-        });
-        cciScoreDisplay.textContent = totalCciPoints;
+    function updateCciScoreInModal() { /* ... same as Turn 35 ... */ 
+        if (!cciScoreDisplay || !cciConditionsContainer) return; let total = 0;
+        cciConditionsContainer.querySelectorAll('input[name="cci_cond"]:checked').forEach(cb => total += parseInt(cb.value));
+        cciScoreDisplay.textContent = total;
     }
-
-    if(openCciModalButton) openCciModalButton.addEventListener('click', () => { if(cciModal) { cciModal.classList.remove('hidden'); document.body.classList.add('modal-active-body-scroll-lock'); updateCciScoreDisplayFromModal(); }});
+    if(openCciModalButton) openCciModalButton.addEventListener('click', () => { if(cciModal) { cciModal.classList.remove('hidden'); document.body.classList.add('modal-active-body-scroll-lock'); updateCciScoreInModal(); }});
     if(closeCciModalButton) closeCciModalButton.addEventListener('click', () => { if(cciModal) { cciModal.classList.add('hidden'); document.body.classList.remove('modal-active-body-scroll-lock'); }});
     if(cancelCciButton) cancelCciButton.addEventListener('click', () => { if(cciModal) { cciModal.classList.add('hidden'); document.body.classList.remove('modal-active-body-scroll-lock'); }});
-    if(applyCciButton) applyCciButton.addEventListener('click', () => {
+    if(applyCciButton) applyCciButton.addEventListener('click', () => { /* ... same as Turn 35, ensuring CCI stays within main form's 0-9 range ... */ 
         if(mainCciInput && cciScoreDisplay && mainCciSlider) {
-            let newCciValue = parseInt(cciScoreDisplay.textContent);
-            const cciMax = parseInt(mainCciInput.max);
-            const cciMin = parseInt(mainCciInput.min);
-            
-            if (newCciValue > cciMax) { // If calculated CCI exceeds main form's CCI input max (e.g. 9)
-                 alert((translations[currentLanguage].errorRange || "CCI must be between {min} and {max}.")
-                    .replace('{label}', translations[currentLanguage].labelCCI || "CCI")
-                    .replace('{min}', cciMin)
-                    .replace('{max}', cciMax) + 
-                    (currentLanguage === 'zh' ? `\n计算器计算的CCI总分为 ${newCciValue}，将使用主输入框允许的最大值 ${cciMax}。原始ARISE列线图CCI上限为9。` : `\nCalculated CCI score is ${newCciValue}, will use max allowed value ${cciMax} for the input field. Original ARISE nomogram CCI max is 9.` )
-                 );
-                newCciValue = cciMax; // Cap at main input's max
-            }
-            mainCciInput.value = newCciValue;
-            mainCciSlider.value = newCciValue; // Sync slider
+            let newCci = parseInt(cciScoreDisplay.textContent); const minCci=0, maxCci=9; // Main form CCI range
+            if (newCci > maxCci) {
+                alert((translations[currentLanguage].errorRange||"").replace('{label}',translations[currentLanguage].labelCCI).replace('{min}',minCci).replace('{max}',maxCci) + ` (Calculated: ${newCci}). Using ${maxCci}.`);
+                newCci = maxCci;
+            } else if (newCci < minCci) newCci = minCci;
+            mainCciInput.value = newCci; mainCciSlider.value = newCci;
         }
         if(cciModal) { cciModal.classList.add('hidden'); document.body.classList.remove('modal-active-body-scroll-lock');}
-        validateSingleField('cci', mainCciInput.value, mainFormSchema.cci.min, mainFormSchema.cci.max, true, true);
+        validateSingleAriseField('cci', mainCciInput.value);
     });
 
     // --- LVESDi Estimator Logic ---
@@ -899,55 +778,45 @@ document.addEventListener('DOMContentLoaded', function () {
     const mainLvesdiInput = document.getElementById('lvesdi');
     const mainLvesdiSlider = document.getElementById('lvesdi_slider');
 
-    if(toggleLvesdiEstimatorButton) toggleLvesdiEstimatorButton.addEventListener('click', () => {
-        if(lvesdiEstimatorSection) lvesdiEstimatorSection.classList.toggle('hidden');
-        if(lvesdiEstimatorIcon) {
-            lvesdiEstimatorIcon.classList.toggle('fa-chevron-down');
-            lvesdiEstimatorIcon.classList.toggle('fa-chevron-up');
-        }
+    if(toggleLvesdiEstimatorButton) toggleLvesdiEstimatorButton.addEventListener('click', () => { /* ... same as Turn 35 ... */ 
+        if(lvesdiEstimatorSection) lvesdiEstimatorSection.classList.toggle('hidden'); 
+        if(lvesdiEstimatorIcon) { lvesdiEstimatorIcon.classList.toggle('fa-chevron-down'); lvesdiEstimatorIcon.classList.toggle('fa-chevron-up'); }
     });
     
-    const estimatorSchema = {
-        estimatorLvdd: { min: 20, max: 100, labelKey: "labelLVDD", isInteger: true }, // LVDd typically integer
-        estimatorHeight: { min: 100, max: 250, labelKey: "labelHeight", isInteger: true },
-        estimatorWeight: { min: 20, max: 250, labelKey: "labelWeight", isInteger: false, step: 0.1 } // Weight can be decimal
+    const estimatorSchema = { // Schema for LVESDi estimator inputs
+        estimatorLvdd: { min: 20, max: 100, labelKey: "labelLVDD", isInteger: true, isRequired: true },
+        estimatorHeight: { min: 100, max: 250, labelKey: "labelHeight", isInteger: true, isRequired: true },
+        estimatorWeight: { min: 20, max: 250, labelKey: "labelWeight", isInteger: false, step: 0.1, isRequired: true }
     };
 
-    if(calculateLvesdiButton) calculateLvesdiButton.addEventListener('click', () => {
-        if(lvesdiEstimationResultEl) {
-            lvesdiEstimationResultEl.textContent = '';
-            lvesdiEstimationResultEl.classList.remove('text-red-500');
+    function validateEstimatorForm() {
+        let isValid = true;
+        for (const key in estimatorSchema) {
+            const el = document.getElementById(key);
+            if (el && !validateSingleAriseField(key, el.value, estimatorSchema[key])) isValid = false; // Reusing validateSingleAriseField
         }
-        let estimatorValid = true;
-        
-        const lvddValRes = validateSingleField('estimatorLvdd', document.getElementById('estimatorLvdd').value, estimatorSchema.estimatorLvdd.min, estimatorSchema.estimatorLvdd.max, true, estimatorSchema.estimatorLvdd.isInteger);
-        const heightValRes = validateSingleField('estimatorHeight', document.getElementById('estimatorHeight').value, estimatorSchema.estimatorHeight.min, estimatorSchema.estimatorHeight.max, true, estimatorSchema.estimatorHeight.isInteger);
-        const weightValRes = validateSingleField('estimatorWeight', document.getElementById('estimatorWeight').value, estimatorSchema.estimatorWeight.min, estimatorSchema.estimatorWeight.max, true, estimatorSchema.estimatorWeight.isInteger);
-        
-        const mainLvefInputEl = document.getElementById('lvef');
-        const mainLvefSchema = mainFormSchema.lvef;
-        const lvefValidation = validateSingleField('lvef', mainLvefInputEl.value, mainLvefSchema.min, mainLvefSchema.max, true, mainLvefSchema.isInteger);
-
-        if (!lvddValRes || !heightValRes || !weightValRes || !lvefValidation) { // Simpler check if any failed
-            estimatorValid = false;
-        }
-         if (!lvefValidation) { // Specific error for LVEF if it's the one failing from main form
-            const lvefErrorElement = document.getElementById('lvefError'); // Main LVEF error field
-            if (lvefErrorElement && lvesdiEstimationResultEl) {
+        // Validate LVEF from main form
+        const mainLvefEl = document.getElementById('lvef');
+        if (mainLvefEl && !validateSingleAriseField('lvef', mainLvefEl.value, mainFormSchema.lvef)) {
+            isValid = false;
+            if(lvesdiEstimationResultEl) {
                 lvesdiEstimationResultEl.textContent = translations[currentLanguage].errorLVEFForEstimator;
                 lvesdiEstimationResultEl.classList.add('text-red-500');
             }
         }
+        return isValid;
+    }
 
-        if (!estimatorValid) {
-            if(lvesdiEstimationResultEl && !lvesdiEstimationResultEl.textContent) { // If no specific LVEF error shown
-                 lvesdiEstimationResultEl.textContent = translations[currentLanguage].lvesdiNotCalculated;
-                 lvesdiEstimationResultEl.classList.add('text-red-500');
+    if(calculateLvesdiButton) calculateLvesdiButton.addEventListener('click', () => { /* ... same as Turn 35, but rounds LVESDi to INT ... */ 
+        if(lvesdiEstimationResultEl) { lvesdiEstimationResultEl.textContent = ''; lvesdiEstimationResultEl.classList.remove('text-red-500');}
+        if (!validateEstimatorForm()) { 
+            if(lvesdiEstimationResultEl && !lvesdiEstimationResultEl.textContent) { // Generic error if not set by LVEF
+                lvesdiEstimationResultEl.textContent = translations[currentLanguage].lvesdiNotCalculated;
+                lvesdiEstimationResultEl.classList.add('text-red-500');
             }
-            return;
+            return; 
         }
-
-        const lvef = parseInt(mainLvefInputEl.value);
+        const lvef = parseInt(document.getElementById('lvef').value);
         const lvdd_mm = parseInt(document.getElementById('estimatorLvdd').value);
         const height_cm = parseInt(document.getElementById('estimatorHeight').value);
         const weight_kg = parseFloat(document.getElementById('estimatorWeight').value);
@@ -955,145 +824,84 @@ document.addEventListener('DOMContentLoaded', function () {
         const bsa_m2 = 0.007184 * Math.pow(height_cm, 0.725) * Math.pow(weight_kg, 0.425);
         const lvesd_mm_cubed = Math.pow(lvdd_mm, 3) * (1 - (lvef / 100));
         const lvesd_mm = Math.cbrt(lvesd_mm_cubed);
-        let lvesdi_estimated = lvesd_mm / bsa_m2;
-
-        if (!isNaN(lvesdi_estimated) && isFinite(lvesdi_estimated)) {
-            // LVESDi in main form is integer, so round the estimation
-            const finalLvesdiToFill = Math.round(lvesdi_estimated); 
-            
-            const mainLvesdiMin = parseInt(mainLvesdiInput.min);
-            const mainLvesdiMax = parseInt(mainLvesdiInput.max);
+        let lvesdi_estimated_raw = lvesd_mm / bsa_m2;
+        
+        if (!isNaN(lvesdi_estimated_raw) && isFinite(lvesdi_estimated_raw)) {
+            const finalLvesdiToFill = Math.round(lvesdi_estimated_raw); // Round to nearest INTEGER
+            const mainLvesdiMin = parseInt(mainLvesdiInput.min); const mainLvesdiMax = parseInt(mainLvesdiInput.max);
             let clampedLvesdi = finalLvesdiToFill;
 
             if (finalLvesdiToFill < mainLvesdiMin) {
                 clampedLvesdi = mainLvesdiMin;
-                 alert((translations[currentLanguage].errorRange || "{label} must be an integer between {min} and {max}.")
-                    .replace('{label}', translations[currentLanguage].labelLVESDi || "LVESDi")
-                    .replace('{min}', mainLvesdiMin)
-                    .replace('{max}', mainLvesdiMax) + 
-                    (currentLanguage === 'zh' ? `\n估算结果为 ${finalLvesdiToFill} (原始值 ${lvesdi_estimated.toFixed(1)})，将使用允许的最小值 ${mainLvesdiMin}。` : `\nEstimation result is ${finalLvesdiToFill} (raw ${lvesdi_estimated.toFixed(1)}), will use min allowed value ${mainLvesdiMin}.` )
-                 );
+                alert((translations[currentLanguage].errorRange||"").replace('{label}',translations[currentLanguage].labelLVESDi).replace('{min}',mainLvesdiMin).replace('{max}',mainLvesdiMax) + ` (Est: ${finalLvesdiToFill}, Raw: ${lvesdi_estimated_raw.toFixed(1)}). Using ${mainLvesdiMin}.`);
             } else if (finalLvesdiToFill > mainLvesdiMax) {
                 clampedLvesdi = mainLvesdiMax;
-                alert((translations[currentLanguage].errorRange || "{label} must be an integer between {min} and {max}.")
-                    .replace('{label}', translations[currentLanguage].labelLVESDi || "LVESDi")
-                    .replace('{min}', mainLvesdiMin)
-                    .replace('{max}', mainLvesdiMax) + 
-                    (currentLanguage === 'zh' ? `\n估算结果为 ${finalLvesdiToFill} (原始值 ${lvesdi_estimated.toFixed(1)})，将使用允许的最大值 ${mainLvesdiMax}。` : `\nEstimation result is ${finalLvesdiToFill} (raw ${lvesdi_estimated.toFixed(1)}), will use max allowed value ${mainLvesdiMax}.` )
-                 );
+                alert((translations[currentLanguage].errorRange||"").replace('{label}',translations[currentLanguage].labelLVESDi).replace('{min}',mainLvesdiMin).replace('{max}',mainLvesdiMax) + ` (Est: ${finalLvesdiToFill}, Raw: ${lvesdi_estimated_raw.toFixed(1)}). Using ${mainLvesdiMax}.`);
             }
-            
-            mainLvesdiInput.value = clampedLvesdi;
-            if(mainLvesdiSlider) mainLvesdiSlider.value = clampedLvesdi;
-
-            if(lvesdiEstimationResultEl) lvesdiEstimationResultEl.textContent = (translations[currentLanguage].lvesdiCalculated)
-                .replace('{value}', clampedLvesdi)
-                .replace('{bsa}', bsa_m2.toFixed(2));
-            
-            validateSingleField('lvesdi', mainLvesdiInput.value, mainFormSchema.lvesdi.min, mainFormSchema.lvesdi.max, true, mainFormSchema.lvesdi.isInteger);
+            mainLvesdiInput.value = clampedLvesdi; if(mainLvesdiSlider) mainLvesdiSlider.value = clampedLvesdi;
+            if(lvesdiEstimationResultEl) lvesdiEstimationResultEl.textContent = (translations[currentLanguage].lvesdiCalculated).replace('{value}', clampedLvesdi).replace('{bsa}', bsa_m2.toFixed(2));
+            validateSingleAriseField('lvesdi', mainLvesdiInput.value, mainFormSchema.lvesdi);
         } else {
-            if(lvesdiEstimationResultEl) {
-                lvesdiEstimationResultEl.textContent = translations[currentLanguage].lvesdiNotCalculated;
-                lvesdiEstimationResultEl.classList.add('text-red-500');
-            }
+            if(lvesdiEstimationResultEl) { lvesdiEstimationResultEl.textContent = translations[currentLanguage].lvesdiNotCalculated; lvesdiEstimationResultEl.classList.add('text-red-500');}
         }
     });
 
     // Chart.js Integration
-    function initChart() {
-        const ctx = document.getElementById('survivalCurveChart');
-        if (!ctx) return;
-        const data = {
-            labels: [ /* Populated by updateAllText */ ],
-            datasets: [
-                { label: /* Populated */ '', data: [100, null, null, null], borderColor: 'rgb(239, 68, 68)', backgroundColor: 'rgba(239, 68, 68, 0.1)', tension: 0.2, fill: true, pointRadius: 5, pointHoverRadius: 7, pointBackgroundColor: 'rgb(239, 68, 68)'},
-                { label: /* Populated */ '', data: [100, null, null, null], borderColor: 'rgb(59, 130, 246)', backgroundColor: 'rgba(59, 130, 246, 0.1)', tension: 0.2, fill: true, pointRadius: 5, pointHoverRadius: 7, pointBackgroundColor: 'rgb(59, 130, 246)'}
-            ]
-        };
+    function initChart() { /* ... same as Turn 35 ... */ 
+        const ctx = document.getElementById('survivalCurveChart'); if (!ctx) return;
+        const data = { labels: [], datasets: [ { data: [100,null,null,null] }, { data: [100,null,null,null] } ]}; // Simplified for init
         if (chartInstance) chartInstance.destroy();
-        chartInstance = new Chart(ctx.getContext('2d'), {
-            type: 'line', data: data,
-             options: {
-                responsive: true, maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true, max: 100,
-                        title: { display: true, text: (translations[currentLanguage]?.chartLabelSurvivalRate || 'Survival Rate (%)'), color: document.body.classList.contains('dark') ? '#94A3B8' : '#4B5563', font: {size: 12} },
-                        grid: { color: document.body.classList.contains('dark') ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)' },
-                        ticks: { color: document.body.classList.contains('dark') ? '#CBD5E1' : '#6B7280', stepSize: 20, callback: value => value + '%' }
-                    },
-                    x: {
-                        title: { display: true, text: (translations[currentLanguage]?.chartLabelTimeYears || 'Time (Years)'), color: document.body.classList.contains('dark') ? '#94A3B8' : '#4B5563', font: {size: 12} },
-                        grid: { display: false },
-                        ticks: { color: document.body.classList.contains('dark') ? '#CBD5E1' : '#6B7280' }
-                    }
-                },
-                plugins: {
-                    legend: { position: 'bottom', labels: { color: document.body.classList.contains('dark') ? '#E2E8F0' : '#374151', font: {size: 11}, usePointStyle: true, padding: 15 } },
-                    tooltip: {
-                        mode: 'index', intersect: false, titleFont: {size: 13}, bodyFont: {size: 11},
-                        callbacks: { label: context => `${context.dataset.label || ''}: ${context.parsed.y.toFixed(1)}%` }
-                    }
-                },
-                elements: { line: { borderWidth: 2 }, point: { hitRadius: 10 } }
-            }
-        });
+        chartInstance = new Chart(ctx.getContext('2d'), { type: 'line', data: data, options: { /* ... same options as Turn 35 ... */ 
+            responsive: true, maintainAspectRatio: false,
+            scales: {
+                y: { beginAtZero: true, max: 100, title: { display: true, text: "", color: document.body.classList.contains('dark') ? '#94A3B8' : '#4B5563', font: {size: 12} }, grid: { color: document.body.classList.contains('dark') ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)' }, ticks: { color: document.body.classList.contains('dark') ? '#CBD5E1' : '#6B7280', stepSize: 20, callback: v => v + '%' }},
+                x: { title: { display: true, text: "", color: document.body.classList.contains('dark') ? '#94A3B8' : '#4B5563', font: {size: 12} }, grid: { display: false }, ticks: { color: document.body.classList.contains('dark') ? '#CBD5E1' : '#6B7280' }}
+            },
+            plugins: { legend: { position: 'bottom', labels: { color: document.body.classList.contains('dark') ? '#E2E8F0' : '#374151', font: {size: 11}, usePointStyle: true, padding: 15 } }, tooltip: { mode: 'index', intersect: false, callbacks: { label: ctx => `${ctx.dataset.label||''}: ${ctx.parsed.y.toFixed(1)}%` }}},
+            elements: { line: { borderWidth: 2.5 }, point: { hitRadius: 10 } }
+        }});
     }
 
-    function updateChart(totalPoints, survivalProbs) { // totalPoints is {noAVS, yesAVS}, survivalProbs is {noAVS: {oneYear,...}, yesAVS: {oneYear,...}}
+    function updateChart(totalPoints, survivalProbs) { /* ... same as Turn 35 ... */ 
         if (!chartInstance || !survivalProbs || !survivalProbs.noAVS || !survivalProbs.yesAVS) return;
-        
-        const lang = currentLanguage; // Capture current language for consistent labels
-        chartInstance.data.labels = [
-            translations[lang].chartLabelBaseline,
-            `1 ${translations[lang].chartLabelTimeYears.split(' ')[0]}`, // "1 年" or "1 Year"
-            `3 ${translations[lang].chartLabelTimeYears.split(' ')[0]}`,
-            `5 ${translations[lang].chartLabelTimeYears.split(' ')[0]}`
-        ];
-        chartInstance.data.datasets[0].label = translations[lang].chartSurvivalNoAVS;
-        chartInstance.data.datasets[0].data = [ 100, survivalProbs.noAVS.oneYear * 100, survivalProbs.noAVS.threeYear * 100, survivalProbs.noAVS.fiveYear * 100 ];
-        
-        chartInstance.data.datasets[1].label = translations[lang].chartSurvivalYesAVS;
-        chartInstance.data.datasets[1].data = [ 100, survivalProbs.yesAVS.oneYear * 100, survivalProbs.yesAVS.threeYear * 100, survivalProbs.yesAVS.fiveYear * 100 ];
-        
-        chartInstance.options.scales.y.title.text = translations[lang].chartLabelSurvivalRate;
-        chartInstance.options.scales.x.title.text = translations[lang].chartLabelTimeYears;
+        const lang = currentLanguage;
+        chartInstance.data.labels = [ translations[lang].chartLabelBaseline, `1 ${translations[lang].chartLabelTimeYears.split(' ')[0]}`, `3 ${translations[lang].chartLabelTimeYears.split(' ')[0]}`, `5 ${translations[lang].chartLabelTimeYears.split(' ')[0]}` ];
+        chartInstance.data.datasets[0].label = translations[lang].chartSurvivalNoAVS; chartInstance.data.datasets[0].data = [ 100, survivalProbs.noAVS.oneYear * 100, survivalProbs.noAVS.threeYear * 100, survivalProbs.noAVS.fiveYear * 100 ];
+        chartInstance.data.datasets[0].borderColor = 'rgb(239, 68, 68)'; chartInstance.data.datasets[0].backgroundColor = document.body.classList.contains('dark') ? 'rgba(239, 68, 68, 0.2)' : 'rgba(239, 68, 68, 0.1)'; chartInstance.data.datasets[0].pointBackgroundColor = 'rgb(239, 68, 68)';
+        chartInstance.data.datasets[1].label = translations[lang].chartSurvivalYesAVS; chartInstance.data.datasets[1].data = [ 100, survivalProbs.yesAVS.oneYear * 100, survivalProbs.yesAVS.threeYear * 100, survivalProbs.yesAVS.fiveYear * 100 ];
+        chartInstance.data.datasets[1].borderColor = 'rgb(59, 130, 246)'; chartInstance.data.datasets[1].backgroundColor = document.body.classList.contains('dark') ? 'rgba(59, 130, 246, 0.2)' : 'rgba(59, 130, 246, 0.1)'; chartInstance.data.datasets[1].pointBackgroundColor = 'rgb(59, 130, 246)';
+        chartInstance.options.scales.y.title.text = translations[lang].chartLabelSurvivalRate; chartInstance.options.scales.x.title.text = translations[lang].chartLabelTimeYears;
         chartInstance.update();
     }
     
-    // Initial setup on DOMContentLoaded
-    function initializeApp() {
-        // Set year in footer
+    function initializeApp() { /* No auto-calc, default Chinese */
         const currentYearSpan = document.getElementById('currentYear');
         if(currentYearSpan) currentYearSpan.textContent = new Date().getFullYear();
-
-        // Language setup: default to Chinese if no preference
         const savedLang = localStorage.getItem('ariseCalculatorLanguage');
-        if (savedLang && translations[savedLang]) {
-            currentLanguage = savedLang;
-        } else {
-            currentLanguage = 'zh'; // Default to Chinese
-        }
+        if (savedLang && translations[savedLang]) currentLanguage = savedLang;
+        else currentLanguage = 'zh'; // Default to Chinese
         if(languageSelector) languageSelector.value = currentLanguage;
         
-        populateCciConditions(); // Needs to be done before first updateAllText if modal elements use data-lang-key
-        showTab('who'); // Set default tab
-        updateAllText(); // Apply language to all elements
+        populateCciConditions();
+        showTab('who'); 
+        updateAllText(); 
         
-        // Clear results and set up empty chart, NO auto-calculation or default value filling beyond HTML defaults
-        inputsConfig.forEach(conf => { // Set inputs to their HTML 'value' or min if slider
+        // Set form inputs to their HTML default values or blank, not specific clinical values
+        inputsConfig.forEach(conf => {
             const numInput = document.getElementById(conf.id);
             const sliderInput = document.getElementById(conf.sliderId);
-            if(numInput && sliderInput){
-                numInput.value = numInput.defaultValue || conf.defaultVal; // Keep HTML default
-                sliderInput.value = numInput.defaultValue || conf.defaultVal;
-            }
+            if(numInput) numInput.value = numInput.defaultValue || ''; // Use HTML default value or blank
+            if(sliderInput) sliderInput.value = sliderInput.defaultValue || conf.min; // Slider to min or HTML default
         });
-        // Reset select elements to their first option or HTML default
-        if(document.getElementById('sex')) document.getElementById('sex').value = document.getElementById('sex').options[0].value;
-        if(document.getElementById('nyha')) document.getElementById('nyha').value = document.getElementById('nyha').options[0].value;
+        if(document.getElementById('sex')) document.getElementById('sex').value = document.getElementById('sex').options[0].value; // Default to first option
+        if(document.getElementById('nyha')) document.getElementById('nyha').value = document.getElementById('nyha').options[0].value; // Default to first option
+        if(document.getElementById('cci') && document.getElementById('cci_slider')){ // ensure CCI input and slider are reset if no default value attribute set to 0
+             document.getElementById('cci').value = document.getElementById('cci').defaultValue || '0';
+             document.getElementById('cci_slider').value = document.getElementById('cci_slider').defaultValue || '0';
+        }
 
-        clearResultsAndNomogramPoints(); // This will also init an empty chart
+
+        clearResultsAndNomogramPoints(); // This initializes an empty chart too
     }
 
     initializeApp();
