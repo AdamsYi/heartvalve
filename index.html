@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HeartValve 专家 - 主动脉瓣疾病权威资讯与ARISE预后评估</title>
+    <title>HeartValve 专家 - 主动脉瓣疾病权威资讯与评估工具</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-            @apply bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-200;
+            font-family: 'Inter', sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
@@ -48,46 +47,28 @@
         .footer-link {
             @apply text-gray-400 hover:text-slate-200 transition-colors duration-300;
         }
-
-        /* Dark mode specific styles */
         .dark body { @apply bg-slate-900 text-slate-200; }
         .dark .hero-bg {
              background-image: linear-gradient(to right, rgba(17, 24, 39, 0.88), rgba(31, 41, 55, 0.95)), url('https://placehold.co/1920x1080/0f172a/0f172a?text=%20');
         }
         .dark nav { @apply bg-slate-800; }
-        .dark .nav-link-active {
-            @apply text-sky-400 border-sky-400;
-        }
-        .dark .nav-link {
-            @apply text-slate-300 hover:text-sky-400;
-        }
-        .dark .feature-card {
-            @apply bg-slate-800 hover:bg-slate-700 border border-slate-700;
-        }
-        .dark .feature-card-icon-placeholder {
-            @apply bg-sky-700/30 text-sky-400;
-        }
-        .dark .feature-card h3 {
-            @apply text-slate-100;
-        }
-         .dark .feature-card p {
-            @apply text-slate-400;
-        }
-        .dark .feature-card a.cta-button {
-            @apply bg-sky-600 hover:bg-sky-700 text-white;
-        }
+        .dark .nav-link-active { @apply text-sky-400 border-sky-400; }
+        .dark .nav-link { @apply text-slate-300 hover:text-sky-400; }
+        .dark .feature-card { @apply bg-slate-800 hover:bg-slate-700 border border-slate-700; }
+        .dark .feature-card-icon-placeholder { @apply bg-sky-700/30 text-sky-400; }
+        .dark .feature-card h3 { @apply text-slate-100; }
+        .dark .feature-card p { @apply text-slate-400; }
+        .dark .feature-card a.cta-button { @apply bg-sky-600 hover:bg-sky-700 text-white; }
         .dark .section-title { @apply text-slate-100; }
         .dark .section-subtitle { @apply text-slate-400; }
         .dark footer { @apply bg-gray-900 text-gray-400; }
         .dark .footer-link { @apply hover:text-sky-400; }
-
-        .hero-text-shadow {
-            text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
-        }
+        .hero-text-shadow { text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3); }
     </style>
 </head>
 <body class="bg-slate-50 text-gray-800 dark:bg-slate-900 dark:text-slate-200">
 
+    <!-- 导航栏 -->
     <nav class="bg-white dark:bg-slate-800 shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
@@ -97,13 +78,15 @@
                 <div class="hidden md:flex items-center space-x-1">
                     <a href="index.html" class="nav-link nav-link-active">首页</a>
                     <a href="calculator.html" class="nav-link">ARISE Score 工具</a>
+                    <!-- ➕ 新增 ValvePro 桌面导航链接 -->
+                    <a href="valvepro.html" class="nav-link">ValvePro AI 助手</a>
                     <a href="disease-info.html" class="nav-link">疾病知识</a>
                     <a href="surgical-options.html" class="nav-link">手术方案</a>
                     <a href="expert-views.html" class="nav-link">专家视角</a>
                     <a href="about.html" class="nav-link">关于我们</a>
                 </div>
                 <div class="md:hidden">
-                    <button type="button" class="bg-gray-100 dark:bg-gray-700 inline-flex items-center justify-center p-2 rounded-md text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sky-500" aria-controls="mobile-menu" aria-expanded="false" id="mobile-menu-button">
+                    <button type="button" class="bg-gray-100 dark:bg-gray-700 inline-flex items-center justify-center p-2 rounded-md text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sky-500" aria-controls="mobile-menu" aria-expanded="false" id="mobile-menu-button">
                         <span class="sr-only">打开主菜单</span>
                         <svg class="block h-6 w-6" id="icon-open" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
                         <svg class="hidden h-6 w-6" id="icon-close" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -111,10 +94,13 @@
                 </div>
             </div>
         </div>
+        <!-- 移动端菜单 -->
         <div class="md:hidden hidden bg-white dark:bg-slate-800" id="mobile-menu">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 <a href="index.html" class="nav-link nav-link-active block text-base">首页</a>
                 <a href="calculator.html" class="nav-link block text-base">ARISE Score 工具</a>
+                 <!-- ➕ 新增 ValvePro 移动端链接 -->
+                <a href="valvepro.html" class="nav-link block text-base">ValvePro AI 助手</a>
                 <a href="disease-info.html" class="nav-link block text-base">疾病知识</a>
                 <a href="surgical-options.html" class="nav-link block text-base">手术方案</a>
                 <a href="expert-views.html" class="nav-link block text-base">专家视角</a>
@@ -123,25 +109,27 @@
         </div>
     </nav>
 
+    <!-- 英雄区块 -->
     <header class="hero-bg">
         <div class="container mx-auto px-6 py-24 md:py-32 text-center">
             <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 leading-tight text-white hero-text-shadow">
                 精准评估<span class="text-sky-200">主动脉瓣反流</span>预后
             </h1>
             <p class="text-lg md:text-xl mb-10 max-w-3xl mx-auto text-slate-100 hero-text-shadow">
-                利用经科学验证的 ARISE Score 工具，结合最新临床指南与专家见解，为患者提供个体化的生存率评估与手术决策支持。
+                利用经科学验证的 ARISE Score 工具与 AI 话术助手，结合最新临床指南，为患者提供个体化的评估与决策支持。
             </p>
             <div class="space-y-4 sm:space-y-0 sm:space-x-4">
                 <a href="calculator.html" class="inline-block w-full sm:w-auto bg-white text-sky-700 hover:bg-sky-100 font-bold py-3 px-8 rounded-lg text-lg transition-colors duration-300 shadow-lg hover:shadow-xl">
                     立即使用 ARISE 工具
                 </a>
-                <a href="#features" class="inline-block w-full sm:w-auto bg-transparent border-2 border-white text-white hover:bg-white hover:text-sky-700 font-bold py-3 px-8 rounded-lg text-lg transition-colors duration-300">
-                    了解更多功能
+                <a href="valvepro.html" class="inline-block w-full sm:w-auto bg-transparent border-2 border-white text-white hover:bg-white hover:text-sky-700 font-bold py-3 px-8 rounded-lg text-lg transition-colors duration-300">
+                    打开 ValvePro 助手
                 </a>
             </div>
         </div>
     </header>
 
+    <!-- 我们的使命/为何选择我们 -->
     <section class="py-16 bg-white dark:bg-slate-800/50">
         <div class="container mx-auto px-6 text-center">
             <h2 class="section-title">我们的使命</h2>
@@ -151,21 +139,35 @@
         </div>
     </section>
 
+    <!-- 核心功能区块 -->
     <section id="features" class="py-16 bg-slate-100 dark:bg-slate-900">
         <div class="container mx-auto px-6">
             <h2 class="section-title">核心服务与资源</h2>
             <p class="section-subtitle">探索我们提供的专业工具和深度资讯，助力临床决策与患者教育。</p>
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-                <div class="feature-card lg:col-span-1 md:col-span-2 bg-sky-50 dark:bg-sky-900/20 border border-sky-200 dark:border-sky-700/50 ring-2 ring-sky-500/20 dark:ring-sky-500/30">
+                <!-- ARISE Score 工具卡片 - 重点突出 -->
+                <div class="feature-card lg:col-span-1 md:col-span-1 bg-sky-50 dark:bg-sky-900/20 border border-sky-200 dark:border-sky-700/50 ring-2 ring-sky-500/20 dark:ring-sky-500/30">
                     <div class="feature-card-icon-placeholder text-sky-500 dark:text-sky-400 bg-sky-100 dark:bg-sky-800/50">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16" y2="18"></line><line x1="16" y1="10" x2="12" y2="10"></line><line x1="12" y1="14" x2="12" y2="18"></line><line x1="12" y1="10" x2="8" y2="10"></line><line x1="8" y1="14" x2="8" y2="18"></line></svg>
                     </div>
                     <h3 class="dark:text-slate-50">ARISE Score 预后评估</h3>
-                    <p>基于最新研究（Liu et al., JAHA 2025），为主动脉瓣反流患者提供1、3、5年生存率的个体化估算，辅助手术时机决策。</p>
+                    <p>基于最新研究，为主动脉瓣反流患者提供1、3、5年生存率的个体化估算。</p>
                     <a href="calculator.html" class="cta-button bg-sky-600 hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-600">
-                        启动ARISE评估工具
+                        启动评估工具
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="inline ml-1.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </a>
+                </div>
+                
+                 <!-- ➕ 新增 ValvePro 卡片 -->
+                <div class="feature-card lg:col-span-1 md:col-span-1 bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-700/50 ring-2 ring-teal-500/20 dark:ring-teal-500/30">
+                    <div class="feature-card-icon-placeholder text-teal-500 dark:text-teal-400 bg-teal-100 dark:bg-teal-800/50">
+                       <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.94c1.5 0 2.85-1.12 2.85-2.5 0-1.66-2.55-3-4.5-3s-4.5 1.34-4.5 3c0 1.38 1.35 2.5 2.85 2.5z"/><path d="M12 3v10"/><path d="M12 3c-1.5 0-2.85 1.12-2.85 2.5S10.5 8.34 12 8.34s2.85-1.34 2.85-2.84S13.5 3 12 3z"/></svg>
+                    </div>
+                    <h3 class="dark:text-slate-50">ValvePro AI 话术助手</h3>
+                    <p>输入简短编码，快速生成专业、标准化的医患沟通话术，提升沟通效率。</p>
+                    <a href="valvepro.html" class="cta-button bg-teal-500 hover:bg-teal-600">
+                        打开话术助手
                     </a>
                 </div>
 
@@ -177,50 +179,16 @@
                     <p>深入了解主动脉瓣二叶畸形的诊断、分型、并发症及最新治疗策略。</p>
                     <a href="bicuspid-aortic-valve-info.html" class="cta-button">阅读专题</a>
                 </div>
-
-                <div class="feature-card">
-                    <div class="feature-card-icon-placeholder">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="M8 14s1.5-2 4-2 4 2 4 2"/><path d="M12 14v4"/><path d="M12 12h0"/></svg>
-                    </div>
-                    <h3 class="dark:text-slate-50">手术方案解析</h3>
-                    <p>详细介绍各类主动脉瓣手术（如AVR, TAVR, Ross手术等）的适应症、流程与预后。</p>
-                    <a href="surgical-options.html" class="cta-button">查看手术方案</a>
-                </div>
-
-                <div class="feature-card">
-                     <div class="feature-card-icon-placeholder">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                    </div>
-                    <h3 class="dark:text-slate-50">疾病知识库</h3>
-                    <p>提供全面的心脏瓣膜疾病基础知识、预防、诊断和康复指南。</p>
-                    <a href="disease-info.html" class="cta-button">探索知识库</a>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-card-icon-placeholder">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                    </div>
-                    <h3 class="dark:text-slate-50">专家视角与病例</h3>
-                    <p>分享领域内专家的最新观点、研究进展以及典型病例讨论。</p>
-                    <a href="expert-views.html" class="cta-button">阅读专家观点</a>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-card-icon-placeholder">
-                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-                    </div>
-                    <h3 class="dark:text-slate-50">关于我们</h3>
-                    <p>了解HeartValve专家的团队、愿景以及我们如何致力于心脏健康事业。</p>
-                    <a href="about.html" class="cta-button">了解更多</a>
-                </div>
+                
             </div>
         </div>
     </section>
 
+    <!-- 页脚 -->
     <footer class="bg-slate-800 dark:bg-black text-slate-300 dark:text-slate-400 py-8 text-center mt-12">
         <div class="container mx-auto px-6">
-            <p>&copy; <span id="currentYear"></span> HeartValve 专家. <span data-lang-key="footerRights">版权所有.</span></p>
-            <p class="text-sm mt-2" data-lang-key="footerDisclaimer">本网站信息仅供参考，不能替代专业医疗建议、诊断或治疗。</p>
+            <p>&copy; <span id="currentYear"></span> HeartValve 专家. 版权所有.</p>
+            <p class="text-sm mt-2">本网站信息仅供参考，不能替代专业医疗建议、诊断或治疗。</p>
         </div>
     </footer>
 
