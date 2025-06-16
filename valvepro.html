@@ -1,1 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ValvePro - 医患沟通话术生成器 | HeartValve 专家</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            @apply bg-slate-100 text-slate-700;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* --- 统一风格组件 --- */
+        .content-card {
+            @apply bg-white p-6 md:p-8 rounded-xl shadow-lg border border-slate-200;
+        }
+        .section-title {
+            @apply text-3xl md:text-4xl font-bold text-slate-800 mb-2;
+        }
+        .section-subtitle {
+            @apply text-md md:text-lg text-slate-500 max-w-3xl mx-auto;
+        }
+        .button-primary {
+            @apply h-12 px-6 py-2.5 rounded-lg text-sm font-semibold transition-colors duration-150 ease-in-out flex items-center justify-center space-x-2 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2;
+            @apply bg-sky-600 hover:bg-sky-700 text-white focus:ring-sky-500;
+        }
+        .form-input-base {
+            @apply flex h-12 w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-base text-slate-900 ring-offset-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all duration-150 ease-in-out shadow-sm;
+        }
+
+        /* --- 导航栏 --- */
+        .nav-link {
+            @apply px-3 py-2 rounded-md text-sm font-medium transition-colors duration-150 text-slate-600 hover:bg-slate-200 hover:text-sky-700;
+        }
+        .nav-link-active {
+            @apply bg-sky-100 text-sky-700 font-semibold;
+        }
+        
+        /* --- 速查表 --- */
+        .lookup-table th, .lookup-table td { @apply border border-slate-200 px-4 py-2.5 text-sm; }
+        .lookup-table th { @apply bg-slate-100 font-semibold text-slate-700 text-left; }
+        .lookup-table td { @apply text-slate-600; }
+        .lookup-table code { @apply bg-slate-200 text-sky-700 font-mono text-xs px-1.5 py-1 rounded; }
+
+        /* --- 结果输出区 --- */
+        #outputScript p { @apply mb-3; }
+        #outputScript p:last-child { @apply mb-0; }
+        #copyConfirmation { 
+            @apply absolute top-4 right-4 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full opacity-0 transition-opacity duration-300;
+        }
+    </style>
+</head>
+<body class="bg-slate-100">
+
+    <nav class="bg-white shadow-sm sticky top-0 z-50 border-b border-slate-200">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="index.html" class="text-2xl font-bold text-sky-600 hover:text-sky-700 transition-colors">HeartValve 专家</a>
+                <div class="hidden md:flex items-center space-x-1">
+                    <a href="index.html" class="nav-link">首页</a>
+                    <a href="calculator.html" class="nav-link">ARISE Score 工具</a>
+                    <a href="valvepro.html" class="nav-link nav-link-active">ValvePro 话术生成</a>
+                    <a href="disease-info.html" class="nav-link">疾病知识</a>
+                    <a href="expert-views.html" class="nav-link">专家视角</a>
+                    <a href="about.html" class="nav-link">关于我们</a>
+                </div>
+                </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8 sm:py-12">
+        <div class="text-center mb-12">
+            <h1 class="section-title">ValvePro - 医患沟通话术生成器</h1>
+            <h2 class="section-subtitle">输入简短组合码，即时生成专业、标准化的医患沟通话术。</h2>
+        </div>
+        
+        <div class="lg:grid lg:grid-cols-12 lg:gap-8 xl:gap-10">
+            <section class="lg:col-span-5 space-y-8">
+                <div class="content-card">
+                    <h3 class="card-title">生成话术</h3>
+                    <form id="generatorForm" class="flex items-center space-x-3">
+                        <input type="text" id="comboCodeInput" class="form-input-base flex-grow tracking-wider font-mono" placeholder="例如: 2ac4r6">
+                        <button type="submit" id="generateButton" class="button-primary flex-shrink-0">
+                            <i class="fas fa-bolt mr-2"></i>生成
+                        </button>
+                    </form>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="card-title">编码速查图</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full lookup-table">
+                            <thead>
+                                <tr><th>区段</th><th>代码</th><th>含义</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><th rowspan="4">病情阶段</th><td><code>1</code></td><td>稳定随访</td></tr>
+                                <tr><td><code>2</code></td><td>干预评估</td></tr>
+                                <tr><td><code>3</code></td><td>建议手术</td></tr>
+                                <tr><td><code>4</code></td><td>术后随访</td></tr>
+                                <tr><th rowspan="5">术式方向</th><td><code>a</code></td><td>修复优先（失败可换瓣）</td></tr>
+                                <tr><td><code>b</code></td><td>直接换瓣</td></tr>
+                                <tr><td><code>c</code></td><td>Ross</td></tr>
+                                <tr><td><code>d</code></td><td>Ozaki</td></tr>
+                                <tr><td><code>x</code></td><td>无术式</td></tr>
+                                <tr><th rowspan="2">附加说明</th><td><code>4</code></td><td>生活建议</td></tr>
+                                <tr><td><code>5</code></td><td>术语解释</td></tr>
+                                <tr><th rowspan="4">复查周期</th><td><code>r3</code></td><td>每3月</td></tr>
+                                <tr><td><code>r6</code></td><td>每6月</td></tr>
+                                <tr><td><code>r12</code></td><td>每年</td></tr>
+                                <tr><td><code>r24</code></td><td>每2年</td></tr>
+                                <tr><th rowspan="3">行动建议</th><td><code>m</code></td><td>线下门诊</td></tr>
+                                <tr><td><code>c</code></td><td>CTA 等检查</td></tr>
+                                <tr><td><code>h</code></td><td>本院复查</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section class="lg:col-span-7 mt-8 lg:mt-0">
+                <div class="content-card relative">
+                    <h3 class="card-title">生成结果</h3>
+                    <button id="copyButton" class="absolute top-6 right-6 h-9 px-3 text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-md transition-colors flex items-center space-x-1.5 shadow-sm">
+                        <i class="fas fa-copy"></i><span>复制</span>
+                    </button>
+                    <div id="copyConfirmation">已复制!</div>
+
+                    <div id="outputScript" class="prose prose-slate max-w-none p-5 bg-slate-50 rounded-lg min-h-[200px] border border-slate-200">
+                        <p class="text-slate-400">请在左侧输入组合码并点击“生成”按钮。</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="bg-slate-800 text-slate-300 py-8 text-center mt-12">
+        <div class="container mx-auto px-6">
+            <p>&copy; <span id="currentYear"></span> HeartValve 专家. 版权所有.</p>
+            <p class="text-sm mt-2">本网站信息仅供参考，不能替代专业医疗建议、诊断或治疗。</p>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // --- DOM ELEMENT REFERENCES ---
+    const form = document.getElementById('generatorForm');
+    const input = document.getElementById('comboCodeInput');
+    const outputContainer = document.getElementById('outputScript');
+    const copyButton = document.getElementById('copyButton');
+    const copyConfirmation = document.getElementById('copyConfirmation');
+    const currentYearSpan = document.getElementById('currentYear');
+    if(currentYearSpan) currentYearSpan.textContent = new Date().getFullYear();
+
+    // --- PHRASE DATABASE ---
+    const phrases = {
+        stage: {
+            '1': '当前病情稳定，暂无明确干预指征，建议定期随访观察。',
+            '2': '当前检查提示部分指标已有进展，尚未达到明确手术指征，但后续存在干预可能。',
+            '3': '当前检查提示符合手术指征，建议考虑进行手术干预。',
+            '4': '术后恢复良好，请继续保持定期随访。'
+        },
+        approach: {
+            'a': '若需手术，可优先考虑主动脉瓣修复；修复能否实施需更多影像及术中评估。',
+            'ac': '若需手术，可优先考虑主动脉瓣修复；修复能否实施需更多影像及术中评估，若条件不足可考虑 Ross 术式。',
+            'ad': '若需手术，可优先考虑主动脉瓣修复；修复能否实施需更多影像及术中评估，若条件不足可考虑 Ozaki 术式。',
+            'b': '若需手术，建议直接进行主动脉瓣置换术。',
+            'c': '若需手术，可考虑 Ross 术式。',
+            'd': '若需手术，可考虑 Ozaki 术式。',
+            'x': '现阶段无需讨论具体术式，以随访监测为主。'
+        },
+        addons: {
+            '4': '日常生活保持规律，饮食清淡，适度活动，避免熬夜和情绪波动。',
+            '5': '主动脉瓣反流是指心脏主动脉瓣关闭不全，导致部分血液在心室收缩后返流回左心室。'
+        },
+        followup: {
+            'r3': '建议每 3 个月复查一次心脏超声。',
+            'r6': '建议每 6 个月复查一次心脏超声。',
+            'r12': '建议每年复查一次心脏超声。',
+            'r24': '建议每 2 年复查一次心脏超声。'
+        },
+        action: {
+            'm': '请于近期预约线下门诊，以便进一步详细沟通。',
+            'c': '建议择期完成主动脉CTA等影像学检查，以全面评估解剖结构。',
+            'h': '请按时于我院复查，以便我们持续跟踪您的病情变化。'
+        }
+    };
+
+    const disclaimer = '⚠️ 本内容由 AI 辅助生成，仅供医生参考，不构成诊断或治疗建议。';
+
+    // --- CORE LOGIC: CODE PARSER ---
+    function parseCode(code) {
+        const parts = [];
+        let error = '';
+
+        const regex = /^([1-4])([a-dx]+)((?:[45])*)((?:r\d+)?)(\w*)$/i;
+        const match = code.trim().toLowerCase().match(regex);
+
+        if (!match) {
+            return {
+                html: '<p class="text-red-500">输入的组合码格式不正确，请参照速查表检查。</p>',
+                error: true
+            };
+        }
+
+        const [, stageCode, approachCode, addonsCode, followupCode, actionCode] = match;
+
+        // 1. Stage
+        if (phrases.stage[stageCode]) {
+            parts.push(phrases.stage[stageCode]);
+        }
+
+        // 2. Approach
+        if (phrases.approach[approachCode]) {
+            parts.push(phrases.approach[approachCode]);
+        } else {
+            let approachText = '';
+            for (const char of approachCode) {
+                if (phrases.approach[char]) {
+                    approachText += phrases.approach[char] + ' ';
+                }
+            }
+            if(approachText) parts.push(approachText.trim());
+        }
+
+        // 3. Follow-up Period
+        if (followupCode && phrases.followup[followupCode]) {
+            parts.push(phrases.followup[followupCode]);
+        }
+        
+        // 4. Add-ons
+        if (addonsCode) {
+            for (const char of addonsCode) {
+                if (phrases.addons[char]) {
+                    parts.push(phrases.addons[char]);
+                }
+            }
+        }
+        
+        // 5. Action
+        if (actionCode) {
+             for (const char of actionCode) {
+                if (phrases.action[char]) {
+                    parts.push(phrases.action[char]);
+                }
+            }
+        }
+
+        parts.push(disclaimer);
+
+        const html = parts.map(p => `<p>${p}</p>`).join('');
+        return { html, error: false };
+    }
+
+    // --- EVENT LISTENERS ---
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const code = input.value;
+        if (!code) {
+            outputContainer.innerHTML = '<p class="text-slate-400">请输入组合码。</p>';
+            copyButton.classList.add('hidden');
+            return;
+        }
+
+        const result = parseCode(code);
+        outputContainer.innerHTML = result.html;
+        
+        if (!result.error) {
+            copyButton.classList.remove('hidden');
+        } else {
+            copyButton.classList.add('hidden');
+        }
+    });
+
+    copyButton.addEventListener('click', () => {
+        const textToCopy = Array.from(outputContainer.querySelectorAll('p'))
+                                .map(p => p.textContent)
+                                .join('\n\n');
+
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            copyConfirmation.style.opacity = '1';
+            setTimeout(() => {
+                copyConfirmation.style.opacity = '0';
+            }, 2000);
+        }).catch(err => {
+            console.error('无法复制文本: ', err);
+            alert('复制失败，请手动复制。');
+        });
+    });
+});
+</script>
+
+</body>
+</html>
 
