@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ValvePro AI 医患沟通助手</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Open Sans","Helvetica Neue",sans-serif;}
+    .code-banner img{max-height:100px;object-fit:contain;}
+    .output{white-space:pre-line;}
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 dark:bg-slate-900 dark:text-gray-100">
+
+  <!-- 顶部编码示意图（占位，可换图） -->
+  <div class="code-banner flex justify-center p-3">
+    <img src="valvepro_codes.png" alt="编码参考图">
+  </div>
+
+  <div class="max-w-xl mx-auto bg-white dark:bg-slate-800 p-6 rounded-xl shadow-md">
+    <h1 class="text-2xl font-bold mb-4 text-sky-600 dark:text-sky-300 text-center">ValvePro 主动脉瓣 AI 医患话术生成器</h1>
+
+    <label class="block text-sm font-medium mb-1">输入编码（顺序不限）：</label>
+    <textarea id="codeInput" class="w-full h-16 p-2 border rounded-md dark:bg-slate-700 dark:border-slate-600" placeholder="如：2ac4r6 或 2r6ac"></textarea>
+
+    <div class="flex gap-3 mt-3">
+      <button onclick="generateSpeech()" class="flex-1 bg-sky-600 hover:bg-sky-700 text-white rounded-md py-2">生成话术</button>
+      <button onclick="clearAll()" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-900 rounded-md py-2">清空</button>
+    </div>
+
+    <div id="output" class="output mt-6 p-4 bg-gray-100 dark:bg-slate-700 rounded-md border dark:border-slate-600 min-h-[120px]"></div>
+
+    <p class="text-xs text-gray-500 dark:text-gray-400 mt-4 text-center">
+      ⚠️ 本内容由 AI 辅助生成，仅供医生沟通参考，不构成诊断或治疗建议。
+    </p>
+  </div>
+
+<script>
+/* ---------- 配置区 ---------- */
+const GEMINI_API_KEY = "AIzaSyAF4ulEidOCkdIOKOzcnqL_zVWfHwVYULk";   // 你的 Gemini API Key
+const GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=" + GEMINI_API_KEY;
+/* ---------- 工具函数 ---------- */
+function clearAll(){
+  document.getElementById("codeInput").value="";
+  document.getElementById("output").textContent="";
+}
+function parseCode(raw){
+  const code=raw.toLowerCase().replace(/\\s+/g,"");
+  if(!/^[0-4]/.test(code)) return null;
+
+  const obj={stage:code.match(/[0-4]/)[0], therapy:"x", extras:[], review:""};
+  // 取术式 a b c d x
+  const t=code.match(/[abcdx]/);
+  if(t) obj.therapy=t[0];
+
+  // 修复备选 ross/ozaki
+  if(code.includes("ac")) obj.extras.push("ross");
+  if(code.includes("ad")) obj.extras.push("ozaki");
+  // 单独主术式 ross/ozaki
+  if(obj.therapy==="c") obj.therapy="ross";
+  if(obj.therapy==="d") obj.therapy="ozaki";
+
+  // 生活 术语 英文
+  if(code.includes("4")) obj.extras.push("lifestyle");
+  if(code.includes("5")) obj.extras.push("explain");
+
+  // 行动建议
+  if(code.includes("m")) obj.extras.push("clinic");
+  if(code.includes("c")) obj.extras.push("cta");
+  if(code.includes("h")) obj.extras.push("hospital");
+
+  // 复查周期 r3 r6 r12 r24
+  const r=code.match(/r(3|6|12|24)/);
+  if(r) obj.review=r[0].replace("r","");
+
+  return obj;
+}
+/* ---------- 主函数 ---------- */
+async function generateSpeech(){
+  const raw=document.getElementById("codeInput").value.trim();
+  const output=document.getElementById("output");
+  if(!raw){output.textContent="⚠️ 请输入编码";return;}
+
+  const parsed=parseCode(raw);
+  if(!parsed){output.textContent="⚠️ 编码格式有误";return;}
+
+  output.textContent="⏳ 正在生成，请稍候…";
+
+  /* 组装 prompt */
+  let prompt=`你是一名心脏外科医生助手，请根据以下指令生成中文专业且简洁的患者沟通话术：\\n`;
+  prompt+=`病情阶段代码：${parsed.stage}\\n`;
+  prompt+=`治疗方向：${parsed.therapy}\\n`;
+  if(parsed.extras.length) prompt+=`附加选项：${parsed.extras.join(",")}\\n`;
+  if(parsed.review) prompt+=`复查频率：每 ${parsed.review} 个月复查心超\\n`;
+  prompt+=`要求：\\n1. 使用建议式中立语气，不出现“我们”。\\n2. 若首选修复需说明修复不确定性与备选方案。\\n3. 生活建议保持一句话简洁风格。\\n4. 输出分段，结尾不忘附加复查语句。`;
+
+  /* 发送到 Gemini */
+  try{
+    const res=await fetch(GEMINI_ENDPOINT,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        contents:[{parts:[{text:prompt}]}],
+        generationConfig:{temperature:0.4}
+      })
+    });
+    const data=await res.json();
+    const text=data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    output.textContent=text||"❌ AI 返回空内容，请检查编码或稍后重试。";
+  }catch(err){
+    output.textContent="❌ 调用 Gemini 失败："+err;
+  }
+}
+</script>
+</body>
+</html>
